@@ -1,0 +1,10 @@
+# dependencies
+/node_modules
+/packages/**/node_module
+
+# production
+/dist
+/packages/**/dist
+
+# logs
+*.log
