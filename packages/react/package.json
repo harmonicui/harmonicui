@@ -1,11 +1,11 @@
 {
-  "name": "@harmonicui/vue",
+  "name": "@harmonicui/react",
   "version": "0.1.0",
   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/harmonicui/harmonicui/",
-    "directory": "packages/vue"
+    "directory": "packages/react"
   },
   "author": "Mohammad Ataei",
   "license": "MIT",
@@ -17,6 +17,8 @@
     "lint": "eslint --ext .js,.ts ."
   },
   "devDependencies": {
-    "vue": "^3.0.2"
+    "@pika/react": "^16.13.1",
+    "@pika/react-dom": "^16.13.1",
+    "vite-plugin-react": "^3.0.2"
   }
 }
