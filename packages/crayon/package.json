@@ -11,6 +11,9 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/harmonicui/harmonicui/issues"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }
 

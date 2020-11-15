@@ -8,3 +8,7 @@
 
 # logs
 *.log
+
+# testing
+/coverage
+/packages/**/coverage
