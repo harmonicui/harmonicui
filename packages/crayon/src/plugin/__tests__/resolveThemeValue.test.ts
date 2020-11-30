@@ -1,6 +1,6 @@
-import resolveThemeValue from './resolveThemeValue'
+import resolveThemeValue from '../resolveThemeValue'
 
-jest.mock('./tailwindUtils')
+jest.mock('../tailwindUtils')
 
 test('returns requested value from tailwind config', () => {
   expect(resolveThemeValue('backgroundColor.blue.500', ''))

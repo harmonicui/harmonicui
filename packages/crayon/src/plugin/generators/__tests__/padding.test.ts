@@ -1,6 +1,6 @@
-import { paddingBottom, paddingLeft, paddingRight, paddingTop } from './padding'
+import { paddingBottom, paddingLeft, paddingRight, paddingTop } from '../padding'
 
-jest.mock('../tailwindUtils')
+jest.mock('../../tailwindUtils')
 
 describe.each(
   [
