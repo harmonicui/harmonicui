@@ -9,7 +9,7 @@ const addComponents: TailwindUtils['addComponents'] = (components, options) => {
   console.log()
 }
 
-const e: TailwindUtils['e'] = (className) => {
+export const e: TailwindUtils['e'] = (className) => {
   return className
 }
 
