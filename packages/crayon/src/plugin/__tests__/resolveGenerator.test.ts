@@ -6,10 +6,12 @@ jest.mock('../tailwindUtils')
 
 const generatorsList: Array<[keyof typeof generators, Generator]> = [
   ['backgroundColor', generators.backgroundColor],
+  ['height', generators.height],
   ['paddingTop', generators.paddingTop],
   ['paddingRight', generators.paddingRight],
   ['paddingBottom', generators.paddingBottom],
   ['paddingLeft', generators.paddingLeft],
+  ['width', generators.width],
 ]
 
 test.each(generatorsList)('resolves the "%s" generator', (name, generator) => {
