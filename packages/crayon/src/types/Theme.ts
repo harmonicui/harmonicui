@@ -7,3 +7,7 @@ export type UserTheme = {
   styles?: Styles,
   modifiers?: { [name: string]: Styles },
 }
+
+export type UserThemeCollection = {
+  [name: string]: UserTheme
+}
