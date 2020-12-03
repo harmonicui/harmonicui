@@ -21,3 +21,8 @@ test('generates name with modifier', () => {
   expect(generateComponentName('with/modifier', 'success'))
     .toEqual('.with\\/modifier--success')
 })
+
+test('component names must be kebab-case', () => {
+  expect(generateComponentName('The Class Name/With_Special:characters', 'WithAModifier'))
+    .toEqual('.the-class-name\\/with-special\\:characters--with-a-modifier')
+})
