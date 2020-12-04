@@ -4,7 +4,7 @@ jest.mock('../tailwindUtils')
 
 test('generate components of all given themes', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const themes = require('../../__fixtures__/DaVinci.theme')
+  const themes = require('../../__fixtures__/themes/DaVinci.theme')
 
   expect(processThemes(themes))
     .toEqual({
