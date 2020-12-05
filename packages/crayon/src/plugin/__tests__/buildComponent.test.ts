@@ -1,6 +1,6 @@
 import buildComponent from '../buildComponent'
 
-jest.mock('../tailwindUtils')
+jest.mock('../../utils/tailwindUtils')
 
 test('build a component from given styles', () => {
   const styles = {

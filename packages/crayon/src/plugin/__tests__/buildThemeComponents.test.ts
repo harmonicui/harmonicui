@@ -1,6 +1,6 @@
 import buildThemeComponents from '../buildThemeComponents'
 
-jest.mock('../tailwindUtils')
+jest.mock('../../utils/tailwindUtils')
 
 test('constructs a component for theme\'s styles', () => {
   const theme = {

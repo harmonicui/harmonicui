@@ -1,6 +1,6 @@
 import { height } from '../height'
 
-jest.mock('../../tailwindUtils')
+jest.mock('../../../utils/tailwindUtils')
 
 test('generates height property with tailwind values', () => {
   expect(height('4'))

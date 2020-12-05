@@ -1,4 +1,4 @@
-import { theme } from './tailwindUtils'
+import { theme } from '../utils/tailwindUtils'
 
 export default function resolveThemeValue (path: string, defaultValue: string): string {
   const resolvedValue = theme(path)

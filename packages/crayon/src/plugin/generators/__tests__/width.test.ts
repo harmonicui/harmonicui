@@ -1,6 +1,6 @@
 import { width } from '../width'
 
-jest.mock('../../tailwindUtils')
+jest.mock('../../../utils/tailwindUtils')
 
 test('generates width property with tailwind values', () => {
   expect(width('4'))

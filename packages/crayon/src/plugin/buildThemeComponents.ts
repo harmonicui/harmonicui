@@ -1,5 +1,5 @@
 import buildComponent from './buildComponent'
-import generateComponentName from './generateComponentName'
+import generateComponentName from '../utils/generateComponentName'
 import { TailwindComponent, UserTheme } from '../types'
 
 export default function buildThemeComponents (theme: UserTheme): TailwindComponent {

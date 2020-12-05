@@ -1,6 +1,6 @@
 import { backgroundColor } from '../background'
 
-jest.mock('../../tailwindUtils')
+jest.mock('../../../utils/tailwindUtils')
 
 describe('backgroundColor', () => {
   test('generates backgroundColor property', () => {

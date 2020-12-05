@@ -1,6 +1,6 @@
 import { processThemes } from '../processThemes'
 
-jest.mock('../tailwindUtils')
+jest.mock('../../utils/tailwindUtils')
 
 test('generate components of all given themes', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires

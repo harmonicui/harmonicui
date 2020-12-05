@@ -2,7 +2,7 @@ import resolveGenerator from '../resolveGenerator'
 import * as generators from '../generators'
 import { Generator } from '../../types'
 
-jest.mock('../tailwindUtils')
+jest.mock('../../utils/tailwindUtils')
 
 const generatorsList: Array<[keyof typeof generators, Generator]> = [
   ['backgroundColor', generators.backgroundColor],

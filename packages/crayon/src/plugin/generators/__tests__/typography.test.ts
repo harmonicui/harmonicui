@@ -1,6 +1,6 @@
 import { color } from '../typography'
 
-jest.mock('../../tailwindUtils')
+jest.mock('../../../utils/tailwindUtils')
 
 describe('color', () => {
   test('generates color property with tailwind values', () => {
