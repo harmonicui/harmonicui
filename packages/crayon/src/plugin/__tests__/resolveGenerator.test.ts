@@ -8,6 +8,7 @@ const generatorsList: Array<[keyof typeof generators, Generator]> = [
   ['backgroundColor', generators.backgroundColor],
   ['color', generators.color],
   ['height', generators.height],
+  ['letterSpacing', generators.letterSpacing],
   ['paddingTop', generators.paddingTop],
   ['paddingRight', generators.paddingRight],
   ['paddingBottom', generators.paddingBottom],
