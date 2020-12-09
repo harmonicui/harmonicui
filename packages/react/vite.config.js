@@ -1,4 +1,5 @@
 // @ts-check
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const reactPlugin = require('vite-plugin-react')
 
 /**
@@ -6,7 +7,7 @@ const reactPlugin = require('vite-plugin-react')
  */
 const config = {
   jsx: 'react',
-  plugins: [reactPlugin]
+  plugins: [reactPlugin],
 }
 
 module.exports = config
