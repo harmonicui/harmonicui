@@ -1,4 +1,4 @@
-import { marginBottom, marginLeft, marginRight, marginTop, marginX } from '../margin'
+import { marginBottom, marginLeft, marginRight, marginTop, marginX, marginY } from '../margin'
 
 jest.mock('../../../utils/tailwindUtils')
 
@@ -107,6 +107,72 @@ describe('marginX', () => {
       .toEqual({
         marginRight: '-13px',
         marginLeft: '-13px',
+      })
+  })
+})
+
+describe('marginY', () => {
+  test('generates marginTop and marginBottom properties property with tailwind values', () => {
+    expect(marginY('0'))
+      .toEqual({
+        marginTop: '0px',
+        marginBottom: '0px',
+      })
+
+    expect(marginY('-0'))
+      .toEqual({
+        marginTop: '0px',
+        marginBottom: '0px',
+      })
+
+    expect(marginY('px'))
+      .toEqual({
+        marginTop: '1px',
+        marginBottom: '1px',
+      })
+
+    expect(marginY('-px'))
+      .toEqual({
+        marginTop: '-1px',
+        marginBottom: '-1px',
+      })
+
+    expect(marginY('4'))
+      .toEqual({
+        marginTop: '1rem',
+        marginBottom: '1rem',
+      })
+
+    expect(marginY('-4'))
+      .toEqual({
+        marginTop: '-1rem',
+        marginBottom: '-1rem',
+      })
+
+    expect(marginY('1.5'))
+      .toEqual({
+        marginTop: '0.375rem',
+        marginBottom: '0.375rem',
+      })
+
+    expect(marginY('-1.5'))
+      .toEqual({
+        marginTop: '-0.375rem',
+        marginBottom: '-0.375rem',
+      })
+  })
+
+  test('uses value as raw css if it can not be resolved from tailwind', () => {
+    expect(marginY('13px'))
+      .toEqual({
+        marginTop: '13px',
+        marginBottom: '13px',
+      })
+
+    expect(marginY('-13px'))
+      .toEqual({
+        marginTop: '-13px',
+        marginBottom: '-13px',
       })
   })
 })
