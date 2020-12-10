@@ -19,6 +19,13 @@ export const marginLeft: Generator = (value) => {
   return marginSide(value, 'marginLeft')
 }
 
+export const marginX: Generator = (value) => {
+  return {
+    ...marginSide(value, 'marginRight'),
+    ...marginSide(value, 'marginLeft'),
+  }
+}
+
 function marginSide (value: string, side: Sides) {
   return {
     [side]: resolveThemeValue(`margin[${value}]`, value),
