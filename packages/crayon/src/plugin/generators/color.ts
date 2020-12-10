@@ -8,9 +8,3 @@ export const color: Generator = (value) => {
     color: resolveThemeValue(path, value),
   }
 }
-
-export const letterSpacing: Generator = (value) => {
-  return {
-    letterSpacing: resolveThemeValue(`letterSpacing.${value}`, value),
-  }
-}
