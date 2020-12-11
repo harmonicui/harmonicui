@@ -1,4 +1,4 @@
-import { paddingBottom, paddingLeft, paddingRight, paddingTop, paddingX } from '../padding'
+import { paddingBottom, paddingLeft, paddingRight, paddingTop, paddingX, paddingY } from '../padding'
 import { Generator } from '../../../types'
 
 jest.mock('../../../utils/tailwindUtils')
@@ -56,6 +56,26 @@ describe('paddingX', () => {
       .toEqual({
         paddingRight: '18rem',
         paddingLeft: '18rem',
+      })
+  })
+})
+
+describe('paddingY', () => {
+  test.each(testValues)(
+    'generates paddingTop & paddingBottom properties using tailwind values. input: %s, expected: %s',
+    (input, expected) => {
+      expect(paddingY(input))
+        .toEqual({
+          paddingTop: expected,
+          paddingBottom: expected,
+        })
+    })
+
+  test('uses value as raw css if it can not be resolved from tailwind', () => {
+    expect(paddingY('18rem'))
+      .toEqual({
+        paddingTop: '18rem',
+        paddingBottom: '18rem',
       })
   })
 })
