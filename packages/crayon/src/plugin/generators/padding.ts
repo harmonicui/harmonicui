@@ -21,6 +21,6 @@ export const paddingLeft: Generator = (value) => {
 
 function paddingSide (value: string, side: Sides) {
   return {
-    [side]: resolveThemeValue(`padding.${value}`, value),
+    [side]: resolveThemeValue(`padding[${value}]`, value),
   }
 }
