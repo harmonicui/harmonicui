@@ -1,40 +1,40 @@
 import { marginBottom, marginLeft, marginRight, marginTop, marginX, marginY } from '../margin'
+import { Generator } from '../../../types'
 
 jest.mock('../../../utils/tailwindUtils')
 
-describe.each(
-  [
-    ['marginTop', marginTop],
-    ['marginRight', marginRight],
-    ['marginBottom', marginBottom],
-    ['marginLeft', marginLeft],
-  ],
-)('%s', (name, generator) => {
-  test(`generates ${name} property`, () => {
-    expect(generator('0'))
-      .toEqual({ [name]: '0px' })
+type Sides = 'marginTop'
+  | 'marginRight'
+  | 'marginBottom'
+  | 'marginLeft'
 
-    expect(generator('-0'))
-      .toEqual({ [name]: '0px' })
+const testValues = [
+  ['0', '0px'],
+  ['px', '1px'],
+  ['4', '1rem'],
+  ['-0', '0px'],
+  ['-px', '-1px'],
+  ['-4', '-1rem'],
+  ['1.5', '0.375rem'],
+  ['-1.5', '-0.375rem'],
+]
 
-    expect(generator('px'))
-      .toEqual({ [name]: '1px' })
+const sides: Array<[Sides, Generator]> = [
+  ['marginTop', marginTop],
+  ['marginRight', marginRight],
+  ['marginBottom', marginBottom],
+  ['marginLeft', marginLeft],
+]
 
-    expect(generator('-px'))
-      .toEqual({ [name]: '-1px' })
-
-    expect(generator('4'))
-      .toEqual({ [name]: '1rem' })
-
-    expect(generator('-4'))
-      .toEqual({ [name]: '-1rem' })
-
-    expect(generator('1.5'))
-      .toEqual({ [name]: '0.375rem' })
-
-    expect(generator('-1.5'))
-      .toEqual({ [name]: '-0.375rem' })
-  })
+describe.each(sides)('%s', (name, generator) => {
+  test.each(testValues)(
+    `generates ${name} property using tailwind values. input: %s, expected: %s`,
+    (input, expectedResult) => {
+      expect(generator(input))
+        .toEqual({
+          [name]: expectedResult,
+        })
+    })
 
   test('uses value as raw css if it cant be resolved from tailwind', () => {
     expect(generator('10px'))
@@ -46,55 +46,15 @@ describe.each(
 })
 
 describe('marginX', () => {
-  test('generates marginRight and marginLeft properties property with tailwind values', () => {
-    expect(marginX('0'))
-      .toEqual({
-        marginRight: '0px',
-        marginLeft: '0px',
-      })
-
-    expect(marginX('-0'))
-      .toEqual({
-        marginRight: '0px',
-        marginLeft: '0px',
-      })
-
-    expect(marginX('px'))
-      .toEqual({
-        marginRight: '1px',
-        marginLeft: '1px',
-      })
-
-    expect(marginX('-px'))
-      .toEqual({
-        marginRight: '-1px',
-        marginLeft: '-1px',
-      })
-
-    expect(marginX('4'))
-      .toEqual({
-        marginRight: '1rem',
-        marginLeft: '1rem',
-      })
-
-    expect(marginX('-4'))
-      .toEqual({
-        marginRight: '-1rem',
-        marginLeft: '-1rem',
-      })
-
-    expect(marginX('1.5'))
-      .toEqual({
-        marginRight: '0.375rem',
-        marginLeft: '0.375rem',
-      })
-
-    expect(marginX('-1.5'))
-      .toEqual({
-        marginRight: '-0.375rem',
-        marginLeft: '-0.375rem',
-      })
-  })
+  test.each(testValues)(
+    'generates marginRight & marginLeft properties using tailwind values. input: %s, expected: %s',
+    (input, expectedResult) => {
+      expect(marginX(input))
+        .toEqual({
+          marginRight: expectedResult,
+          marginLeft: expectedResult,
+        })
+    })
 
   test('uses value as raw css if it can not be resolved from tailwind', () => {
     expect(marginX('13px'))
@@ -112,55 +72,15 @@ describe('marginX', () => {
 })
 
 describe('marginY', () => {
-  test('generates marginTop and marginBottom properties property with tailwind values', () => {
-    expect(marginY('0'))
-      .toEqual({
-        marginTop: '0px',
-        marginBottom: '0px',
-      })
-
-    expect(marginY('-0'))
-      .toEqual({
-        marginTop: '0px',
-        marginBottom: '0px',
-      })
-
-    expect(marginY('px'))
-      .toEqual({
-        marginTop: '1px',
-        marginBottom: '1px',
-      })
-
-    expect(marginY('-px'))
-      .toEqual({
-        marginTop: '-1px',
-        marginBottom: '-1px',
-      })
-
-    expect(marginY('4'))
-      .toEqual({
-        marginTop: '1rem',
-        marginBottom: '1rem',
-      })
-
-    expect(marginY('-4'))
-      .toEqual({
-        marginTop: '-1rem',
-        marginBottom: '-1rem',
-      })
-
-    expect(marginY('1.5'))
-      .toEqual({
-        marginTop: '0.375rem',
-        marginBottom: '0.375rem',
-      })
-
-    expect(marginY('-1.5'))
-      .toEqual({
-        marginTop: '-0.375rem',
-        marginBottom: '-0.375rem',
-      })
-  })
+  test.each(testValues)(
+    'generates marginTop & marginBottom properties using tailwind values. input: %s, expected result: %s',
+    (input, expectedResult) => {
+      expect(marginY(input))
+        .toEqual({
+          marginTop: expectedResult,
+          marginBottom: expectedResult,
+        })
+    })
 
   test('uses value as raw css if it can not be resolved from tailwind', () => {
     expect(marginY('13px'))
