@@ -1,5 +1,7 @@
 export * from './background'
+export * from './boxSizing'
 export * from './color'
+export * from './display'
 export * from './height'
 export * from './letterSpacing'
 export * from './margin'
