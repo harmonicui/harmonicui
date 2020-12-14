@@ -1,5 +1,6 @@
 export * from './background'
 export * from './boxSizing'
+export * from './clear'
 export * from './color'
 export * from './display'
 export * from './float'

@@ -7,6 +7,7 @@ jest.mock('../../utils/tailwindUtils')
 const generatorsList: Array<[keyof typeof generators, Generator]> = [
   ['backgroundColor', generators.backgroundColor],
   ['boxSizing', generators.boxSizing],
+  ['clear', generators.clear],
   ['color', generators.color],
   ['display', generators.display],
   ['float', generators.float],
