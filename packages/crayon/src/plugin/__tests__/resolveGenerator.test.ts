@@ -9,6 +9,7 @@ const generatorsList: Array<[keyof typeof generators, Generator]> = [
   ['boxSizing', generators.boxSizing],
   ['color', generators.color],
   ['display', generators.display],
+  ['float', generators.float],
   ['height', generators.height],
   ['letterSpacing', generators.letterSpacing],
   ['marginTop', generators.marginTop],
