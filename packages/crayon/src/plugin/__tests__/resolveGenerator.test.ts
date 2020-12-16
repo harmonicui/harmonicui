@@ -23,8 +23,9 @@ const generatorsList: Array<[keyof typeof generators, Generator]> = [
   ['paddingRight', generators.paddingRight],
   ['paddingBottom', generators.paddingBottom],
   ['paddingLeft', generators.paddingLeft],
-  ['width', generators.width],
+  ['textAlign', generators.textAlign],
   ['textTransform', generators.textTransform],
+  ['width', generators.width],
 ]
 
 test.each(generatorsList)('resolves the "%s" generator', (name, generator) => {

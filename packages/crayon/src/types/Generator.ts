@@ -5,6 +5,7 @@ declare module 'csstype' {
     boxSizing?: string
     clear?: string
     float?: string
+    textAlign?: string
     textTransform?: string
   }
 }
