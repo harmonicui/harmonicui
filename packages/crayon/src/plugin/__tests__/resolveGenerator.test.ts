@@ -11,6 +11,7 @@ const generatorsList: Array<[keyof typeof generators, Generator]> = [
   ['color', generators.color],
   ['display', generators.display],
   ['float', generators.float],
+  ['fontWeight', generators.fontWeight],
   ['height', generators.height],
   ['letterSpacing', generators.letterSpacing],
   ['marginTop', generators.marginTop],
