@@ -1,42 +1,15 @@
-import { defineComponent } from 'vue'
-import { render } from '../../test-utils'
-import {
-  HintMessageContextContract,
-  provideHintMessageContext,
-  useHintMessageContext,
-} from '../HintMessageContextContract'
+import { createProvider, render } from '../../test-utils'
+import { HintMessageContextContract } from '../HintMessageContextContract'
 
-const Injector = defineComponent({
-  template: `
-    <span :id="id" v-if="visible"/>
-  `,
-  setup () {
-    const context = useHintMessageContext()
-    return { ...context }
-  },
-})
-
-function renderProvider (contextValues: Partial<HintMessageContextContract>) {
-  return render({
-    template: '<Injector/>',
-    components: { Injector },
-
-    setup () {
-      const defaultValues = {
-        id: '',
-        visible: true,
-      }
-      provideHintMessageContext({
-        ...defaultValues,
-        ...contextValues,
-      })
-    },
-  })
-}
+const {
+  renderProvider,
+  ContextConsumer: HintMessageContextConsumer,
+  ContextConsumerComponent,
+} = createProvider<HintMessageContextContract>('HintMessageContext')
 
 test('throws an error if no provider exists to perform the contract', () => {
   console.warn = jest.fn()
-  expect(() => render(Injector)).toThrowError()
+  expect(() => render(ContextConsumerComponent)).toThrowError()
 })
 
 test('the contract defines an id property', () => {
@@ -44,13 +17,17 @@ test('the contract defines an id property', () => {
 
   renderProvider({ id })
 
-  expect(document.querySelector('span'))
-    .toHaveAttribute('id', id)
+  expect(HintMessageContextConsumer).toHaveBeenReceived({
+    id,
+  })
 })
 
 test('the contract defines a visible property', () => {
-  renderProvider({ visible: false })
+  renderProvider({
+    visible: false,
+  })
 
-  expect(document.querySelector('span'))
-    .not.toBeInTheDocument()
+  expect(HintMessageContextConsumer).toHaveBeenReceived({
+    visible: false,
+  })
 })

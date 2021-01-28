@@ -1,10 +1,10 @@
 import { inject, InjectionKey, provide } from 'vue'
 import { throwUnperformedContractError } from './utils/throwUnperformedContractError'
 
-interface HintMessageContextContract {
+type HintMessageContextContract = Partial<{
   id: string,
   visible: boolean,
-}
+}>
 
 const HintMessageContextKey: InjectionKey<HintMessageContextContract> = Symbol('HintMessageContextContract')
 
