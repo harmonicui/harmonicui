@@ -1,53 +1,16 @@
-import { defineComponent } from 'vue'
-import { render } from '../../test-utils'
-import { InputContextContract, provideInputContext, useInputContext } from '../InputContextContract'
+import { createProvider, render } from '../../test-utils'
+import { InputContextContract } from '../InputContextContract'
 
-const Injector = defineComponent({
-  template: `
-    <input
-        :id="id"
-        :value="value"
-        :required="required"
-        :disabled="disabled"
-        :aria-invalid="invalid"
-        :aria-describedby="ariaDescribedby"
-        :aria-errormessage="ariaErrormessage"
-    />
-  `,
-  setup () {
-    const { updateValue, ...context } = useInputContext()
-    updateValue('hello world!')
-    return { ...context }
-  },
-})
-
-function renderProvider (contextValues: Partial<InputContextContract>) {
-  return render({
-    template: '<Injector/>',
-    components: { Injector },
-
-    setup () {
-      const defaultValues = {
-        value: '',
-        id: 'email',
-        ariaErrormessage: 'error',
-        ariaDescribedby: 'hint',
-        required: false,
-        disabled: false,
-        invalid: false,
-        updateValue (value: unknown) { return value },
-      }
-      provideInputContext({
-        ...defaultValues,
-        ...contextValues,
-      })
-    },
-  })
-}
+const {
+  renderProvider,
+  ContextConsumer: InputContextConsumer,
+  ContextConsumerComponent,
+} = createProvider<InputContextContract>('InputContext')
 
 test('throws an error if no provider exists to perform the contract', () => {
   console.warn = jest.fn()
-  expect(() => render(Injector)).toThrowError()
+  expect(() => render(ContextConsumerComponent))
+    .toThrowError()
 })
 
 test('the contract defines an id property', () => {
@@ -55,8 +18,9 @@ test('the contract defines an id property', () => {
     id: 'email',
   })
 
-  expect(document.querySelector('input'))
-    .toHaveAttribute('id', 'email')
+  expect(InputContextConsumer).toHaveBeenReceived({
+    id: 'email',
+  })
 })
 
 test('the contract defines an ariaErrormessage property', () => {
@@ -64,8 +28,9 @@ test('the contract defines an ariaErrormessage property', () => {
     ariaErrormessage: 'error-message-id',
   })
 
-  expect(document.querySelector('input'))
-    .toHaveAttribute('aria-errormessage', 'error-message-id')
+  expect(InputContextConsumer).toHaveBeenReceived({
+    ariaErrormessage: 'error-message-id',
+  })
 })
 
 test('the contract defines an ariaDescribedBy property', () => {
@@ -73,8 +38,9 @@ test('the contract defines an ariaDescribedBy property', () => {
     ariaDescribedby: 'hint-message-id',
   })
 
-  expect(document.querySelector('input'))
-    .toHaveAttribute('aria-describedby', 'hint-message-id')
+  expect(InputContextConsumer).toHaveBeenReceived({
+    ariaDescribedby: 'hint-message-id',
+  })
 })
 
 test('the contract defines a value property', () => {
@@ -82,40 +48,42 @@ test('the contract defines a value property', () => {
     value: 'hello!',
   })
 
-  expect(document.querySelector('input'))
-    .toHaveValue('hello!')
+  expect(InputContextConsumer).toHaveBeenReceived({
+    value: 'hello!',
+  })
 })
 
 test('the contract defines an updateValue method', () => {
-  let updatedValue
+  const mock = jest.fn()
 
   renderProvider({
-    updateValue: (value) => {
-      updatedValue = value
-    },
+    updateValue: mock,
   })
 
-  expect(updatedValue)
-    .toEqual('hello world!')
+  expect(InputContextConsumer).toHaveBeenReceived({
+    updateValue: mock,
+  })
 })
 
 test('the contract defines a required property', () => {
   renderProvider({ required: true })
 
-  expect(document.querySelector('input'))
-    .toBeRequired()
+  expect(InputContextConsumer).toHaveBeenReceived({
+    required: true,
+  })
 })
 
 test('the contract defines a disabled property', () => {
   renderProvider({ disabled: true })
 
-  expect(document.querySelector('input'))
-    .toBeDisabled()
+  expect(InputContextConsumer).toHaveBeenReceived({
+    disabled: true,
+  })
 })
 
 test('the contract defines an invalid property', () => {
   renderProvider({ invalid: true })
 
-  expect(document.querySelector('input'))
-    .toBeInvalid()
+  expect(InputContextConsumer).toHaveBeenReceived(
+    { invalid: true })
 })

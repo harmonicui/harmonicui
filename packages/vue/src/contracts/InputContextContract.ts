@@ -1,7 +1,7 @@
 import { inject, InjectionKey, provide } from 'vue'
 import { throwUnperformedContractError } from './utils/throwUnperformedContractError'
 
-interface InputContextContract {
+type InputContextContract = Partial<{
   id: string,
   value: string | number,
   updateValue: (value: string | number) => void
@@ -10,7 +10,7 @@ interface InputContextContract {
   required: boolean,
   disabled: boolean,
   invalid: boolean,
-}
+}>
 
 const InputContextKey: InjectionKey<InputContextContract> = Symbol('InputContextContract')
 
