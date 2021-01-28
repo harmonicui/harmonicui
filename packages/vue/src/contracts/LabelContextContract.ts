@@ -1,13 +1,13 @@
 import { inject, InjectionKey, provide } from 'vue'
 import { throwUnperformedContractError } from './utils/throwUnperformedContractError'
 
-interface LabelContextContract {
+type LabelContextContract = Partial<{
   id: string | null,
   htmlFor: string | null,
   optional: boolean,
   disabled: boolean,
   invalid: boolean,
-}
+}>
 
 const LabelContextKey: InjectionKey<LabelContextContract> = Symbol('LabelContextContract')
 

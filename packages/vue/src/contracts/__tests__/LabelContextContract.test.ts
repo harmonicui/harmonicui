@@ -1,113 +1,83 @@
-import { LabelContextContract, provideLabelContext, useLabelContext } from '../LabelContextContract'
-import { render } from '../../test-utils'
-import { defineComponent } from 'vue'
+import { createProvider, render } from '../../test-utils'
+import { LabelContextContract } from '../LabelContextContract'
 
-const Injector = defineComponent({
-  template: `
-    <label :for="htmlFor" :id="id" :class="{'disabled': disabled, 'invalid': invalid}">
-    Username <span v-if="optional">- Optional</span>
-    </label>
-  `,
-  setup () {
-    const context = useLabelContext()
-    return { ...context }
-  },
-})
-
-function renderProvider (contextValues: Partial<LabelContextContract>) {
-  return render({
-    template: '<Injector/>',
-    components: { Injector },
-
-    setup () {
-      const defaultValues = {
-        id: null,
-        htmlFor: null,
-        optional: false,
-        disabled: false,
-        invalid: false,
-      }
-      provideLabelContext({
-        ...defaultValues,
-        ...contextValues,
-      })
-    },
-  })
-}
+const {
+  renderProvider,
+  ContextConsumer: LabelContextConsumer,
+  ContextConsumerComponent,
+} = createProvider<LabelContextContract>('LabelContext')
 
 test('throws an if no provider exists to perform the contract', () => {
   console.warn = jest.fn()
-  expect(() => render(Injector)).toThrowError()
+  expect(() => render(ContextConsumerComponent)).toThrowError()
 })
 
 test('the contract defines a htmlFor property', () => {
-  const { queryByText } = renderProvider({
+  renderProvider({
     htmlFor: 'username',
   })
 
-  expect(queryByText('Username'))
-    .toHaveAttribute('for', 'username')
+  expect(LabelContextConsumer).toHaveBeenReceived({
+    htmlFor: 'username',
+  })
 })
 
 test('htmlFor can be null', () => {
-  const { queryByText } = renderProvider({
+  renderProvider({
     htmlFor: null,
   })
 
-  expect(queryByText('Username'))
-    .not.toHaveAttribute('for', 'username')
+  expect(LabelContextConsumer).toHaveBeenReceived({
+    htmlFor: null,
+  })
 })
 
 test('the contract defines an id property', () => {
-  const { queryByText } = renderProvider({
+  renderProvider({
     id: 'username-label',
   })
 
-  expect(queryByText('Username'))
-    .toHaveAttribute('id', 'username-label')
+  expect(LabelContextConsumer).toHaveBeenReceived({
+    id: 'username-label',
+  })
 })
 
 test('id can be null', () => {
-  const { queryByText } = renderProvider({
+  renderProvider({
     id: null,
   })
 
-  expect(queryByText('Username'))
-    .not.toHaveAttribute('id')
+  expect(LabelContextConsumer).toHaveBeenReceived({
+    id: null,
+  })
 })
 
 test('the contract defines an optional property', () => {
-  const { queryByText } = renderProvider({
+  renderProvider({
     optional: true,
   })
 
-  expect(queryByText('Username'))
-    .toHaveTextContent('- Optional')
+  expect(LabelContextConsumer).toHaveBeenReceived({
+    optional: true,
+  })
 })
 
 test('the contract defines a disabled property', () => {
-  const { queryByText } = renderProvider({
+  renderProvider({
     disabled: true,
   })
 
-  expect(queryByText('Username'))
-    .toHaveClass('disabled')
-})
-
-test('the contract defines a disabled property', () => {
-  const { queryByText } = renderProvider({
+  expect(LabelContextConsumer).toHaveBeenReceived({
     disabled: true,
   })
-
-  expect(queryByText('Username'))
-    .toHaveClass('disabled')
 })
 
 test('the contract defines an invalid property', () => {
-  const { queryByText } = renderProvider({
+  renderProvider({
     invalid: true,
   })
 
-  expect(queryByText('Username'))
-    .toHaveClass('invalid')
+  expect(LabelContextConsumer).toHaveBeenReceived({
+    invalid: true,
+  })
 })
