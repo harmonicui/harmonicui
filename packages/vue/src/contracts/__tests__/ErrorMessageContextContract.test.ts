@@ -1,43 +1,15 @@
-import { defineComponent } from 'vue'
-import { render } from '../../test-utils'
-import {
-  ErrorMessageContextContract,
-  provideErrorMessageContext,
-  useErrorMessageContext,
-} from '../ErrorMessageContextContract'
+import { createProvider, render } from '../../test-utils'
+import { ErrorMessageContextContract } from '../ErrorMessageContextContract'
 
-const Injector = defineComponent({
-  template: `
-    <span :id="id" v-if="visible">{{ message }}</span>
-  `,
-  setup () {
-    const context = useErrorMessageContext()
-    return { ...context }
-  },
-})
-
-function renderProvider (contextValues: Partial<ErrorMessageContextContract>) {
-  return render({
-    template: '<Injector/>',
-    components: { Injector },
-
-    setup () {
-      const defaultValues = {
-        id: '',
-        visible: true,
-        message: '',
-      }
-      provideErrorMessageContext({
-        ...defaultValues,
-        ...contextValues,
-      })
-    },
-  })
-}
+const {
+  renderProvider,
+  ContextConsumer: ErrorMessageContextConsumer,
+  ContextConsumerComponent,
+} = createProvider<ErrorMessageContextContract>('ErrorMessageContext')
 
 test('throws an error if no provider exists to perform the contract', () => {
   console.warn = jest.fn()
-  expect(() => render(Injector)).toThrowError()
+  expect(() => render(ContextConsumerComponent)).toThrowError()
 })
 
 test('the contract defines an id property', () => {
@@ -45,8 +17,9 @@ test('the contract defines an id property', () => {
     id: 'email-error-message',
   })
 
-  expect(document.querySelector('span'))
-    .toHaveAttribute('id', 'email-error-message')
+  expect(ErrorMessageContextConsumer).toHaveBeenReceived({
+    id: 'email-error-message',
+  })
 })
 
 test('the contract defines a visible property', () => {
@@ -54,8 +27,9 @@ test('the contract defines a visible property', () => {
     visible: false,
   })
 
-  expect(document.querySelector('span'))
-    .not.toBeInTheDocument()
+  expect(ErrorMessageContextConsumer).toHaveBeenReceived({
+    visible: false,
+  })
 })
 
 test('the contract defines an message property', () => {
@@ -65,6 +39,7 @@ test('the contract defines an message property', () => {
     message,
   })
 
-  expect(document.querySelector('span'))
-    .toHaveTextContent(message)
+  expect(ErrorMessageContextConsumer).toHaveBeenReceived({
+    message,
+  })
 })

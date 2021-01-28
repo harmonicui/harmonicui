@@ -1,11 +1,11 @@
 import { inject, InjectionKey, provide } from 'vue'
 import { throwUnperformedContractError } from './utils/throwUnperformedContractError'
 
-interface ErrorMessageContextContract {
+type ErrorMessageContextContract = Partial<{
   id: string,
   message: string,
   visible: boolean,
-}
+}>
 
 const ErrorMessageContextKey: InjectionKey<ErrorMessageContextContract> = Symbol('ErrorMessageContextContract')
 
