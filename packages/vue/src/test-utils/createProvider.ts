@@ -1,21 +1,16 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 import { Component, defineComponent } from 'vue'
 import { renderInlineComponent } from './index'
 import { RenderResult } from '@testing-library/vue'
 
 type CreateProviderResult<Contract> = {
-  renderProvider (contextValues: Contract): RenderResult
-  ContextConsumer: jest.Mock
-  ContextConsumerComponent: Component
+  renderProvider (contextValues: Partial<Contract>): RenderResult
+  consumer: jest.Mock
+  ConsumerComponent: Component
 }
 
-function resolveContext (contextName: string) {
-  const context = require(`../contracts/${contextName}Contract`)
-  return {
-    provide: context[`provide${contextName}`],
-    consume: context[`use${contextName}`],
-  }
+type Context<Contract> = {
+  provide (context: Partial<Contract>): void
+  consume (defaultValues?: Contract): Contract
 }
 
 function createConsumer (name: string) {
@@ -29,31 +24,30 @@ function createConsumer (name: string) {
   return consumer
 }
 
-function createProvider<Contract> (contextName: string): CreateProviderResult<Contract> {
-  const { provide, consume } = resolveContext(contextName)
-  const ContextConsumer = createConsumer(contextName)
+function createProvider<Contract> (context: Context<Contract>, name: string): CreateProviderResult<Contract> {
+  const consumer = createConsumer(name)
 
-  const ContextConsumerComponent = defineComponent({
+  const ConsumerComponent = defineComponent({
     setup () {
-      ContextConsumer(consume())
+      consumer(context.consume())
       return () => { /*  renders nothing. */ }
     },
   })
 
-  function renderProvider (contextValues: Contract) {
+  function renderProvider (contextValues: Partial<Contract>) {
     return renderInlineComponent({
-      template: '<ContextConsumerComponent/>',
-      components: { ContextConsumerComponent },
+      template: '<ConsumerComponent/>',
+      components: { ConsumerComponent },
       setup () {
-        provide(contextValues)
+        context.provide(contextValues)
       },
     })
   }
 
   return {
     renderProvider,
-    ContextConsumer,
-    ContextConsumerComponent,
+    consumer,
+    ConsumerComponent,
   }
 }
 

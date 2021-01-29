@@ -1,15 +1,29 @@
 import { createProvider, render } from '../../test-utils'
-import { LabelContextContract } from '../LabelContextContract'
+import { LabelContext, LabelContract } from '../LabelContract'
 
 const {
   renderProvider,
-  ContextConsumer: LabelContextConsumer,
-  ContextConsumerComponent,
-} = createProvider<LabelContextContract>('LabelContext')
+  consumer: LabelContextConsumer,
+  ConsumerComponent,
+} = createProvider<LabelContract>(LabelContext, 'LabelContext')
 
-test('throws an if no provider exists to perform the contract', () => {
+test('throws a warning and returns default values if no provider exists to perform the contract', () => {
   console.warn = jest.fn()
-  expect(() => render(ContextConsumerComponent)).toThrowError()
+
+  const defaults = {
+    id: null,
+    htmlFor: null,
+    invalid: false,
+    disabled: false,
+    optional: false,
+  }
+
+  render(ConsumerComponent)
+
+  expect(console.warn).toHaveBeenCalledWith(
+    expect.stringContaining('[ HarmonicUI: UnperformedContractWarning ]'),
+  )
+  expect(LabelContextConsumer).toHaveBeenReceived(defaults)
 })
 
 test('the contract defines a htmlFor property', () => {
@@ -22,10 +36,8 @@ test('the contract defines a htmlFor property', () => {
   })
 })
 
-test('htmlFor can be null', () => {
-  renderProvider({
-    htmlFor: null,
-  })
+test('htmlFor is null by default', () => {
+  renderProvider({})
 
   expect(LabelContextConsumer).toHaveBeenReceived({
     htmlFor: null,
@@ -42,10 +54,8 @@ test('the contract defines an id property', () => {
   })
 })
 
-test('id can be null', () => {
-  renderProvider({
-    id: null,
-  })
+test('id is null by default', () => {
+  renderProvider({})
 
   expect(LabelContextConsumer).toHaveBeenReceived({
     id: null,
@@ -62,6 +72,14 @@ test('the contract defines an optional property', () => {
   })
 })
 
+test('optional is false by default', () => {
+  renderProvider({})
+
+  expect(LabelContextConsumer).toHaveBeenReceived({
+    optional: false,
+  })
+})
+
 test('the contract defines a disabled property', () => {
   renderProvider({
     disabled: true,
@@ -72,6 +90,14 @@ test('the contract defines a disabled property', () => {
   })
 })
 
+test('disabled is false by default', () => {
+  renderProvider({})
+
+  expect(LabelContextConsumer).toHaveBeenReceived({
+    disabled: false,
+  })
+})
+
 test('the contract defines an invalid property', () => {
   renderProvider({
     invalid: true,
@@ -79,5 +105,13 @@ test('the contract defines an invalid property', () => {
 
   expect(LabelContextConsumer).toHaveBeenReceived({
     invalid: true,
+  })
+})
+
+test('invalid is false by default', () => {
+  renderProvider({})
+
+  expect(LabelContextConsumer).toHaveBeenReceived({
+    invalid: false,
   })
 })

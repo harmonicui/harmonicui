@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 function mockContext (context: string): jest.SpyInstance {
-  return jest.spyOn(require(`../contracts/${context}Contract`), `provide${context}`).mockName(context)
+  return jest.spyOn(
+    require(`../contracts/${context.replace('Context', 'Contract')}`),
+    `provide${context}`).mockName(context)
 }
 
 function setupContexts<T extends string> (contexts: T[]): Record<T, jest.SpyInstance>
