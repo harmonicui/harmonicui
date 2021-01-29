@@ -1,5 +1,6 @@
 import { inject, InjectionKey, provide } from 'vue'
 import { throwUnperformedContractWarning } from './utils/throwUnperformedContractWarning'
+import { Consumer, Provider } from '../types'
 
 type LabelContract = {
   id: string | null,
@@ -19,11 +20,11 @@ const _defaults: LabelContract = {
   optional: false,
 }
 
-function provideLabelContext (context: Partial<LabelContract>): void {
+const provideLabelContext: Provider<LabelContract> = (context) => {
   provide(LabelContextKey, context)
 }
 
-function useLabelContext (defaultValue?: LabelContract): LabelContract {
+const useLabelContext: Consumer<LabelContract> = (defaultValue) => {
   const context = inject(LabelContextKey, defaultValue)
 
   if (context === undefined) {

@@ -1,5 +1,6 @@
 import { inject, InjectionKey, provide } from 'vue'
 import { throwUnperformedContractWarning } from './utils/throwUnperformedContractWarning'
+import { Consumer, Provider } from '../types'
 
 type InputContract = {
   id: string | null,
@@ -25,11 +26,11 @@ const _defaults: InputContract = {
   ariaErrormessage: null,
 }
 
-function provideInputContext (context: Partial<InputContract>): void {
+const provideInputContext: Provider<InputContract> = (context) => {
   provide(InputContextKey, context)
 }
 
-function useInputContext (defaultValue?: InputContract): InputContract {
+const useInputContext: Consumer<InputContract> = (defaultValue) => {
   const context = inject(InputContextKey, defaultValue)
 
   if (context === undefined) {

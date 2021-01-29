@@ -1,5 +1,6 @@
 import { inject, InjectionKey, provide } from 'vue'
 import { throwUnperformedContractWarning } from './utils/throwUnperformedContractWarning'
+import { Consumer, Provider } from '../types'
 
 type HintMessageContract = {
   id: string | null,
@@ -13,11 +14,11 @@ const _defaults: HintMessageContract = {
   visible: true,
 }
 
-function provideHintMessageContext (context: Partial<HintMessageContract>): void {
+const provideHintMessageContext: Provider<HintMessageContract> = (context) => {
   provide(HintMessageContextKey, context)
 }
 
-function useHintMessageContext (defaultValue?: HintMessageContract): HintMessageContract {
+const useHintMessageContext: Consumer<HintMessageContract> = (defaultValue) => {
   const context = inject(HintMessageContextKey, defaultValue)
 
   if (context === undefined) {

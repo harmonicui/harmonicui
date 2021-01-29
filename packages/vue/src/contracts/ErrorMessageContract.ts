@@ -1,5 +1,6 @@
 import { inject, InjectionKey, provide } from 'vue'
 import { throwUnperformedContractWarning } from './utils/throwUnperformedContractWarning'
+import { Consumer, Provider } from '../types'
 
 type ErrorMessageContract = {
   id: string | null,
@@ -15,11 +16,11 @@ const _defaults: ErrorMessageContract = {
   visible: false,
 }
 
-function provideErrorMessageContext (context: Partial<ErrorMessageContract>): void {
+const provideErrorMessageContext: Provider<ErrorMessageContract> = (context) => {
   provide(ErrorMessageContextKey, context)
 }
 
-function useErrorMessageContext (defaultValue?: ErrorMessageContract): ErrorMessageContract {
+const useErrorMessageContext: Consumer<ErrorMessageContract> = (defaultValue) => {
   const context = inject(ErrorMessageContextKey, defaultValue)
 
   if (context === undefined) {

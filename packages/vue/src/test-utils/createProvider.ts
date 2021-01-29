@@ -1,6 +1,7 @@
 import { Component, defineComponent } from 'vue'
 import { renderInlineComponent } from './index'
 import { RenderResult } from '@testing-library/vue'
+import { Consumer, Provider } from '../types'
 
 type CreateProviderResult<Contract> = {
   renderProvider (contextValues: Partial<Contract>): RenderResult
@@ -9,8 +10,8 @@ type CreateProviderResult<Contract> = {
 }
 
 type Context<Contract> = {
-  provide (context: Partial<Contract>): void
-  consume (defaultValues?: Contract): Contract
+  provide: Provider<Contract>
+  consume: Consumer<Contract>
 }
 
 function createConsumer (name: string) {
