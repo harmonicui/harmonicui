@@ -1,5 +1,4 @@
-import { createContext, useContext } from 'react'
-import { throwUnperformedContractWarning } from './utils/throwUnperformedContractWarning'
+import { createContext } from './utils/createContext'
 
 interface LabelContract {
   id: string | null,
@@ -9,8 +8,6 @@ interface LabelContract {
   optional: boolean,
 }
 
-type Consumer<Contract> = (defaultValue?: Contract) => Contract
-
 const _defaults: LabelContract = {
   id: null,
   htmlFor: null,
@@ -19,30 +16,13 @@ const _defaults: LabelContract = {
   optional: false,
 }
 
-const LabelContextKey = createContext<Partial<LabelContract>>({})
-LabelContextKey.displayName = 'LabelContext'
-
-const ProvideLabelContext = LabelContextKey.Provider
-
-const useLabelContext: Consumer<LabelContract> = (defaultValue) => {
-  const context = useContext(LabelContextKey)
-
-  if (Object.keys(context).length === 0) {
-    throwUnperformedContractWarning('LabelContract')
-    return { ..._defaults, ...defaultValue }
-  }
-
-  return { ..._defaults, ...context }
-}
-
-const LabelContext = {
-  Provider: ProvideLabelContext,
-  use: useLabelContext,
-}
+const LabelContext = createContext<LabelContract>('LabelContract', _defaults)
+const useLabelContext = LabelContext.consume
+const LabelContextProvider = LabelContext.Provider
 
 export {
   LabelContract,
   LabelContext,
   useLabelContext,
-  ProvideLabelContext,
+  LabelContextProvider,
 }

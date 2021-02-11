@@ -1,33 +1,13 @@
-// eslint-disable-next-line no-use-before-define
-import React from 'react'
-import { render } from '@testing-library/react'
 import { createProvider } from '../../test-utils'
 import { LabelContext, LabelContract } from '../LabelContract'
 
 const {
   renderProvider,
   consumer: LabelContextConsumer,
-  ConsumerComponent,
 } = createProvider<LabelContract>(LabelContext, 'LabelContext')
 
-test('throws a warning and returns default values if no provider exists to perform the contract', () => {
-  console.warn = jest.fn()
-
-  const defaults = {
-    id: null,
-    htmlFor: null,
-    invalid: false,
-    disabled: false,
-    optional: false,
-  }
-
-  render(<ConsumerComponent/>)
-
-  expect(console.warn).toHaveBeenCalledWith(
-    expect.stringContaining('[ HarmonicUI: UnperformedContractWarning ]'),
-  )
-  expect(LabelContextConsumer).toHaveBeenReceived(defaults)
-})
+beforeAll(() => { console.warn = jest.fn() })
+afterAll(() => { jest.restoreAllMocks() })
 
 test('the contract defines a htmlFor property', () => {
   renderProvider({

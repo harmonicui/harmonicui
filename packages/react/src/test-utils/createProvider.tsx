@@ -10,7 +10,7 @@ type CreateProviderResult<Contract> = {
 
 type Context<Contract> = {
   Provider: Provider<Partial<Contract>>
-  use: (defaultValue?: Contract) => Contract
+  consume: (defaultValue?: Partial<Contract>) => Contract
 }
 
 function createConsumer (name: string) {
@@ -26,12 +26,12 @@ function createConsumer (name: string) {
 
 function createProvider<Contract> ({
   Provider,
-  use,
+  consume,
 }: Context<Contract>, name: string): CreateProviderResult<Contract> {
   const consumer = createConsumer(name)
 
   function ConsumerComponent () {
-    consumer(use())
+    consumer(consume())
     return (
       <>
         {/*  renders nothing. */}

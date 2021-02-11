@@ -1,5 +1,4 @@
-import { createContext, useContext } from 'react'
-import { throwUnperformedContractWarning } from './utils/throwUnperformedContractWarning'
+import { createContext } from './utils/createContext'
 
 interface ErrorMessageContract {
   id: string | null,
@@ -7,38 +6,19 @@ interface ErrorMessageContract {
   visible: boolean | null,
 }
 
-type Consumer<Contract> = (defaultValue?: Contract) => Contract
-
 const _defaults: ErrorMessageContract = {
   id: null,
   message: null,
   visible: false,
 }
 
-const ErrorMessageContextKey = createContext<Partial<ErrorMessageContract>>({})
-ErrorMessageContextKey.displayName = 'ErrorMessageContext'
-
-const ProvideErrorMessageContext = ErrorMessageContextKey.Provider
-
-const useErrorMessageContext: Consumer<ErrorMessageContract> = (defaultValue) => {
-  const context = useContext(ErrorMessageContextKey)
-
-  if (Object.keys(context).length === 0) {
-    throwUnperformedContractWarning('ErrorMessageContract')
-    return { ..._defaults, ...defaultValue }
-  }
-
-  return { ..._defaults, ...context }
-}
-
-const ErrorMessageContext = {
-  Provider: ProvideErrorMessageContext,
-  use: useErrorMessageContext,
-}
+const ErrorMessageContext = createContext<ErrorMessageContract>('ErrorMessageContract', _defaults)
+const useErrorMessageContext = ErrorMessageContext.consume
+const ErrorMessageContextProvider = ErrorMessageContext.Provider
 
 export {
   ErrorMessageContract,
   ErrorMessageContext,
   useErrorMessageContext,
-  ProvideErrorMessageContext,
+  ErrorMessageContextProvider,
 }

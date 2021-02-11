@@ -1,30 +1,13 @@
-// eslint-disable-next-line no-use-before-define
-import React from 'react'
-import { render } from '@testing-library/react'
 import { createProvider } from '../../test-utils'
 import { HintMessageContext, HintMessageContract } from '../HintMessageContract'
 
 const {
   renderProvider,
   consumer: HintMessageContextConsumer,
-  ConsumerComponent,
 } = createProvider<HintMessageContract>(HintMessageContext, 'HintMessageContext')
 
-test('throws a warning and returns default values if no provider exists to perform the contract', () => {
-  console.warn = jest.fn()
-
-  const defaults = {
-    id: null,
-    visible: true,
-  }
-
-  render(<ConsumerComponent />)
-
-  expect(console.warn).toHaveBeenCalledWith(
-    expect.stringContaining('[ HarmonicUI: UnperformedContractWarning ]'),
-  )
-  expect(HintMessageContextConsumer).toHaveBeenReceived(defaults)
-})
+beforeAll(() => { console.warn = jest.fn() })
+afterAll(() => { jest.restoreAllMocks() })
 
 test('the contract defines an id property', () => {
   const id = 'hint-message-id'

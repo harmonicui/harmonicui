@@ -1,5 +1,4 @@
-import { createContext, useContext } from 'react'
-import { throwUnperformedContractWarning } from './utils/throwUnperformedContractWarning'
+import { createContext } from './utils/createContext'
 
 interface InputContract {
   id: string | null,
@@ -12,8 +11,6 @@ interface InputContract {
   updateValue: ((value: string | number) => void) | null,
 }
 
-type Consumer<Contract> = (defaultValue?: Contract) => Contract
-
 const _defaults: InputContract = {
   id: null,
   value: null,
@@ -25,30 +22,13 @@ const _defaults: InputContract = {
   ariaErrormessage: null,
 }
 
-const InputContextKey = createContext<Partial<InputContract>>({})
-InputContextKey.displayName = 'InputContext'
-
-const ProvideInputContext = InputContextKey.Provider
-
-const useInputContext: Consumer<InputContract> = (defaultValue) => {
-  const context = useContext(InputContextKey)
-
-  if (Object.keys(context).length === 0) {
-    throwUnperformedContractWarning('InputContract')
-    return { ..._defaults, ...defaultValue }
-  }
-
-  return { ..._defaults, ...context }
-}
-
-const InputContext = {
-  Provider: ProvideInputContext,
-  use: useInputContext,
-}
+const InputContext = createContext<InputContract>('InputContract', _defaults)
+const useInputContext = InputContext.consume
+const InputContextProvider = InputContext.Provider
 
 export {
   InputContract,
   InputContext,
   useInputContext,
-  ProvideInputContext,
+  InputContextProvider,
 }
