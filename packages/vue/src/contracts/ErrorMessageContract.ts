@@ -1,6 +1,4 @@
-import { inject, InjectionKey, provide } from 'vue'
-import { throwUnperformedContractWarning } from './utils/throwUnperformedContractWarning'
-import { Consumer, Provider } from '../types'
+import { createContext } from './utils/createContext'
 
 type ErrorMessageContract = {
   id: string | null,
@@ -8,36 +6,19 @@ type ErrorMessageContract = {
   visible: boolean | null,
 }
 
-const ErrorMessageContextKey: InjectionKey<ErrorMessageContract> = Symbol('ErrorMessageContext')
-
 const _defaults: ErrorMessageContract = {
   id: null,
   message: null,
   visible: false,
 }
 
-const provideErrorMessageContext: Provider<ErrorMessageContract> = (context) => {
-  provide(ErrorMessageContextKey, context)
-}
+const ErrorMessageContext = createContext<ErrorMessageContract>('ErrorMessageContract', _defaults)
 
-const useErrorMessageContext: Consumer<ErrorMessageContract> = (defaultValue) => {
-  const context = inject(ErrorMessageContextKey, defaultValue)
+const provideErrorMessageContext = ErrorMessageContext.provide
+const useErrorMessageContext = ErrorMessageContext.consume
 
-  if (context === undefined) {
-    throwUnperformedContractWarning('ErrorMessageContract')
-    return _defaults
-  }
-
-  return { ..._defaults, ...context }
-}
-
-const ErrorMessageContext = {
-  provide: provideErrorMessageContext,
-  consume: useErrorMessageContext,
-}
-
-export { ErrorMessageContract }
 export {
+  ErrorMessageContract,
   ErrorMessageContext,
   provideErrorMessageContext,
   useErrorMessageContext,

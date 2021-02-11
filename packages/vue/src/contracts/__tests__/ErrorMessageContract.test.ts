@@ -1,28 +1,10 @@
-import { createProvider, render } from '../../test-utils'
+import { createProvider } from '../../test-utils'
 import { ErrorMessageContext, ErrorMessageContract } from '../ErrorMessageContract'
 
 const {
   renderProvider,
   consumer: ErrorMessageContextConsumer,
-  ConsumerComponent,
 } = createProvider<ErrorMessageContract>(ErrorMessageContext, 'ErrorMessageContext')
-
-test('throws a warning and returns default values if no provider exists to perform the contract', () => {
-  console.warn = jest.fn()
-
-  const defaults = {
-    id: null,
-    message: null,
-    visible: false,
-  }
-
-  render(ConsumerComponent)
-
-  expect(console.warn).toHaveBeenCalledWith(
-    expect.stringContaining('[ HarmonicUI: UnperformedContractWarning ]'),
-  )
-  expect(ErrorMessageContextConsumer).toHaveBeenReceived(defaults)
-})
 
 test('the contract defines an id property', () => {
   renderProvider({

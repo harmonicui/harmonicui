@@ -1,6 +1,4 @@
-import { inject, InjectionKey, provide } from 'vue'
-import { throwUnperformedContractWarning } from './utils/throwUnperformedContractWarning'
-import { Consumer, Provider } from '../types'
+import { createContext } from './utils/createContext'
 
 type InputContract = {
   id: string | null,
@@ -13,8 +11,6 @@ type InputContract = {
   updateValue: ((value: string | number) => void) | null,
 }
 
-const InputContextKey: InjectionKey<InputContract> = Symbol('InputContext')
-
 const _defaults: InputContract = {
   id: null,
   value: null,
@@ -26,25 +22,10 @@ const _defaults: InputContract = {
   ariaErrormessage: null,
 }
 
-const provideInputContext: Provider<InputContract> = (context) => {
-  provide(InputContextKey, context)
-}
+const InputContext = createContext<InputContract>('InputContract', _defaults)
 
-const useInputContext: Consumer<InputContract> = (defaultValue) => {
-  const context = inject(InputContextKey, defaultValue)
-
-  if (context === undefined) {
-    throwUnperformedContractWarning('InputContract')
-    return _defaults
-  }
-
-  return { ..._defaults, ...context }
-}
-
-const InputContext = {
-  provide: provideInputContext,
-  consume: useInputContext,
-}
+const provideInputContext = InputContext.provide
+const useInputContext = InputContext.consume
 
 export {
   InputContract,

@@ -1,38 +1,19 @@
-import { inject, InjectionKey, provide } from 'vue'
-import { throwUnperformedContractWarning } from './utils/throwUnperformedContractWarning'
-import { Consumer, Provider } from '../types'
+import { createContext } from './utils/createContext'
 
 type HintMessageContract = {
   id: string | null,
   visible: boolean,
 }
 
-const HintMessageContextKey: InjectionKey<HintMessageContract> = Symbol('HintMessageContext')
-
 const _defaults: HintMessageContract = {
   id: null,
   visible: true,
 }
 
-const provideHintMessageContext: Provider<HintMessageContract> = (context) => {
-  provide(HintMessageContextKey, context)
-}
+const HintMessageContext = createContext<HintMessageContract>('HintMessageContract', _defaults)
 
-const useHintMessageContext: Consumer<HintMessageContract> = (defaultValue) => {
-  const context = inject(HintMessageContextKey, defaultValue)
-
-  if (context === undefined) {
-    throwUnperformedContractWarning('HintMessageContract')
-    return _defaults
-  }
-
-  return { ..._defaults, ...context }
-}
-
-const HintMessageContext = {
-  provide: provideHintMessageContext,
-  consume: useHintMessageContext,
-}
+const provideHintMessageContext = HintMessageContext.provide
+const useHintMessageContext = HintMessageContext.consume
 
 export {
   HintMessageContract,

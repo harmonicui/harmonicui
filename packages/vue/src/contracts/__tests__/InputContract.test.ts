@@ -1,32 +1,10 @@
-import { createProvider, render } from '../../test-utils'
+import { createProvider } from '../../test-utils'
 import { InputContract, InputContext } from '../InputContract'
 
 const {
   renderProvider,
   consumer: InputContextConsumer,
-  ConsumerComponent,
 } = createProvider<InputContract>(InputContext, 'InputContext')
-
-test('throws a warning and returns default values if no provider exists to perform the contract', () => {
-  console.warn = jest.fn()
-
-  const defaults = {
-    id: null,
-    value: null,
-    updateValue: null,
-    ariaDescribedby: null,
-    required: true,
-    disabled: false,
-    invalid: false,
-  }
-
-  render(ConsumerComponent)
-
-  expect(console.warn).toHaveBeenCalledWith(
-    expect.stringContaining('[ HarmonicUI: UnperformedContractWarning ]'),
-  )
-  expect(InputContextConsumer).toHaveBeenReceived(defaults)
-})
 
 test('the contract defines an id property', () => {
   renderProvider({

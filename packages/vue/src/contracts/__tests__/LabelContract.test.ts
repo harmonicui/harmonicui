@@ -1,30 +1,10 @@
-import { createProvider, render } from '../../test-utils'
+import { createProvider } from '../../test-utils'
 import { LabelContext, LabelContract } from '../LabelContract'
 
 const {
   renderProvider,
   consumer: LabelContextConsumer,
-  ConsumerComponent,
 } = createProvider<LabelContract>(LabelContext, 'LabelContext')
-
-test('throws a warning and returns default values if no provider exists to perform the contract', () => {
-  console.warn = jest.fn()
-
-  const defaults = {
-    id: null,
-    htmlFor: null,
-    invalid: false,
-    disabled: false,
-    optional: false,
-  }
-
-  render(ConsumerComponent)
-
-  expect(console.warn).toHaveBeenCalledWith(
-    expect.stringContaining('[ HarmonicUI: UnperformedContractWarning ]'),
-  )
-  expect(LabelContextConsumer).toHaveBeenReceived(defaults)
-})
 
 test('the contract defines a htmlFor property', () => {
   renderProvider({
