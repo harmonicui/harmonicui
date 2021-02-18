@@ -1,1 +1,6 @@
-export * from './toHaveBeenReceived'
+import '@testing-library/jest-dom'
+import './toBeRenderLessComponent'
+import './toHaveBeenNamed'
+import './toHaveBeenProvidedThrough'
+import './toHaveBeenReceived'
+import './toRendersDefaultSlotContent'

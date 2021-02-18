@@ -77,7 +77,7 @@ test('value is null by default', () => {
   renderProvider({})
 
   expect(InputContextConsumer).toHaveBeenReceived({
-    value: null,
+    value: undefined,
   })
 })
 

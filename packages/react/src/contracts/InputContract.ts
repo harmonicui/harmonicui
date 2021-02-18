@@ -5,15 +5,15 @@ interface InputContract {
   invalid: boolean,
   required: boolean,
   disabled: boolean,
-  value: string | number | null,
+  value: string | number | undefined,
   ariaDescribedby: string | null,
   ariaErrormessage: string | null,
-  updateValue: ((value: string | number) => void) | null,
+  updateValue: ((value: string) => void) | null,
 }
 
 const _defaults: InputContract = {
   id: null,
-  value: null,
+  value: undefined,
   invalid: false,
   required: true,
   disabled: false,
