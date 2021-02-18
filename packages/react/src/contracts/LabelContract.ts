@@ -1,11 +1,11 @@
 import { createContext } from './utils/createContext'
 
-type LabelContract = {
+interface LabelContract {
   id: string | null,
   htmlFor: string | null,
-  optional: boolean,
-  disabled: boolean,
   invalid: boolean,
+  disabled: boolean,
+  optional: boolean,
 }
 
 const _defaults: LabelContract = {
@@ -17,13 +17,12 @@ const _defaults: LabelContract = {
 }
 
 const LabelContext = createContext<LabelContract>('LabelContract', _defaults)
-
-const provideLabelContext = LabelContext.provide
 const useLabelContext = LabelContext.consume
+const LabelContextProvider = LabelContext.Provider
 
 export {
   LabelContract,
   LabelContext,
-  provideLabelContext,
   useLabelContext,
+  LabelContextProvider,
 }

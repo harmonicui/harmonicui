@@ -6,6 +6,9 @@ const {
   consumer: LabelContextConsumer,
 } = createProvider<LabelContract>(LabelContext, 'LabelContext')
 
+beforeAll(() => { console.warn = jest.fn() })
+afterAll(() => { jest.restoreAllMocks() })
+
 test('the contract defines a htmlFor property', () => {
   renderProvider({
     htmlFor: 'username',

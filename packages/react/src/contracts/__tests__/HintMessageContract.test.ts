@@ -6,6 +6,9 @@ const {
   consumer: HintMessageContextConsumer,
 } = createProvider<HintMessageContract>(HintMessageContext, 'HintMessageContext')
 
+beforeAll(() => { console.warn = jest.fn() })
+afterAll(() => { jest.restoreAllMocks() })
+
 test('the contract defines an id property', () => {
   const id = 'hint-message-id'
 

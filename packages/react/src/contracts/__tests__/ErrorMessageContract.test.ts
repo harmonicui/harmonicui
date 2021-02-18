@@ -6,6 +6,9 @@ const {
   consumer: ErrorMessageContextConsumer,
 } = createProvider<ErrorMessageContract>(ErrorMessageContext, 'ErrorMessageContext')
 
+beforeAll(() => { console.warn = jest.fn() })
+afterAll(() => { jest.restoreAllMocks() })
+
 test('the contract defines an id property', () => {
   renderProvider({
     id: 'email-error-message',

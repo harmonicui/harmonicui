@@ -1,6 +1,6 @@
 import { createContext } from './utils/createContext'
 
-type ErrorMessageContract = {
+interface ErrorMessageContract {
   id: string | null,
   message: string | null,
   visible: boolean | null,
@@ -13,13 +13,12 @@ const _defaults: ErrorMessageContract = {
 }
 
 const ErrorMessageContext = createContext<ErrorMessageContract>('ErrorMessageContract', _defaults)
-
-const provideErrorMessageContext = ErrorMessageContext.provide
 const useErrorMessageContext = ErrorMessageContext.consume
+const ErrorMessageContextProvider = ErrorMessageContext.Provider
 
 export {
   ErrorMessageContract,
   ErrorMessageContext,
-  provideErrorMessageContext,
   useErrorMessageContext,
+  ErrorMessageContextProvider,
 }

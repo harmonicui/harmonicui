@@ -1,10 +1,13 @@
 import { createProvider } from '../../test-utils'
-import { InputContract, InputContext } from '../InputContract'
+import { InputContext, InputContract } from '../InputContract'
 
 const {
   renderProvider,
   consumer: InputContextConsumer,
 } = createProvider<InputContract>(InputContext, 'InputContext')
+
+beforeAll(() => { console.warn = jest.fn() })
+afterAll(() => { jest.restoreAllMocks() })
 
 test('the contract defines an id property', () => {
   renderProvider({
@@ -74,7 +77,7 @@ test('value is null by default', () => {
   renderProvider({})
 
   expect(InputContextConsumer).toHaveBeenReceived({
-    value: null,
+    value: undefined,
   })
 })
 
