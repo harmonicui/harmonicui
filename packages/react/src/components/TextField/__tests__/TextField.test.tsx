@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-use-before-define
 import React, { useState } from 'react'
 import { TextFieldProps, TextField } from '../TextField'
 import { fireEvent, render } from '@testing-library/react'
@@ -244,10 +243,10 @@ test('handles value and onChange passing through default slot', async () => {
     return (
       <>
         <TextField value={value} onChange={setValue}>
-          {props =>
+          {({ updateValue, value }) =>
             <input data-testid="input"
-                   value={props.value}
-                   onChange={event => props.updateValue(event.target.value)}/>
+                   value={value}
+                   onChange={event => updateValue(event.target.value)}/>
           }
         </TextField>
         <span data-testid="logger">{value}</span>
@@ -397,7 +396,7 @@ test('exposes a clear method through default slot', () => {
     return (
       <>
         <TextField value={value} onChange={setValue}>
-          {props => <button data-testid="clear" onClick={props.clear}>clear</button>}
+          {({ clear }) => <button data-testid="clear" onClick={clear}>clear</button>}
         </TextField>
         <span data-testid="logger">{value}</span>
       </>

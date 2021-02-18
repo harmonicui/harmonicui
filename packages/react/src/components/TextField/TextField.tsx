@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-use-before-define
 import React, { createElement, Fragment, ReactElement, ReactNode } from 'react'
 import { useId } from '@reach/auto-id'
 import {

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-// eslint-disable-next-line no-use-before-define
-import React from 'react'
+export {}
 
 declare global {
   namespace jest {

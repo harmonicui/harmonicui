@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-use-before-define
 import React, { FunctionComponent, Provider } from 'react'
 import { render, RenderResult } from '@testing-library/react'
 
