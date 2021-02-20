@@ -10,6 +10,7 @@
     "vue": "yarn workspace @harmonicui/vue",
     "react": "yarn workspace @harmonicui/react",
     "crayon": "yarn workspace @harmonicui/crayon",
+    "contracts": "yarn workspace @harmonicui/contracts",
     "test": "yarn workspaces run test",
     "lint": "eslint --ext .js,.ts,.jsx,.tsx ."
   },
