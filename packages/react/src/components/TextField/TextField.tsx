@@ -1,15 +1,12 @@
 import React, { createElement, Fragment, ReactElement, ReactNode } from 'react'
 import { useId } from '@reach/auto-id'
 import {
-  LabelContract,
-  InputContract,
-  HintMessageContract,
-  ErrorMessageContract,
   InputContextProvider,
   LabelContextProvider,
-  HintMessageContextProvider,
+  HelperTextContextProvider,
   ErrorMessageContextProvider,
-} from '../../contracts'
+} from '../../contexts'
+import { ErrorMessageContract, HelperTextContract, InputContract, LabelContract } from '@harmonicui/contracts'
 
 type RenderProp<SlotProps> = (props: SlotProps) => ReactNode
 type RenderLessComponentChildren<SlotProps> = ReactNode | RenderProp<SlotProps>
@@ -110,7 +107,7 @@ function TextField ({ children, ...props }: TextFieldProps): ReactElement {
     message: props.errorMessage,
   }
 
-  const hintMessageContext: Partial<HintMessageContract> = {
+  const hintMessageContext: Partial<HelperTextContract> = {
     visible: !invalid,
     id: IDs.hintMessage,
   }
@@ -119,9 +116,9 @@ function TextField ({ children, ...props }: TextFieldProps): ReactElement {
     <LabelContextProvider value={labelContext}>
       <InputContextProvider value={inputContext}>
         <ErrorMessageContextProvider value={errorMessageContext}>
-          <HintMessageContextProvider value={hintMessageContext}>
+          <HelperTextContextProvider value={hintMessageContext}>
             {createRenderLessComponent<TextFieldSlotProps>(children, slotProps)}
-          </HintMessageContextProvider>
+          </HelperTextContextProvider>
         </ErrorMessageContextProvider>
       </InputContextProvider>
     </LabelContextProvider>

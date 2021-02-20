@@ -31,6 +31,7 @@
     "vite-plugin-react": "^3.0.2"
   },
   "dependencies": {
+    "@harmonicui/contracts": "0.1.0",
     "@reach/auto-id": "^0.13.0"
   }
 }
