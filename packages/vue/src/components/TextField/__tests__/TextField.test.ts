@@ -1,7 +1,7 @@
 import TextField from '../TextField'
 import { Component, defineComponent } from 'vue'
 import { fireEvent } from '@testing-library/vue'
-import { useInputContext } from '../../../contracts'
+import { useInputContext } from '../../../contexts'
 import { DefaultSlot, setupContexts, DefaultSlotComponent, renderComponent } from '../../../test-utils'
 
 jest.mock('../../../composables/useId')
@@ -9,12 +9,12 @@ jest.mock('../../../composables/useId')
 const {
   LabelContext,
   InputContext,
-  HintMessageContext,
+  HelperTextContext,
   ErrorMessageContext,
 } = setupContexts([
   'LabelContext',
   'InputContext',
-  'HintMessageContext',
+  'HelperTextContext',
   'ErrorMessageContext',
 ])
 
@@ -191,7 +191,7 @@ test('generates an id for hint message', () => {
   expect({ hintMessageId: id })
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
-    .toHaveBeenProvidedThrough(HintMessageContext)
+    .toHaveBeenProvidedThrough(HelperTextContext)
   expect({ ariaDescribedby: id })
     .toHaveBeenProvidedThrough(InputContext)
 })
@@ -204,7 +204,7 @@ test('generates unique hint message id for each instance', () => {
   expect({ hintMessageId: id })
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
-    .toHaveBeenProvidedThrough(HintMessageContext)
+    .toHaveBeenProvidedThrough(HelperTextContext)
   expect({ ariaDescribedby: id })
     .toHaveBeenProvidedThrough(InputContext)
 
@@ -215,7 +215,7 @@ test('generates unique hint message id for each instance', () => {
   expect({ hintMessageId: id })
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
-    .toHaveBeenProvidedThrough(HintMessageContext)
+    .toHaveBeenProvidedThrough(HelperTextContext)
   expect({ ariaDescribedby: id })
     .toHaveBeenProvidedThrough(InputContext)
 })
@@ -228,7 +228,7 @@ test('error message id can be overridden via props', () => {
   expect({ hintMessageId: id })
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
-    .toHaveBeenProvidedThrough(HintMessageContext)
+    .toHaveBeenProvidedThrough(HelperTextContext)
   expect({ ariaDescribedby: id })
     .toHaveBeenProvidedThrough(InputContext)
 })
@@ -343,7 +343,7 @@ test('is valid by default', () => {
   expect({ visible: false })
     .toHaveBeenProvidedThrough(ErrorMessageContext)
   expect({ visible: true })
-    .toHaveBeenProvidedThrough(HintMessageContext)
+    .toHaveBeenProvidedThrough(HelperTextContext)
 })
 
 test('user can control validation state via error prop', () => {
@@ -358,7 +358,7 @@ test('user can control validation state via error prop', () => {
   expect({ visible: true })
     .toHaveBeenProvidedThrough(ErrorMessageContext)
   expect({ visible: false })
-    .toHaveBeenProvidedThrough(HintMessageContext)
+    .toHaveBeenProvidedThrough(HelperTextContext)
 })
 
 test('exposes the given error message', () => {

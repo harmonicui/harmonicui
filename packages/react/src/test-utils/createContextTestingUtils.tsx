@@ -16,7 +16,7 @@ function resolveContexts (contexts: string[]): Record<string, Context> {
     return Object.assign(
       contexts,
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      { [context]: require('../contracts')[context] },
+      { [context]: require(`../contexts/${context}`)[context] },
     )
   }, {})
 }

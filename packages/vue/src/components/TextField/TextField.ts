@@ -4,8 +4,8 @@ import {
   provideLabelContext,
   provideInputContext,
   provideErrorMessageContext,
-  provideHintMessageContext,
-} from '../../contracts'
+  provideHelperTextContext,
+} from '../../contexts'
 
 export default defineComponent({
   name: 'TextField',
@@ -91,7 +91,7 @@ export default defineComponent({
       message: props.errorMessage,
     })
 
-    provideHintMessageContext({
+    provideHelperTextContext({
       id: hintMessageId,
       visible: !props.error,
     })

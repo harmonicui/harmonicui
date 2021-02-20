@@ -1,11 +1,11 @@
 {
-  "name": "@harmonicui/vue",
+  "name": "@harmonicui/contracts",
   "version": "0.1.0",
   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/harmonicui/harmonicui/",
-    "directory": "packages/vue"
+    "directory": "packages/contracts"
   },
   "author": "Mohammad Ataei",
   "license": "MIT",
@@ -13,15 +13,7 @@
     "url": "https://github.com/harmonicui/harmonicui/issues"
   },
   "scripts": {
-    "dev": "vite serve dev",
-    "test": "jest",
+    "test": "return",
     "lint": "eslint --ext .js,.ts ."
-  },
-  "dependencies": {
-    "@harmonicui/contracts": "0.1.0"
-  },
-  "devDependencies": {
-    "@testing-library/vue": "6.3.4",
-    "vue": "^3.0.2"
   }
 }
