@@ -13,6 +13,7 @@
     "url": "https://github.com/harmonicui/harmonicui/issues"
   },
   "scripts": {
+    "test": "return",
     "lint": "eslint --ext .js,.ts ."
   }
 }
