@@ -17,6 +17,9 @@
     "test": "jest",
     "lint": "eslint --ext .js,.ts ."
   },
+  "dependencies": {
+    "@harmonicui/contracts": "0.1.0"
+  },
   "devDependencies": {
     "@testing-library/vue": "6.3.4",
     "vue": "^3.0.2"

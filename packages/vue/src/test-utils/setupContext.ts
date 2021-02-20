@@ -2,7 +2,7 @@
 
 function mockContext (context: string): jest.SpyInstance {
   return jest.spyOn(
-    require(`../contracts/${context.replace('Context', 'Contract')}`),
+    require(`../contexts/${context}`),
     `provide${context}`).mockName(context)
 }
 
