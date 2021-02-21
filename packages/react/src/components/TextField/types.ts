@@ -6,7 +6,7 @@ export interface TextFieldProps {
   disabled?: boolean
   optional?: boolean
   errorMessage?: string
-  hintMessageId?: string
+  helperTextId?: string
   errorMessageId?: string
   onChange: (value: string) => void
 }
@@ -22,6 +22,6 @@ export interface TextFieldSlotProps {
   clear: () => void
   errorMessage: string
   errorMessageId: string
-  hintMessageId: string
+  helperTextId: string
   updateValue: (value: string) => void
 }

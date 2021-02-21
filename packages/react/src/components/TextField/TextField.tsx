@@ -23,7 +23,7 @@ const TextField: RenderLessComponent<TextFieldProps, TextFieldSlotProps> = (prop
     input: props.id ?? `HarmonicUI-TextField-Input-${ID_SEQUENCE}`,
     label: props.labelId ?? `HarmonicUI-TextField-Label-${ID_SEQUENCE}`,
     errorMessage: props.errorMessageId ?? `HarmonicUI-TextField-ErrorMessage-${ID_SEQUENCE}`,
-    hintMessage: props.hintMessageId ?? `HarmonicUI-TextField-HintMessage-${ID_SEQUENCE}`,
+    helperText: props.helperTextId ?? `HarmonicUI-TextField-HelperText-${ID_SEQUENCE}`,
   }
 
   const optional = props.optional ?? false
@@ -48,7 +48,7 @@ const TextField: RenderLessComponent<TextFieldProps, TextFieldSlotProps> = (prop
     value: props.value,
     labelId: IDs.label,
     required: !optional,
-    hintMessageId: IDs.hintMessage,
+    helperTextId: IDs.helperText,
     errorMessageId: IDs.errorMessage,
     errorMessage: props.errorMessage ?? '',
   }
@@ -69,7 +69,7 @@ const TextField: RenderLessComponent<TextFieldProps, TextFieldSlotProps> = (prop
     value: props.value,
     required: !optional,
     ariaErrormessage: IDs.errorMessage,
-    ariaDescribedby: IDs.hintMessage,
+    ariaDescribedby: IDs.helperText,
   }
 
   const errorMessageContext: Partial<ErrorMessageContract> = {
@@ -80,7 +80,7 @@ const TextField: RenderLessComponent<TextFieldProps, TextFieldSlotProps> = (prop
 
   const hintMessageContext: Partial<HelperTextContract> = {
     visible: !invalid,
-    id: IDs.hintMessage,
+    id: IDs.helperText,
   }
 
   return (

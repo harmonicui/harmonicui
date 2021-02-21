@@ -191,9 +191,9 @@ test('error-message-id can be overridden via props', () => {
 test('generates an id for hint message', () => {
   renderTextField()
 
-  const id = 'HarmonicUI-TextField-HintMessage-16'
+  const id = 'HarmonicUI-TextField-HelperText-16'
 
-  expect({ hintMessageId: id })
+  expect({ helperTextId: id })
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(HelperTextContext)
@@ -204,9 +204,9 @@ test('generates an id for hint message', () => {
 test('generates unique hint message id for each instance', () => {
   renderTextField()
 
-  let id = 'HarmonicUI-TextField-HintMessage-17'
+  let id = 'HarmonicUI-TextField-HelperText-17'
 
-  expect({ hintMessageId: id })
+  expect({ helperTextId: id })
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(HelperTextContext)
@@ -215,9 +215,9 @@ test('generates unique hint message id for each instance', () => {
 
   renderTextField()
 
-  id = 'HarmonicUI-TextField-HintMessage-18'
+  id = 'HarmonicUI-TextField-HelperText-18'
 
-  expect({ hintMessageId: id })
+  expect({ helperTextId: id })
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(HelperTextContext)
@@ -228,9 +228,9 @@ test('generates unique hint message id for each instance', () => {
 test('error message id can be overridden via props', () => {
   const id = 'username-hint-message'
 
-  renderTextField({ hintMessageId: id })
+  renderTextField({ helperTextId: id })
 
-  expect({ hintMessageId: id })
+  expect({ helperTextId: id })
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(HelperTextContext)
