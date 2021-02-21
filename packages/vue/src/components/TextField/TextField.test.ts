@@ -1,10 +1,10 @@
-import TextField from '../TextField'
+import TextField from './TextField'
 import { Component, defineComponent } from 'vue'
 import { fireEvent } from '@testing-library/vue'
-import { useInputContext } from '../../../contexts'
-import { DefaultSlot, setupContexts, DefaultSlotComponent, renderComponent } from '../../../test-utils'
+import { useInputContext } from '../../contexts'
+import { DefaultSlot, setupContexts, DefaultSlotComponent, renderComponent } from '../../test-utils'
 
-jest.mock('../../../composables/useId')
+jest.mock('../../composables/useId')
 
 const {
   LabelContext,
@@ -170,7 +170,7 @@ test('generates unique error message id for each instance', () => {
     .toHaveBeenProvidedThrough(InputContext)
 })
 
-test('error message id can be overridden via props', () => {
+test('error-message-id can be overridden via props', () => {
   const id = 'username-error-message'
 
   renderTextField({ errorMessageId: id })
@@ -183,12 +183,12 @@ test('error message id can be overridden via props', () => {
     .toHaveBeenProvidedThrough(InputContext)
 })
 
-test('generates an id for hint message', () => {
+test('generates an id for helper-text', () => {
   renderTextField()
 
-  const id = 'HarmonicUI-TextField-HintMessage-1'
+  const id = 'HarmonicUI-TextField-HelperText-1'
 
-  expect({ hintMessageId: id })
+  expect({ helperTextId: id })
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(HelperTextContext)
@@ -196,12 +196,12 @@ test('generates an id for hint message', () => {
     .toHaveBeenProvidedThrough(InputContext)
 })
 
-test('generates unique hint message id for each instance', () => {
+test('generates unique helper-text-id for each instance', () => {
   renderTextField()
 
-  let id = 'HarmonicUI-TextField-HintMessage-1'
+  let id = 'HarmonicUI-TextField-HelperText-1'
 
-  expect({ hintMessageId: id })
+  expect({ helperTextId: id })
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(HelperTextContext)
@@ -210,9 +210,9 @@ test('generates unique hint message id for each instance', () => {
 
   renderTextField()
 
-  id = 'HarmonicUI-TextField-HintMessage-2'
+  id = 'HarmonicUI-TextField-HelperText-2'
 
-  expect({ hintMessageId: id })
+  expect({ helperTextId: id })
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(HelperTextContext)
@@ -223,9 +223,9 @@ test('generates unique hint message id for each instance', () => {
 test('error message id can be overridden via props', () => {
   const id = 'hint-message-id'
 
-  renderTextField({ hintMessageId: id })
+  renderTextField({ helperTextId: id })
 
-  expect({ hintMessageId: id })
+  expect({ helperTextId: id })
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(HelperTextContext)

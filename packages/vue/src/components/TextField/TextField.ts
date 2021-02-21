@@ -1,4 +1,4 @@
-import { defineComponent, getCurrentInstance } from 'vue'
+import { defineComponent } from 'vue'
 import useId from '../../composables/useId'
 import {
   provideLabelContext,
@@ -20,7 +20,7 @@ export default defineComponent({
     errorMessageId: {
       type: String,
     },
-    hintMessageId: {
+    helperTextId: {
       type: String,
     },
     modelValue: {
@@ -50,67 +50,70 @@ export default defineComponent({
   ],
 
   setup (props, { slots, emit }) {
-    const idSequence = useId()
+    const ID_SEQUENCE = useId()
 
-    function generateId (childName: string, id: number) {
-      const componentName = getCurrentInstance()?.type.name
-      return `HarmonicUI-${componentName}-${childName}-${id}`
+    const IDs = {
+      input: props.id ?? `HarmonicUI-TextField-Input-${ID_SEQUENCE}`,
+      label: props.labelId ?? `HarmonicUI-TextField-Label-${ID_SEQUENCE}`,
+      errorMessage: props.errorMessageId ?? `HarmonicUI-TextField-ErrorMessage-${ID_SEQUENCE}`,
+      helperText: props.helperTextId ?? `HarmonicUI-TextField-HelperText-${ID_SEQUENCE}`,
     }
-
-    const id = props.id ?? generateId('Input', idSequence)
-    const labelId = props.labelId ?? generateId('Label', idSequence)
-    const errorMessageId = props.errorMessageId ?? generateId('ErrorMessage', idSequence)
-    const hintMessageId = props.hintMessageId ?? generateId('HintMessage', idSequence)
 
     function updateValue (value: string | number) {
       emit('update:modelValue', value)
     }
 
+    function clear () {
+      updateValue('')
+    }
+
     provideLabelContext({
-      id: labelId,
-      htmlFor: id,
+      id: IDs.label,
+      htmlFor: IDs.input,
       optional: props.optional,
       disabled: props.disabled,
       invalid: props.error,
     })
 
     provideInputContext({
-      id,
+      id: IDs.input,
       updateValue,
       disabled: props.disabled,
       required: !props.optional,
       value: props.modelValue,
-      ariaErrormessage: errorMessageId,
-      ariaDescribedby: hintMessageId,
+      ariaErrormessage: IDs.errorMessage,
+      ariaDescribedby: IDs.helperText,
       invalid: props.error,
     })
 
     provideErrorMessageContext({
-      id: errorMessageId,
+      id: IDs.errorMessage,
       visible: props.error,
       message: props.errorMessage,
     })
 
     provideHelperTextContext({
-      id: hintMessageId,
+      id: IDs.helperText,
       visible: !props.error,
     })
 
+    const slotProps = {
+      id: IDs.input,
+      labelId: IDs.label,
+      clear,
+      updateValue,
+      helperTextId: IDs.helperText,
+      errorMessageId: IDs.errorMessage,
+      invalid: props.error,
+      value: props.modelValue,
+      disabled: props.disabled,
+      optional: props.optional,
+      required: !props.optional,
+      errorMessage: props.errorMessage,
+    }
+
     return () => {
-      return slots.default?.({
-        id,
-        labelId,
-        clear: () => { updateValue('') },
-        updateValue,
-        hintMessageId,
-        errorMessageId,
-        invalid: props.error,
-        value: props.modelValue,
-        disabled: props.disabled,
-        optional: props.optional,
-        required: !props.optional,
-        errorMessage: props.errorMessage,
-      })
+      return slots.default?.(slotProps)
     }
   },
 })
