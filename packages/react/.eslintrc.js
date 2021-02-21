@@ -12,5 +12,6 @@ module.exports = {
   rules: {
     'comma-dangle': ['error', 'always-multiline'],
     'no-use-before-define': 'off',
+    'react/prop-types': 'off',
   },
 }

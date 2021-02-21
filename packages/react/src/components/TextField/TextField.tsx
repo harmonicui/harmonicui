@@ -1,55 +1,22 @@
-import React, { createElement, Fragment, ReactElement, ReactNode } from 'react'
+import React from 'react'
 import { useId } from '@reach/auto-id'
+import { RenderLessComponent } from '../../types'
+import { renderChildren } from '../../utils'
+import { TextFieldProps, TextFieldSlotProps } from './types'
 import {
   InputContextProvider,
   LabelContextProvider,
   HelperTextContextProvider,
   ErrorMessageContextProvider,
 } from '../../contexts'
-import { ErrorMessageContract, HelperTextContract, InputContract, LabelContract } from '@harmonicui/contracts'
+import {
+  ErrorMessageContract,
+  HelperTextContract,
+  InputContract,
+  LabelContract,
+} from '@harmonicui/contracts'
 
-type RenderProp<SlotProps> = (props: SlotProps) => ReactNode
-type RenderLessComponentChildren<SlotProps> = ReactNode | RenderProp<SlotProps>
-
-function isRenderProp<SlotProps> (node: RenderLessComponentChildren<SlotProps>): node is RenderProp<SlotProps> {
-  return typeof node === 'function'
-}
-
-function createRenderLessComponent<SlotProps> (children: RenderLessComponentChildren<SlotProps>, slotProps: SlotProps) {
-  const content = isRenderProp(children) ? children(slotProps) : children
-  return createElement(Fragment, null, content)
-}
-
-interface TextFieldSlotProps {
-  id: string
-  value: string
-  labelId: string
-  invalid: boolean
-  disabled: boolean
-  optional: boolean
-  required: boolean
-  clear: () => void
-  errorMessage: string
-  errorMessageId: string
-  hintMessageId: string
-  updateValue: (value: string) => void
-}
-
-interface TextFieldProps {
-  id?: string
-  value: string
-  error?: boolean
-  labelId?: string
-  disabled?: boolean
-  optional?: boolean
-  errorMessage?: string
-  hintMessageId?: string
-  errorMessageId?: string
-  onChange: (value: string) => void
-  children?: RenderLessComponentChildren<TextFieldSlotProps>
-}
-
-function TextField ({ children, ...props }: TextFieldProps): ReactElement {
+const TextField: RenderLessComponent<TextFieldProps, TextFieldSlotProps> = (props) => {
   const ID_SEQUENCE = useId()
 
   const IDs = {
@@ -67,8 +34,12 @@ function TextField ({ children, ...props }: TextFieldProps): ReactElement {
     props.onChange(value)
   }
 
+  function clear () {
+    updateValue('')
+  }
+
   const slotProps: TextFieldSlotProps = {
-    clear: () => { updateValue('') },
+    clear,
     invalid,
     optional,
     disabled,
@@ -117,7 +88,9 @@ function TextField ({ children, ...props }: TextFieldProps): ReactElement {
       <InputContextProvider value={inputContext}>
         <ErrorMessageContextProvider value={errorMessageContext}>
           <HelperTextContextProvider value={hintMessageContext}>
-            {createRenderLessComponent<TextFieldSlotProps>(children, slotProps)}
+            {
+              renderChildren<TextFieldSlotProps>(props.children, slotProps)
+            }
           </HelperTextContextProvider>
         </ErrorMessageContextProvider>
       </InputContextProvider>
@@ -129,5 +102,4 @@ TextField.displayName = 'TextField'
 
 export {
   TextField,
-  TextFieldProps,
 }

@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { TextFieldProps, TextField } from '../TextField'
+import { TextField } from './TextField'
 import { fireEvent, render } from '@testing-library/react'
-import { createContextTestingUtils } from '../../../test-utils'
-import { useInputContext } from '../../../contexts'
+import { createContextTestingUtils } from '../../test-utils'
+import { useInputContext } from '../../contexts'
+import { TextFieldProps } from './types'
 
 beforeEach(() => {
   jest.isolateModules(() => { require('@reach/auto-id') })
