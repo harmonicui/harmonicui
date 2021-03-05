@@ -7,8 +7,12 @@ interface Context<Contract> {
   consume: Consumer<Contract>
 }
 
-export function createContext<Contract> (contractName: string, contractDefaultValue: Contract): Context<Contract> {
-  const context: InjectionKey<Contract> = Symbol(contractName)
+type Class<T> = { new (): T }
+
+export function createContext<ContractType> (Contract: Class<ContractType>, name?: string): Context<ContractType> {
+  const context: InjectionKey<ContractType> = Symbol(name ?? Contract.name)
+
+  const contractDefaults = new Contract()
 
   return {
     provide: (value) => {
@@ -19,11 +23,11 @@ export function createContext<Contract> (contractName: string, contractDefaultVa
       const value = inject(context, defaultValue)
 
       if (value === undefined) {
-        throwUnperformedContractWarning(contractName)
-        return contractDefaultValue
+        throwUnperformedContractWarning(Contract.name)
+        return contractDefaults
       }
 
-      return { ...contractDefaultValue, ...value }
+      return { ...contractDefaults, ...value }
     },
   }
 }

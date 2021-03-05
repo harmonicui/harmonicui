@@ -1,17 +1,12 @@
 import { createContext } from '../createContext'
 import { createProvider, render, renderInlineComponent } from '../../../test-utils'
 
-type TestContract = {
-  firstName: string,
-  lastName: string
+class TestContract {
+  readonly firstName: string = 'John'
+  readonly lastName: string = 'Doe'
 }
 
-const contractDefaultValue: TestContract = {
-  firstName: 'John',
-  lastName: 'Doe',
-}
-
-const context = createContext<TestContract>('TestContract', contractDefaultValue)
+const context = createContext(TestContract, 'TestContext')
 
 const {
   consumer,
@@ -45,7 +40,7 @@ test('throws warning if no provider performed the contract', () => {
 test('the default contract values will be returned if no provider exists', () => {
   render(ConsumerComponent)
 
-  expect(consumer).toHaveBeenReceived(contractDefaultValue)
+  expect(consumer).toHaveBeenReceived(new TestContract())
 })
 
 test('consumer can provide default values partially, it will be merged with contract defaults', () => {
@@ -61,6 +56,6 @@ test('consumer can provide default values partially, it will be merged with cont
   })
 
   expect(consumer).toHaveBeenReceived(
-    { ...contractDefaultValue, ...consumerDefaultValue },
+    { ...new TestContract(), ...consumerDefaultValue },
   )
 })

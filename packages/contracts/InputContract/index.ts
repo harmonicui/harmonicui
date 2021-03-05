@@ -1,26 +1,10 @@
-interface InputContract {
-  id: string | undefined,
-  invalid: boolean,
-  required: boolean,
-  disabled: boolean,
-  value: string | number | undefined,
-  ariaDescribedby: string | undefined,
-  ariaErrormessage: string | undefined,
-  updateValue: ((value: string) => void) | undefined,
-}
-
-const InputContractDefaultValues: InputContract = {
-  id: undefined,
-  value: undefined,
-  invalid: false,
-  required: true,
-  disabled: false,
-  updateValue: undefined,
-  ariaDescribedby: undefined,
-  ariaErrormessage: undefined,
-}
-
-export {
-  InputContract,
-  InputContractDefaultValues,
+export class InputContract {
+  readonly id: string | undefined = undefined
+  readonly invalid: boolean = false
+  readonly required: boolean = true
+  readonly disabled: boolean = false
+  readonly value: string | number | undefined = undefined
+  readonly ariaDescribedby: string | undefined = undefined
+  readonly ariaErrormessage: string | undefined = undefined
+  readonly updateValue: ((value: string) => void) | undefined = undefined
 }

@@ -3,17 +3,12 @@ import { render } from '@testing-library/react'
 import { createContext } from '../createContext'
 import { createProvider } from '../../../test-utils'
 
-type TestContract = {
-  firstName: string,
-  lastName: string
+class TestContract {
+  readonly firstName: string = 'John'
+  readonly lastName: string = 'Doe'
 }
 
-const contractDefaultValue: TestContract = {
-  firstName: 'John',
-  lastName: 'Doe',
-}
-
-const context = createContext<TestContract>('TestContract', contractDefaultValue)
+const context = createContext(TestContract, 'TextContext')
 
 const {
   consumer,
@@ -51,7 +46,7 @@ test('the default contract values will be returned if no provider exists', () =>
 
   render(<ConsumerComponent/>)
 
-  expect(consumer).toHaveBeenReceived(contractDefaultValue)
+  expect(consumer).toHaveBeenReceived(new TestContract())
   consoleWarnMock.mockRestore()
 })
 
@@ -70,7 +65,7 @@ test('consumer can provide default values partially, it will be merged with cont
   render(<ConsumerComponent/>)
 
   expect(consumer).toHaveBeenReceived(
-    { ...contractDefaultValue, ...consumerDefaultValue },
+    { ...new TestContract(), ...consumerDefaultValue },
   )
 
   consoleWarnMock.mockRestore()

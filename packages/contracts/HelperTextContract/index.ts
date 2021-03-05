@@ -1,14 +1,4 @@
-interface HelperTextContract {
-  id: string | null,
-  visible: boolean,
-}
-
-const HelperTextContractDefaultValues: HelperTextContract = {
-  id: null,
-  visible: true,
-}
-
-export {
-  HelperTextContract,
-  HelperTextContractDefaultValues,
+export class HelperTextContract {
+  readonly id: string | undefined = undefined
+  readonly visible: boolean = true
 }

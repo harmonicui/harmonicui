@@ -6,9 +6,13 @@ type Context<Contract> = {
   consume: (defaultValue?: Partial<Contract>) => Contract
 }
 
-function createContext<Contract> (contractName: string, contractDefaults: Contract): Context<Contract> {
-  const context = React.createContext<Partial<Contract>>({})
-  context.displayName = contractName.replace('Contract', 'Context')
+type Class<T> = { new (): T }
+
+function createContext<ContractType> (Contract: Class<ContractType>, name?: string): Context<ContractType> {
+  const context = React.createContext<Partial<ContractType>>({})
+  context.displayName = name ?? Contract.name
+
+  const contractDefaults = new Contract()
 
   return {
     Provider: context.Provider,
@@ -17,7 +21,7 @@ function createContext<Contract> (contractName: string, contractDefaults: Contra
       const value = React.useContext(context)
 
       if (isEmpty(value)) {
-        throwUnperformedContractWarning(contractName)
+        throwUnperformedContractWarning(Contract.name)
         return { ...contractDefaults, ...defaultValue }
       }
 

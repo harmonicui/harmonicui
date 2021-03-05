@@ -1,20 +1,7 @@
-interface LabelContract {
-  id: string | null,
-  htmlFor: string | null,
-  invalid: boolean,
-  disabled: boolean,
-  optional: boolean,
-}
-
-const LabelContractDefaultValues: LabelContract = {
-  id: null,
-  htmlFor: null,
-  invalid: false,
-  disabled: false,
-  optional: false,
-}
-
-export {
-  LabelContract,
-  LabelContractDefaultValues,
+export class LabelContract {
+  readonly id: string | undefined = undefined
+  readonly htmlFor: string | undefined = undefined
+  readonly invalid: boolean = false
+  readonly disabled: boolean = false
+  readonly optional: boolean = false
 }
