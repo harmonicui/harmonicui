@@ -1,3 +1,4 @@
+export * from './CheckBoxContract'
 export * from './ErrorMessageContract'
 export * from './InputContract'
 export * from './LabelContract'
