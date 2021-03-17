@@ -58,3 +58,20 @@ test('should not be visible if HelperTextContext.hidden is true', () => {
   renderHelperTextWithProvider({ hidden: true })
   expect(getHelperText()).not.toBeVisible()
 })
+
+test('user must not be able to modify controlled props', () => {
+  renderInlineComponent({
+    template: '<HelperText id="user" hidden/>',
+    components: { HelperText },
+
+    setup () {
+      provideHelperTextContext({
+        id: 'context',
+        hidden: false,
+      })
+    },
+  })
+
+  expect(getHelperText()).toHaveAttribute('id', 'context')
+  expect(getHelperText()).toBeVisible()
+})

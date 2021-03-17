@@ -73,3 +73,20 @@ test('should pass uncontrolled props to label element',
     expect(getLabel()).toHaveAttribute('data-test-id', 'test')
   }),
 )
+
+test('user must not be able to modify controlled props', () => {
+  renderInlineComponent({
+    template: '<LabelComponent id="user" for="user"/>',
+    components: { LabelComponent },
+
+    setup () {
+      provideLabelContext({
+        id: 'context',
+        htmlFor: 'context',
+      })
+    },
+  })
+
+  expect(getLabel()).toHaveAttribute('id', 'context')
+  expect(getLabel()).toHaveAttribute('for', 'context')
+})
