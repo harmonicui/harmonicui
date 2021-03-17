@@ -79,7 +79,7 @@ const TextField: RenderLessComponent<TextFieldProps, TextFieldSlotProps> = (prop
   }
 
   const hintMessageContext: Partial<HelperTextContract> = {
-    visible: !invalid,
+    hidden: invalid,
     id: IDs.helperText,
   }
 

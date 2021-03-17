@@ -94,7 +94,7 @@ export default defineComponent({
 
     provideHelperTextContext({
       id: IDs.helperText,
-      visible: !props.error,
+      hidden: props.error,
     })
 
     const slotProps = {
