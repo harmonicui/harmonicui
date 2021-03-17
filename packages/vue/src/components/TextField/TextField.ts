@@ -88,7 +88,7 @@ export default defineComponent({
 
     provideErrorMessageContext({
       id: IDs.errorMessage,
-      visible: props.error,
+      hidden: !props.error,
       message: props.errorMessage,
     })
 
