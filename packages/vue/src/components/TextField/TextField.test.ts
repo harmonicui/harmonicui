@@ -340,9 +340,9 @@ test('is valid by default', () => {
     .toHaveBeenProvidedThrough(LabelContext)
   expect({ invalid: false })
     .toHaveBeenProvidedThrough(InputContext)
-  expect({ visible: false })
+  expect({ hidden: true })
     .toHaveBeenProvidedThrough(ErrorMessageContext)
-  expect({ visible: true })
+  expect({ hidden: false })
     .toHaveBeenProvidedThrough(HelperTextContext)
 })
 
@@ -355,9 +355,9 @@ test('user can control validation state via error prop', () => {
     .toHaveBeenProvidedThrough(LabelContext)
   expect({ invalid: true })
     .toHaveBeenProvidedThrough(InputContext)
-  expect({ visible: true })
+  expect({ hidden: false })
     .toHaveBeenProvidedThrough(ErrorMessageContext)
-  expect({ visible: false })
+  expect({ hidden: true })
     .toHaveBeenProvidedThrough(HelperTextContext)
 })
 
