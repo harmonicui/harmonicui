@@ -73,7 +73,7 @@ const TextField: RenderLessComponent<TextFieldProps, TextFieldSlotProps> = (prop
   }
 
   const errorMessageContext: Partial<ErrorMessageContract> = {
-    visible: invalid,
+    hidden: !invalid,
     id: IDs.errorMessage,
     message: props.errorMessage,
   }

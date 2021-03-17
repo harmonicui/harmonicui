@@ -244,7 +244,10 @@ test('handles value and onChange passing through default slot', async () => {
     return (
       <>
         <TextField value={value} onChange={setValue}>
-          {({ updateValue, value }) =>
+          {({
+            updateValue,
+            value,
+          }) =>
             <input data-testid="input"
                    value={value}
                    onChange={event => updateValue(event.target.value)}/>
@@ -273,7 +276,10 @@ test('handles value and onChange passing through default slot', async () => {
 
 test('handles value and onChange passing through InputContext', async () => {
   function InputContextConsumer () {
-    const { value, updateValue } = useInputContext()
+    const {
+      value,
+      updateValue,
+    } = useInputContext()
     return <input data-testid="input" value={value} onChange={event => updateValue?.(event.target.value)}/>
   }
 
@@ -308,7 +314,10 @@ test('handles value and onChange passing through InputContext', async () => {
 test('the input is required by default', () => {
   renderTextField()
 
-  expect({ optional: false, required: true })
+  expect({
+    optional: false,
+    required: true,
+  })
     .toHaveBeenProvidedThrough(DefaultSlot)
 
   expect({ optional: false })
@@ -321,7 +330,10 @@ test('the input is required by default', () => {
 test('user can make input optional via prop', () => {
   renderTextField({ optional: true })
 
-  expect({ optional: true, required: false })
+  expect({
+    optional: true,
+    required: false,
+  })
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ optional: true })
     .toHaveBeenProvidedThrough(LabelContext)
@@ -360,7 +372,7 @@ test('is valid by default', () => {
     .toHaveBeenProvidedThrough(LabelContext)
   expect({ invalid: false })
     .toHaveBeenProvidedThrough(InputContext)
-  expect({ visible: false })
+  expect({ hidden: true })
     .toHaveBeenProvidedThrough(ErrorMessageContext)
   expect({ hidden: false })
     .toHaveBeenProvidedThrough(HelperTextContext)
@@ -375,7 +387,7 @@ test('user can control validation state via error prop', () => {
     .toHaveBeenProvidedThrough(LabelContext)
   expect({ invalid: true })
     .toHaveBeenProvidedThrough(InputContext)
-  expect({ visible: true })
+  expect({ hidden: false })
     .toHaveBeenProvidedThrough(ErrorMessageContext)
   expect({ hidden: true })
     .toHaveBeenProvidedThrough(HelperTextContext)
