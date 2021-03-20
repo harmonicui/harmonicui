@@ -7,12 +7,12 @@ export interface CheckBoxProps {
   required?: boolean
   optional?: boolean
   disabled?: boolean
-  isChecked?: boolean
+  checked?: boolean
   errorMessage?:string
   helperTextId?: string
   errorMessageId?: string
   onChange: (value: string) => void
-  onClick: (isChecked: boolean) => void
+  onClick: (checked: boolean) => void
 }
 
 export interface CheckBoxSlotProps {
@@ -24,10 +24,10 @@ export interface CheckBoxSlotProps {
   optional: boolean
   disabled: boolean
   required: boolean
-  isChecked: boolean
+  checked: boolean
   helperTextId: string
   errorMessage?:string
   errorMessageId: string
-  setCheck: (isChecked: boolean) => void
+  updateChecked: (checked: boolean) => void
   updateValue: (value: string) => void
 }

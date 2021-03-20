@@ -18,7 +18,7 @@ import {
 const CheckBox: RenderLessComponent<CheckBoxProps, CheckBoxSlotProps> = (
   props,
 ) => {
-  const setCheck = (value: boolean): void => {
+  const updateChecked = (value: boolean): void => {
     props.onClick(value)
   }
 
@@ -30,7 +30,7 @@ const CheckBox: RenderLessComponent<CheckBoxProps, CheckBoxSlotProps> = (
 
   const optional = props.optional ?? false
   const disabled = props.disabled ?? false
-  const isChecked = props.isChecked ?? false
+  const checked = props.checked ?? false
   const invalid = props.error ?? false
 
   const IDs = {
@@ -44,10 +44,10 @@ const CheckBox: RenderLessComponent<CheckBoxProps, CheckBoxSlotProps> = (
 
   const slotProps: CheckBoxSlotProps = {
     invalid,
-    setCheck,
+    updateChecked,
     optional,
     disabled,
-    isChecked,
+    checked,
     updateValue,
     error: invalid,
     id: IDs.checkbox,
@@ -69,9 +69,9 @@ const CheckBox: RenderLessComponent<CheckBoxProps, CheckBoxSlotProps> = (
 
   const CheckBoxContext: Partial<CheckBoxContract> = {
     invalid,
-    setCheck,
+    updateChecked,
     disabled,
-    isChecked,
+    checked,
     updateValue,
     id: IDs.checkbox,
     required: !optional,

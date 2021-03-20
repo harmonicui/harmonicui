@@ -26,7 +26,7 @@ const {
 
 function renderCheckBox (props?: Partial<CheckBoxProps>) {
   const requiredProps = {
-    isChecked: false,
+    checked: false,
     onClick: (): void => {
       //
     },
@@ -198,23 +198,23 @@ test('error message id can be overridden via props', () => {
   expect({ ariaDescribedby: id }).toHaveBeenProvidedThrough(CheckBoxContext)
 })
 
-test('handles isChecked and onChange passing through default slot', async () => {
+test('handleschecked and onChange passing through default slot', async () => {
   const Wrapper = (): React.ReactElement => {
     const [checked, setCheck] = React.useState(false)
     return (
       <>
         <CheckBox
-          isChecked={checked}
+          checked={checked}
           onClick={setCheck}
           value=""
           onChange={(t) => t}
         >
-          {({ setCheck, isChecked }) => (
+          {({ updateChecked, checked }) => (
             <input
               type="checkbox"
               data-testid="checkbox"
-              checked={isChecked}
-              onChange={(event) => setCheck(event.currentTarget.checked)}
+              checked={checked}
+              onChange={(event) => updateChecked(event.currentTarget.checked)}
             />
           )}
         </CheckBox>
@@ -320,15 +320,15 @@ test('CheckBox can be disabled via props.', () => {
 test('CheckBox is unchecked by default.', () => {
   renderCheckBox()
 
-  expect({ isChecked: false }).toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ isChecked: false }).toHaveBeenProvidedThrough(CheckBoxContext)
+  expect({ checked: false }).toHaveBeenProvidedThrough(DefaultSlot)
+  expect({ checked: false }).toHaveBeenProvidedThrough(CheckBoxContext)
 })
 
 test('CheckBox can be checked via props.', () => {
-  renderCheckBox({ isChecked: true })
+  renderCheckBox({ checked: true })
 
-  expect({ isChecked: true }).toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ isChecked: true }).toHaveBeenProvidedThrough(CheckBoxContext)
+  expect({ checked: true }).toHaveBeenProvidedThrough(DefaultSlot)
+  expect({ checked: true }).toHaveBeenProvidedThrough(CheckBoxContext)
 })
 
 test('CheckBox can be given value via props.', () => {
