@@ -1,6 +1,6 @@
 export interface CheckBoxProps {
   id?: string
-  value?: string
+  value: string
   error?: boolean
   labelId?: string
   invalid?: boolean
