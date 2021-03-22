@@ -1,10 +1,10 @@
 export class InputContract {
-  readonly id: string | undefined = undefined
-  readonly invalid: boolean = false
   readonly required: boolean = true
   readonly disabled: boolean = false
+  readonly id: string | undefined = undefined
   readonly value: string | number | undefined = undefined
-  readonly ariaDescribedby: string | undefined = undefined
-  readonly ariaErrormessage: string | undefined = undefined
-  readonly updateValue: ((value: string) => void) | undefined = undefined
+  readonly setValue: ((value: string) => void) | undefined = undefined
+  readonly 'aria-invalid': boolean = false
+  readonly 'aria-errormessage': string | undefined = undefined
+  readonly 'aria-describedby': string | undefined = undefined
 }

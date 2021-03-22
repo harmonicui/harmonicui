@@ -142,7 +142,7 @@ test('generates an id for error message', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(ErrorMessageContext)
-  expect({ ariaErrormessage: id })
+  expect({ 'aria-errormessage': id })
     .toHaveBeenProvidedThrough(InputContext)
 })
 
@@ -155,7 +155,7 @@ test('generates unique error message id for each instance', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(ErrorMessageContext)
-  expect({ ariaErrormessage: id })
+  expect({ 'aria-errormessage': id })
     .toHaveBeenProvidedThrough(InputContext)
 
   renderTextField()
@@ -166,7 +166,7 @@ test('generates unique error message id for each instance', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(ErrorMessageContext)
-  expect({ ariaErrormessage: id })
+  expect({ 'aria-errormessage': id })
     .toHaveBeenProvidedThrough(InputContext)
 })
 
@@ -179,7 +179,7 @@ test('error-message-id can be overridden via props', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(ErrorMessageContext)
-  expect({ ariaErrormessage: id })
+  expect({ 'aria-errormessage': id })
     .toHaveBeenProvidedThrough(InputContext)
 })
 
@@ -192,7 +192,7 @@ test('generates an id for helper-text', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(HelperTextContext)
-  expect({ ariaDescribedby: id })
+  expect({ 'aria-describedby': id })
     .toHaveBeenProvidedThrough(InputContext)
 })
 
@@ -205,7 +205,7 @@ test('generates unique helper-text-id for each instance', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(HelperTextContext)
-  expect({ ariaDescribedby: id })
+  expect({ 'aria-describedby': id })
     .toHaveBeenProvidedThrough(InputContext)
 
   renderTextField()
@@ -216,7 +216,7 @@ test('generates unique helper-text-id for each instance', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(HelperTextContext)
-  expect({ ariaDescribedby: id })
+  expect({ 'aria-describedby': id })
     .toHaveBeenProvidedThrough(InputContext)
 })
 
@@ -229,12 +229,15 @@ test('error message id can be overridden via props', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(HelperTextContext)
-  expect({ ariaDescribedby: id })
+  expect({ 'aria-describedby': id })
     .toHaveBeenProvidedThrough(InputContext)
 })
 
 test('should handle v-model - provide value and updateValue through default slot', async () => {
-  const { getByTestId, emitted } = renderTextField(
+  const {
+    getByTestId,
+    emitted,
+  } = renderTextField(
     { modelValue: 'hello' },
     `
       <template v-slot="{ value, updateValue }">
@@ -259,16 +262,25 @@ test('should handle v-model - provide value and updateValue through InputContext
     template: `
       <input :value="value"
              data-testId="InjectorInput"
-             @input="updateValue($event.target.value)"
+             @input="setValue($event.target.value)"
       />
     `,
     setup () {
-      const { value, updateValue } = useInputContext()
-      return { value, updateValue }
+      const {
+        value,
+        setValue,
+      } = useInputContext()
+      return {
+        value,
+        setValue,
+      }
     },
   })
 
-  const { getByTestId, emitted } = renderTextField(
+  const {
+    getByTestId,
+    emitted,
+  } = renderTextField(
     { modelValue: 'hello' },
     '<InjectorComponent/>',
     { InjectorComponent },
@@ -288,7 +300,10 @@ test('should handle v-model - provide value and updateValue through InputContext
 test('the input is required by default', () => {
   renderTextField()
 
-  expect({ optional: false, required: true })
+  expect({
+    optional: false,
+    required: true,
+  })
     .toHaveBeenProvidedThrough(DefaultSlot)
 
   expect({ optional: false })
@@ -301,7 +316,10 @@ test('the input is required by default', () => {
 test('user can make input optional via prop', () => {
   renderTextField({ optional: true })
 
-  expect({ optional: true, required: false })
+  expect({
+    optional: true,
+    required: false,
+  })
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ optional: true })
     .toHaveBeenProvidedThrough(LabelContext)
@@ -338,7 +356,7 @@ test('is valid by default', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ invalid: false })
     .toHaveBeenProvidedThrough(LabelContext)
-  expect({ invalid: false })
+  expect({ 'aria-invalid': false })
     .toHaveBeenProvidedThrough(InputContext)
   expect({ hidden: true })
     .toHaveBeenProvidedThrough(ErrorMessageContext)
@@ -353,7 +371,7 @@ test('user can control validation state via error prop', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ invalid: true })
     .toHaveBeenProvidedThrough(LabelContext)
-  expect({ invalid: true })
+  expect({ 'aria-invalid': true })
     .toHaveBeenProvidedThrough(InputContext)
   expect({ hidden: false })
     .toHaveBeenProvidedThrough(ErrorMessageContext)
@@ -372,7 +390,10 @@ test('exposes the given error message', () => {
 })
 
 test('exposes a clear method through default slot', async () => {
-  const { getByText, emitted } = renderTextField(
+  const {
+    getByText,
+    emitted,
+  } = renderTextField(
     {},
     `
       <template v-slot="{ clear }">
