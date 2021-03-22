@@ -147,7 +147,7 @@ test('generates an id for error message', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(ErrorMessageContext)
-  expect({ ariaErrormessage: id })
+  expect({ 'aria-errormessage': id })
     .toHaveBeenProvidedThrough(InputContext)
 })
 
@@ -160,7 +160,7 @@ test('generates unique error-message-id for each instance', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(ErrorMessageContext)
-  expect({ ariaErrormessage: id })
+  expect({ 'aria-errormessage': id })
     .toHaveBeenProvidedThrough(InputContext)
 
   renderTextField()
@@ -171,7 +171,7 @@ test('generates unique error-message-id for each instance', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(ErrorMessageContext)
-  expect({ ariaErrormessage: id })
+  expect({ 'aria-errormessage': id })
     .toHaveBeenProvidedThrough(InputContext)
 })
 
@@ -184,7 +184,7 @@ test('error-message-id can be overridden via props', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(ErrorMessageContext)
-  expect({ ariaErrormessage: id })
+  expect({ 'aria-errormessage': id })
     .toHaveBeenProvidedThrough(InputContext)
 })
 
@@ -197,7 +197,7 @@ test('generates an id for hint message', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(HelperTextContext)
-  expect({ ariaDescribedby: id })
+  expect({ 'aria-describedby': id })
     .toHaveBeenProvidedThrough(InputContext)
 })
 
@@ -210,7 +210,7 @@ test('generates unique hint message id for each instance', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(HelperTextContext)
-  expect({ ariaDescribedby: id })
+  expect({ 'aria-describedby': id })
     .toHaveBeenProvidedThrough(InputContext)
 
   renderTextField()
@@ -221,7 +221,7 @@ test('generates unique hint message id for each instance', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(HelperTextContext)
-  expect({ ariaDescribedby: id })
+  expect({ 'aria-describedby': id })
     .toHaveBeenProvidedThrough(InputContext)
 })
 
@@ -234,7 +234,7 @@ test('error message id can be overridden via props', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ id })
     .toHaveBeenProvidedThrough(HelperTextContext)
-  expect({ ariaDescribedby: id })
+  expect({ 'aria-describedby': id })
     .toHaveBeenProvidedThrough(InputContext)
 })
 
@@ -278,9 +278,9 @@ test('handles value and onChange passing through InputContext', async () => {
   function InputContextConsumer () {
     const {
       value,
-      updateValue,
+      setValue,
     } = useInputContext()
-    return <input data-testid="input" value={value} onChange={event => updateValue?.(event.target.value)}/>
+    return <input data-testid="input" value={value} onChange={event => setValue?.(event.target.value)}/>
   }
 
   function Wrapper () {
@@ -370,7 +370,7 @@ test('is valid by default', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ invalid: false })
     .toHaveBeenProvidedThrough(LabelContext)
-  expect({ invalid: false })
+  expect({ 'aria-invalid': false })
     .toHaveBeenProvidedThrough(InputContext)
   expect({ hidden: true })
     .toHaveBeenProvidedThrough(ErrorMessageContext)
@@ -385,7 +385,7 @@ test('user can control validation state via error prop', () => {
     .toHaveBeenProvidedThrough(DefaultSlot)
   expect({ invalid: true })
     .toHaveBeenProvidedThrough(LabelContext)
-  expect({ invalid: true })
+  expect({ 'aria-invalid': true })
     .toHaveBeenProvidedThrough(InputContext)
   expect({ hidden: false })
     .toHaveBeenProvidedThrough(ErrorMessageContext)
