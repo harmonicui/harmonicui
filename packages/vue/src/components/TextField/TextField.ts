@@ -49,7 +49,10 @@ export default defineComponent({
     'update:modelValue',
   ],
 
-  setup (props, { slots, emit }) {
+  setup (props, {
+    slots,
+    emit,
+  }) {
     const ID_SEQUENCE = useId()
 
     const IDs = {
@@ -77,13 +80,13 @@ export default defineComponent({
 
     provideInputContext({
       id: IDs.input,
-      updateValue,
+      setValue: updateValue,
       disabled: props.disabled,
       required: !props.optional,
       value: props.modelValue,
-      ariaErrormessage: IDs.errorMessage,
-      ariaDescribedby: IDs.helperText,
-      invalid: props.error,
+      'aria-errormessage': IDs.errorMessage,
+      'aria-describedby': IDs.helperText,
+      'aria-invalid': props.error,
     })
 
     provideErrorMessageContext({

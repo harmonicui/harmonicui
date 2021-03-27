@@ -62,14 +62,14 @@ const TextField: RenderLessComponent<TextFieldProps, TextFieldSlotProps> = (prop
   }
 
   const inputContext: Partial<InputContract> = {
-    invalid,
+    'aria-invalid': invalid,
     disabled,
-    updateValue,
+    setValue: updateValue,
     id: IDs.input,
     value: props.value,
     required: !optional,
-    ariaErrormessage: IDs.errorMessage,
-    ariaDescribedby: IDs.helperText,
+    'aria-errormessage': IDs.errorMessage,
+    'aria-describedby': IDs.helperText,
   }
 
   const errorMessageContext: Partial<ErrorMessageContract> = {
