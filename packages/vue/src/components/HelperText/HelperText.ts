@@ -1,22 +1,34 @@
-import { defineComponent, h } from 'vue'
+import { defineComponent } from 'vue'
+import { render } from '../../utils'
 import { useHelperTextContext } from '../../contexts'
 
 export default defineComponent({
+  name: 'HelperText',
+
   inheritAttrs: false,
+
+  props: {
+    as: {
+      type: String,
+      default: 'div',
+      validator: (value: string) => {
+        return ['div', 'span'].indexOf(value) !== -1
+      },
+    },
+  },
 
   setup (props, {
     slots,
     attrs,
   }) {
-    const {
-      id,
-      hidden,
-    } = useHelperTextContext()
+    const context = useHelperTextContext()
 
-    return () => h('span', {
-      ...attrs,
-      id,
-      hidden,
-    }, slots.default?.())
+    return () => {
+      return render({
+        as: props.as,
+        props: { ...attrs, ...context },
+        children: slots.default,
+      })
+    }
   },
 })

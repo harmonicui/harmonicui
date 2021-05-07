@@ -1,92 +1,132 @@
-import { renderComponent, renderInlineComponent, suppressUnperformedContractWarning } from '../../test-utils'
-import { provideLabelContext } from '../../contexts'
-import { LabelContract } from '@harmonicui/contracts'
+import { computed, ref } from 'vue'
+import { renderInlineComponent } from '../../test-utils'
+import { LabelContract, provideLabelContext } from '../../contexts'
 import LabelComponent from './Label'
 
 function getLabel () {
-  return document.querySelector('label')
+  return container.querySelector('label')
 }
 
-function renderLabelWithContextProvider (context: Partial<LabelContract>) {
-  renderInlineComponent({
-    template: '<LabelComponent />',
+function renderTemplate (template: string, contextValue: Partial<LabelContract> = {}) {
+  return renderInlineComponent({
+    template,
     components: { LabelComponent },
     setup () {
-      provideLabelContext(context)
+      provideLabelContext(contextValue as LabelContract)
     },
   })
 }
 
-test('renders a label element',
-  suppressUnperformedContractWarning(() => {
-    renderComponent(LabelComponent)
-    expect(getLabel()).not.toBeNull()
-  }),
-)
-
-test('renders default slot content',
-  suppressUnperformedContractWarning(() => {
-    renderInlineComponent({
-      template: `
-        <LabelComponent>
-        hello <span>world!</span>
-        </LabelComponent>
-      `,
-      components: { LabelComponent },
-    })
-
-    expect(getLabel()).toHaveTextContent('hello world!')
-  }),
-)
-
-test('consumes id from LabelContext', () => {
-  renderLabelWithContextProvider({ id: 'label-id' })
-  expect(getLabel()).toHaveAttribute('id', 'label-id')
+test('should have a proper name', () => {
+  expect(LabelComponent).toHaveBeenNamed('Label')
 })
 
-test('does not render id if not provided through LabelContext', () => {
-  renderLabelWithContextProvider({})
-  expect(getLabel()).not.toHaveAttribute('id')
-})
+describe('rendering', () => {
+  test('renders a label element', () => {
+    renderTemplate(`
+      <LabelComponent />
+    `)
 
-test('consumes htmlFor from LabelContext', () => {
-  renderLabelWithContextProvider({ htmlFor: 'dummy-input-id' })
-  expect(getLabel()).toHaveAttribute('for', 'dummy-input-id')
-})
+    expect(getLabel()).toBeInTheDocument()
+  })
 
-test('does not render htmlFor if not provided through LabelContext', () => {
-  renderLabelWithContextProvider({})
-  expect(getLabel()).not.toHaveAttribute('for')
-})
+  test('renders default slot content inside label element', () => {
+    renderTemplate(`
+      <LabelComponent>Username</LabelComponent>
+    `)
 
-test('should pass uncontrolled props to label element',
-  suppressUnperformedContractWarning(() => {
-    renderInlineComponent({
-      template: `
-        <LabelComponent dir="rtl" lang="en" data-test-id="test"/>
-      `,
-      components: { LabelComponent },
-    })
+    expect(getLabel()).toHaveTextContent('Username')
+  })
 
+  test('forwards attrs to the label element', () => {
+    renderTemplate(`
+      <LabelComponent dir="rtl" data-test-id="test-id" class="class-name">
+        Username
+      </LabelComponent>
+    `)
+
+    expect(getLabel()).toHaveClass('class-name')
     expect(getLabel()).toHaveAttribute('dir', 'rtl')
-    expect(getLabel()).toHaveAttribute('lang', 'en')
-    expect(getLabel()).toHaveAttribute('data-test-id', 'test')
-  }),
-)
+    expect(getLabel()).toHaveAttribute('data-test-id', 'test-id')
+  })
+})
 
-test('user must not be able to modify controlled props', () => {
-  renderInlineComponent({
-    template: '<LabelComponent id="user" for="user"/>',
-    components: { LabelComponent },
+test('consumes ref from LabelContext', () => {
+  const labelRef = ref<LabelContract['ref']['value']>(null)
 
-    setup () {
-      provideLabelContext({
-        id: 'context',
-        htmlFor: 'context',
-      })
-    },
+  renderTemplate(`
+    <LabelComponent>Username</LabelComponent>
+  `, {
+    ref: labelRef,
+    id: 'label-id',
   })
 
-  expect(getLabel()).toHaveAttribute('id', 'context')
-  expect(getLabel()).toHaveAttribute('for', 'context')
+  expect(labelRef.value).not.toBeNull()
+  expect(labelRef.value?.id).toEqual('label-id')
+})
+
+describe('id attribute', () => {
+  test('consumes the id provided by LabelContext', () => {
+    renderTemplate(`
+    <LabelComponent>Username</LabelComponent>
+  `, {
+      id: 'label-id',
+    })
+
+    expect(getLabel()).toHaveAttribute('id', 'label-id')
+  })
+
+  test('id should not be overridable by user', () => {
+    renderTemplate(`
+    <LabelComponent id="id-from-props">Username</LabelComponent>
+  `, {
+      id: 'id-from-context',
+    })
+
+    expect(getLabel()).toHaveAttribute('id', 'id-from-context')
+  })
+})
+
+describe('for attribute', () => {
+  test('consumes for property from LabelContext', () => {
+    renderTemplate(`
+      <LabelComponent>Username</LabelComponent>
+    `, {
+      for: computed(() => 'dummy-input-id'),
+    })
+
+    expect(getLabel()).toHaveAttribute('for', 'dummy-input-id')
+  })
+
+  test('for attribute should not be modifiable by user', () => {
+    renderTemplate(`
+      <LabelComponent id="id-from-props">Username</LabelComponent>
+    `, {
+      for: computed(() => 'id-from-context'),
+    })
+
+    expect(getLabel()).toHaveAttribute('for', 'id-from-context')
+  })
+})
+
+describe('data-is attribute', () => {
+  test('consumes data-is from LabelContext', () => {
+    renderTemplate(`
+      <LabelComponent>Username</LabelComponent>
+    `, {
+      'data-is': 'invalid disabled',
+    })
+
+    expect(getLabel()).toHaveAttribute('data-is', 'invalid disabled')
+  })
+
+  test('data-is attribute should not be modifiable by user', () => {
+    renderTemplate(`
+      <LabelComponent data-is="props">Username</LabelComponent>
+    `, {
+      'data-is': 'context',
+    })
+
+    expect(getLabel()).toHaveAttribute('data-is', 'context')
+  })
 })
