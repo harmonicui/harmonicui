@@ -10,5 +10,6 @@ module.exports = {
   ],
   rules: {
     'comma-dangle': ['error', 'always-multiline'],
+    '@typescript-eslint/no-namespace': 0,
   },
 }

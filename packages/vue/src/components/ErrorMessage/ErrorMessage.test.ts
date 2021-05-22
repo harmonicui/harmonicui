@@ -1,103 +1,125 @@
-import { ErrorMessageContract } from '@harmonicui/contracts'
-import { renderComponent, renderInlineComponent, suppressUnperformedContractWarning } from '../../test-utils'
-import { provideErrorMessageContext } from '../../contexts'
+import { ref } from 'vue'
+import { renderInlineComponent } from '../../test-utils'
+import { ErrorMessageContract, provideErrorMessageContext } from '../../contexts'
 import ErrorMessage from './ErrorMessage'
 
-function getErrorMessage () {
-  return document.querySelector('span')
+function getErrorMessage (element = 'div') {
+  return container.querySelector(element)
 }
 
-function renderErrorMessageWithProvider (context: Partial<ErrorMessageContract>, defaultSlot = '') {
-  renderInlineComponent({
-    template: `
-      <ErrorMessage>${defaultSlot}</ErrorMessage>`,
+function renderTemplate (template: string, contextValue: Partial<ErrorMessageContract> = {}) {
+  return renderInlineComponent({
+    template,
     components: { ErrorMessage },
     setup () {
-      provideErrorMessageContext(context)
+      provideErrorMessageContext(contextValue as ErrorMessageContract)
     },
   })
 }
 
-test('renders a span',
-  suppressUnperformedContractWarning(() => {
-    renderComponent(ErrorMessage)
-    expect(getErrorMessage()).not.toBeNull()
-  }),
-)
-
-test('renders children content',
-  suppressUnperformedContractWarning(() => {
-    renderInlineComponent({
-      template: `
-        <ErrorMessage>
-        hello <span>world!</span>
-        </ErrorMessage>
-      `,
-      components: { ErrorMessage },
-    })
-    expect(getErrorMessage()).toHaveTextContent('hello world!')
-  }),
-)
-
-test('consumes message from ErrorMessageContext', () => {
-  const message = 'Oops! something went wrong!'
-  renderErrorMessageWithProvider({ message })
-  expect(getErrorMessage()).toHaveTextContent(message)
+test('should have a proper name', () => {
+  expect(ErrorMessage).toHaveBeenNamed('ErrorMessage')
 })
 
-test('children contents overrides the ErrorMessageContext.message', () => {
-  const message = 'Oops! something went wrong!'
-  renderErrorMessageWithProvider({ message }, 'hello <span>world!</span>')
-  expect(getErrorMessage()).toHaveTextContent('hello world!')
-})
+describe('rendering', () => {
+  test('renders a div element by default', () => {
+    renderTemplate(`
+      <ErrorMessage>
+        Oops! Something went wrong.
+      </ErrorMessage>
+    `)
 
-test('consumes id from ErrorMessageContext', () => {
-  renderErrorMessageWithProvider({ id: 'error-id' })
-  expect(getErrorMessage()).toHaveAttribute('id', 'error-id')
-})
+    expect(getErrorMessage()).toBeInTheDocument()
+    expect(getErrorMessage()).toHaveTextContent('Oops! Something went wrong.')
+  })
 
-test('does not render id if not provided through ErrorMessageContext', () => {
-  renderErrorMessageWithProvider({})
-  expect(getErrorMessage()).not.toHaveAttribute('id')
-})
+  test('can be rendered as a span', () => {
+    renderTemplate(`
+      <ErrorMessage as="span">
+        Oops! Something went wrong.
+      </ErrorMessage>
+    `)
 
-test('should be visible if context provides hidden = false', () => {
-  renderErrorMessageWithProvider({ hidden: false })
-  expect(getErrorMessage()).toBeVisible()
-})
+    expect(getErrorMessage('span')).toBeInTheDocument()
+    expect(getErrorMessage('span')).toHaveTextContent('Oops! Something went wrong.')
+  })
 
-test('should not be visible if context provides hidden = true', () => {
-  renderErrorMessageWithProvider({ hidden: true })
-  expect(getErrorMessage()).not.toBeVisible()
-})
+  test('forwards uncontrolled props to the inner element', () => {
+    renderTemplate(`
+      <ErrorMessage dir="rtl" data-test-id="test-id" class="class-name">
+        Oops! Something went wrong.
+      </ErrorMessage>
+    `)
 
-test('forwards other props to span element',
-  suppressUnperformedContractWarning(() => {
-    renderComponent(ErrorMessage, {
-      dir: 'rtl',
-      lang: 'en',
-      class: 'test',
-    })
-
+    expect(getErrorMessage()).toHaveClass('class-name')
     expect(getErrorMessage()).toHaveAttribute('dir', 'rtl')
-    expect(getErrorMessage()).toHaveAttribute('lang', 'en')
-    expect(getErrorMessage()).toHaveClass('test')
-  }),
-)
+    expect(getErrorMessage()).toHaveAttribute('data-test-id', 'test-id')
+  })
+})
 
-test('user must not be able to modify controlled props', () => {
-  renderInlineComponent({
-    template: '<ErrorMessage id="user" hidden/>',
-    components: { ErrorMessage },
+test('consumes ref from ErrorMessageContext', () => {
+  const templateRef = ref<ErrorMessageContract['ref']['value']>(null)
 
-    setup () {
-      provideErrorMessageContext({
-        id: 'context',
-        hidden: false,
-      })
-    },
+  renderTemplate(`
+    <ErrorMessage id="error-message-id">
+      Oops! Something went wrong.
+    </ErrorMessage>
+  `, {
+    ref: templateRef,
   })
 
-  expect(getErrorMessage()).toHaveAttribute('id', 'context')
-  expect(getErrorMessage()).toBeVisible()
+  expect(templateRef.value).not.toBeNull()
+  expect(templateRef.value?.id).toEqual('error-message-id')
+})
+
+describe('id attribute', () => {
+  test('consumes id from ErrorMessageContext', () => {
+    renderTemplate(`
+    <ErrorMessage>
+      Oops! Something went wrong.
+    </ErrorMessage>
+  `, {
+      id: 'error-message-id',
+    })
+
+    expect(getErrorMessage()).toHaveAttribute('id', 'error-message-id')
+  })
+
+  test('id should not be overridable by user', () => {
+    renderTemplate(`
+      <ErrorMessage id="props">
+        Oops! Something went wrong.
+      </ErrorMessage>
+    `, {
+      id: 'context',
+    })
+
+    expect(getErrorMessage()).toHaveAttribute('id', 'context')
+  })
+})
+
+describe('visibility control', () => {
+  test('consumes hidden state from ErrorMessageContext', () => {
+    renderTemplate(`
+      <ErrorMessage>
+        Oops! Something went wrong.
+      </ErrorMessage>
+    `, {
+      hidden: true,
+    })
+
+    expect(getErrorMessage()).not.toBeVisible()
+  })
+
+  test('visibility should not be controllable by user', () => {
+    renderTemplate(`
+      <ErrorMessage hidden>
+        Oops! Something went wrong.
+      </ErrorMessage>
+    `, {
+      hidden: false,
+    })
+
+    expect(getErrorMessage()).toBeVisible()
+  })
 })

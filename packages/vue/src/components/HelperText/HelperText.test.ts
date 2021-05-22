@@ -1,77 +1,125 @@
-import { renderComponent, renderInlineComponent, suppressUnperformedContractWarning } from '../../test-utils'
+import { ref } from 'vue'
+import { renderInlineComponent } from '../../test-utils'
+import { HelperTextContract, provideHelperTextContext } from '../../contexts'
 import HelperText from './HelperText'
-import { HelperTextContract } from '@harmonicui/contracts'
-import { provideHelperTextContext } from '../../contexts'
 
-function getHelperText () {
-  return document.querySelector('span')
+function getHelperText (element = 'div') {
+  return container.querySelector(element)
 }
 
-test('renders a span element',
-  suppressUnperformedContractWarning(() => {
-    renderComponent(HelperText)
-    expect(getHelperText()).not.toBeNull()
-  }),
-)
+function renderTemplate (template: string, contextValue: Partial<HelperTextContract> = {}) {
+  return renderInlineComponent({
+    template,
+    components: { HelperText },
+    setup () {
+      provideHelperTextContext(contextValue as HelperTextContract)
+    },
+  })
+}
 
-test('renders children content',
-  suppressUnperformedContractWarning(() => {
-    renderInlineComponent({
-      template: `
-        <HelperText>
-        hello <span>world!</span>
-        </HelperText>
-      `,
-      components: { HelperText },
+test('should have a proper name', () => {
+  expect(HelperText).toHaveBeenNamed('HelperText')
+})
+
+describe('rendering', () => {
+  test('renders a div element by default', () => {
+    renderTemplate(`
+      <HelperText>
+        Something that might help!
+      </HelperText>
+    `)
+
+    expect(getHelperText()).toBeInTheDocument()
+    expect(getHelperText()).toHaveTextContent('Something that might help!')
+  })
+
+  test('can be rendered as a span', () => {
+    renderTemplate(`
+      <HelperText as="span">
+        Something that might help!
+      </HelperText>
+    `)
+
+    expect(getHelperText('span')).toBeInTheDocument()
+    expect(getHelperText('span')).toHaveTextContent('Something that might help!')
+  })
+
+  test('forwards uncontrolled props to the inner element', () => {
+    renderTemplate(`
+      <HelperText dir="rtl" data-test-id="test-id" class="class-name">
+        Something that might help!
+      </HelperText>
+    `)
+
+    expect(getHelperText()).toHaveClass('class-name')
+    expect(getHelperText()).toHaveAttribute('dir', 'rtl')
+    expect(getHelperText()).toHaveAttribute('data-test-id', 'test-id')
+  })
+})
+
+test('consumes ref from HelperTextContext', () => {
+  const templateRef = ref<HelperTextContract['ref']['value']>(null)
+
+  renderTemplate(`
+    <HelperText id="helper-id">
+      Something that might help!
+    </HelperText>
+  `, {
+    ref: templateRef,
+  })
+
+  expect(templateRef.value).not.toBeNull()
+  expect(templateRef.value?.id).toEqual('helper-id')
+})
+
+describe('id attribute', () => {
+  test('consumes id from HelperTextContext', () => {
+    renderTemplate(`
+    <HelperText>
+      Something that might help!
+    </HelperText>
+  `, {
+      id: 'helper-text-id',
     })
 
-    expect(getHelperText()).toHaveTextContent('hello world!')
-  }),
-)
-
-function renderHelperTextWithProvider (context: Partial<HelperTextContract>) {
-  renderInlineComponent({
-    template: '<HelperText />',
-    components: { HelperText },
-    setup () {
-      provideHelperTextContext(context)
-    },
-  })
-}
-
-test('consumes id from HelperTextContext', () => {
-  renderHelperTextWithProvider({ id: 'description-id' })
-  expect(getHelperText()).toHaveAttribute('id', 'description-id')
-})
-
-test('does not render id if not provided through HelperTextContext', () => {
-  renderHelperTextWithProvider({})
-  expect(getHelperText()).not.toHaveAttribute('id')
-})
-
-test('should be visible if HelperTextContext.hidden is false', () => {
-  renderHelperTextWithProvider({ hidden: false })
-  expect(getHelperText()).toBeVisible()
-})
-
-test('should not be visible if HelperTextContext.hidden is true', () => {
-  renderHelperTextWithProvider({ hidden: true })
-  expect(getHelperText()).not.toBeVisible()
-})
-
-test('user must not be able to modify controlled props', () => {
-  renderInlineComponent({
-    template: '<HelperText id="user" hidden/>',
-    components: { HelperText },
-
-    setup () {
-      provideHelperTextContext({
-        id: 'context',
-        hidden: false,
-      })
-    },
+    expect(getHelperText()).toHaveAttribute('id', 'helper-text-id')
   })
 
-  expect(getHelperText()).toHaveAttribute('id', 'context')
-  expect(getHelperText()).toBeVisible()
+  test('id should not be overridable by user', () => {
+    renderTemplate(`
+      <HelperText id="props">
+        Something that might help!
+      </HelperText>
+    `, {
+      id: 'context',
+    })
+
+    expect(getHelperText()).toHaveAttribute('id', 'context')
+  })
+})
+
+describe('visibility control', () => {
+  test('consumes hidden state from HelperTextContext', () => {
+    renderTemplate(`
+      <HelperText>
+        Something that might help!
+      </HelperText>
+    `, {
+      hidden: true,
+    })
+
+    expect(getHelperText()).not.toBeVisible()
+  })
+
+  test('visibility should not be controllable by user', () => {
+    renderTemplate(`
+      <HelperText hidden>
+        Something that might help!
+      </HelperText>
+    `, {
+      hidden: false,
+    })
+
+    expect(getHelperText()).toBeVisible()
+  })
 })

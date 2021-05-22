@@ -1,7 +1,10 @@
 import { defineComponent, h } from 'vue'
 import { useLabelContext } from '../../contexts'
+import { unrefAllRefs } from '../../utils'
 
 export default defineComponent({
+  name: 'Label',
+
   inheritAttrs: false,
 
   setup (props, {
@@ -9,14 +12,14 @@ export default defineComponent({
     attrs,
   }) {
     const {
-      id,
-      htmlFor,
+      ref,
+      ...context
     } = useLabelContext()
 
     return () => h('label', {
       ...attrs,
-      id,
-      for: htmlFor,
+      ref,
+      ...unrefAllRefs(context),
     }, slots.default?.())
   },
 })

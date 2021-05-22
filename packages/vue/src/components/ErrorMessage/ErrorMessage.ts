@@ -1,23 +1,32 @@
-import { defineComponent, h } from 'vue'
+import { defineComponent } from 'vue'
+import { render } from '../../utils'
 import { useErrorMessageContext } from '../../contexts'
 
 export default defineComponent({
+  name: 'ErrorMessage',
+
   inheritAttrs: false,
+
+  props: {
+    as: {
+      type: String,
+      default: 'div',
+      validator: (value: string) => {
+        return ['div', 'span'].indexOf(value) !== -1
+      },
+    },
+  },
 
   setup (props, {
     slots,
     attrs,
   }) {
-    const {
-      id,
-      hidden,
-      message,
-    } = useErrorMessageContext()
+    const context = useErrorMessageContext()
 
-    return () => h('span', {
-      ...attrs,
-      id,
-      hidden,
-    }, slots.default ? slots.default() : message)
+    return () => render({
+      as: props.as,
+      props: { ...attrs, ...context },
+      children: slots.default,
+    })
   },
 })
