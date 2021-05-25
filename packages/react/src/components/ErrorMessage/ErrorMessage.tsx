@@ -1,26 +1,23 @@
-import React, { createElement, ReactElement, ReactNode } from 'react'
-import { ErrorMessageContract } from '@harmonicui/contracts'
+import { createElement, ElementType, ReactElement } from 'react'
+import { PolymorphicPropsWithoutRef } from '../../types'
 import { useErrorMessageContext } from '../../contexts'
 
-interface Props extends Omit<React.ComponentPropsWithoutRef<'span'>, keyof ErrorMessageContract> {
-  children?: ReactNode
-}
+const DEFAULT_ELEMENT = 'div'
 
-function ErrorMessage ({
+export type ErrorMessageProps<T extends ElementType = typeof DEFAULT_ELEMENT> =
+  PolymorphicPropsWithoutRef<unknown, T>
+
+function ErrorMessage<T extends ElementType = typeof DEFAULT_ELEMENT> ({
+  as,
   children,
-  ...otherPros
-}: Props): ReactElement {
-  const {
-    id,
-    hidden,
-    message,
-  } = useErrorMessageContext()
+  ...attrs
+}: ErrorMessageProps<T>): ReactElement {
+  const context = useErrorMessageContext()
 
-  return createElement('span', {
-    id,
-    hidden,
-    ...otherPros,
-  }, children ?? message)
+  const Element: ElementType = as || DEFAULT_ELEMENT
+  return createElement(Element, { ...attrs, ...context }, children)
 }
 
-export default ErrorMessage
+ErrorMessage.displayName = 'ErrorMessage'
+
+export { ErrorMessage }

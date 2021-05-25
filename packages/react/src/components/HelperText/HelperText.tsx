@@ -1,22 +1,22 @@
-import React, { ReactElement, ReactNode } from 'react'
-import { HelperTextContract } from '@harmonicui/contracts'
+import { createElement, ElementType, ReactElement } from 'react'
 import { useHelperTextContext } from '../../contexts'
+import { PolymorphicPropsWithoutRef } from '../../types'
 
-interface Props extends Omit<React.ComponentPropsWithoutRef<'span'>, keyof HelperTextContract> {
-  children?: ReactNode
+const DEFAULT_ELEMENT = 'div'
+
+export type HelperTextProps<T extends ElementType = typeof DEFAULT_ELEMENT> =
+  PolymorphicPropsWithoutRef<unknown, T>
+
+function HelperText<T extends ElementType = typeof DEFAULT_ELEMENT> ({
+  as,
+  children,
+  ...attrs
+}: HelperTextProps<T>): ReactElement {
+  const context = useHelperTextContext()
+
+  const Element: ElementType = as || DEFAULT_ELEMENT
+  return createElement(Element, { ...attrs, ...context }, children)
 }
 
-function HelperText (props: Props): ReactElement {
-  const {
-    id,
-    hidden,
-  } = useHelperTextContext()
-
-  return (
-    <span id={id} hidden={hidden}>
-      {props.children}
-    </span>
-  )
-}
-
-export default HelperText
+HelperText.displayName = 'HelperText'
+export { HelperText }

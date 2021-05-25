@@ -1,105 +1,141 @@
-import React from 'react'
-import { useId } from '@reach/auto-id'
-import { RenderLessComponent } from '../../types'
+import { createElement, ElementType, Fragment, ReactElement, useEffect, useRef, useState } from 'react'
+import { ComponentWithHybridChildren, PolymorphicPropsWithoutRef } from '../../types'
+import { useGenerateId, useGenerateDataIsAttribute } from '../../hooks'
 import { renderChildren } from '../../utils'
-import { TextFieldProps, TextFieldSlotProps } from './types'
+import { TextFieldInput } from '../TextFieldInput/TextFieldInput'
+import { ErrorMessage } from '../ErrorMessage/ErrorMessage'
+import { HelperText } from '../HelperText/HelperText'
+import { Label } from '../Label/Label'
 import {
-  InputContextProvider,
+  ErrorMessageContextProvider, ErrorMessageContract,
+  HelperTextContextProvider, HelperTextContract,
   LabelContextProvider,
-  HelperTextContextProvider,
-  ErrorMessageContextProvider,
-} from '../../contexts'
-import {
-  ErrorMessageContract,
-  HelperTextContract,
-  InputContract,
   LabelContract,
-} from '@harmonicui/contracts'
+  TextFieldInputContextProvider,
+  TextFieldInputContract,
+} from '../../contexts'
 
-const TextField: RenderLessComponent<TextFieldProps, TextFieldSlotProps> = (props) => {
-  const ID_SEQUENCE = useId()
+export type TextFieldOwnProps = {
+  invalid?: boolean
+  optional?: boolean
+  disabled?: boolean
+  inputId?: string
+  labelId?: string
+  helperTextId?: string
+  errorMessageId?: string
+  value?: string | number
+  onChange?: (newValue: string | number) => void
+};
 
-  const IDs = {
-    input: props.id ?? `HarmonicUI-TextField-Input-${ID_SEQUENCE}`,
-    label: props.labelId ?? `HarmonicUI-TextField-Label-${ID_SEQUENCE}`,
-    errorMessage: props.errorMessageId ?? `HarmonicUI-TextField-ErrorMessage-${ID_SEQUENCE}`,
-    helperText: props.helperTextId ?? `HarmonicUI-TextField-HelperText-${ID_SEQUENCE}`,
-  }
+interface TextFieldChildrenProps {
+  disabled: boolean
+  invalid: boolean
+  required: boolean
+  optional: boolean
+  clear: () => void
+}
 
-  const optional = props.optional ?? false
-  const disabled = props.disabled ?? false
-  const invalid = props.error ?? false
+const DEFAULT_ELEMENT = Fragment
 
-  function updateValue (value: string): void {
-    props.onChange(value)
-  }
+export type TextFieldProps<T extends ElementType = typeof DEFAULT_ELEMENT> =
+  ComponentWithHybridChildren<PolymorphicPropsWithoutRef<TextFieldOwnProps, T>, TextFieldChildrenProps>;
 
-  function clear () {
-    updateValue('')
-  }
+function TextField<T extends ElementType = typeof DEFAULT_ELEMENT> ({
+  as,
+  children,
+  onChange,
+  value = '',
+  invalid = false,
+  optional = false,
+  disabled = false,
+  inputId = useGenerateId('TextFieldInput'),
+  labelId = useGenerateId('TextFieldLabel'),
+  helperTextId = useGenerateId('TextFieldHelperText'),
+  errorMessageId = useGenerateId('TextFieldErrorMessage'),
+  ...attrs
+}: TextFieldProps<T>): ReactElement {
+  const inputRef = useRef<TextFieldInputContract['ref']['current']>(null)
+  const labelRef = useRef<LabelContract['ref']['current']>(null)
+  const helperTextRef = useRef<HelperTextContract['ref']['current']>(null)
+  const errorMessageRef = useRef<ErrorMessageContract['ref']['current']>(null)
 
-  const slotProps: TextFieldSlotProps = {
-    clear,
-    invalid,
-    optional,
+  const [htmlFor, setHtmlFor] = useState<string | undefined>(undefined)
+  const [ariaDescribedBy, setAriaDescribedBy] = useState<string | undefined>(undefined)
+  const [ariaErrorMessage, setAriaErrorMessage] = useState<string | undefined>(undefined)
+
+  useEffect(() => {
+    setHtmlFor(inputRef.current ? inputId : undefined)
+  }, [inputRef])
+
+  useEffect(() => {
+    setAriaDescribedBy(helperTextRef.current && !invalid ? helperTextId : undefined)
+  }, [helperTextRef])
+
+  useEffect(() => {
+    setAriaErrorMessage(errorMessageRef.current && invalid ? errorMessageId : undefined)
+  }, [errorMessageRef])
+
+  const inputProps = {
+    setValue: (newValue: string | number) => onChange?.(newValue),
+    value,
+    ref: inputRef,
+    id: inputId,
     disabled,
-    updateValue,
-    id: IDs.input,
-    value: props.value,
-    labelId: IDs.label,
     required: !optional,
-    helperTextId: IDs.helperText,
-    errorMessageId: IDs.errorMessage,
-    errorMessage: props.errorMessage ?? '',
+    'aria-describedby': ariaDescribedBy,
+    'aria-errormessage': ariaErrorMessage,
+    'aria-invalid': invalid || undefined,
   }
 
-  const labelContext: Partial<LabelContract> = {
-    invalid,
-    disabled,
-    optional,
-    id: IDs.label,
-    htmlFor: IDs.input,
+  const labelProps = {
+    ref: labelRef,
+    id: labelId,
+    htmlFor: htmlFor,
+    ...useGenerateDataIsAttribute({
+      disabled,
+      invalid,
+      optional,
+    }),
   }
 
-  const inputContext: Partial<InputContract> = {
-    'aria-invalid': invalid,
-    disabled,
-    setValue: updateValue,
-    id: IDs.input,
-    value: props.value,
-    required: !optional,
-    'aria-errormessage': IDs.errorMessage,
-    'aria-describedby': IDs.helperText,
-  }
-
-  const errorMessageContext: Partial<ErrorMessageContract> = {
+  const errorMessageProps = {
+    ref: errorMessageRef,
+    id: errorMessageId,
     hidden: !invalid,
-    id: IDs.errorMessage,
-    message: props.errorMessage,
   }
 
-  const hintMessageContext: Partial<HelperTextContract> = {
+  const helperTextProps = {
+    ref: helperTextRef,
+    id: helperTextId,
     hidden: invalid,
-    id: IDs.helperText,
   }
 
-  return (
-    <LabelContextProvider value={labelContext}>
-      <InputContextProvider value={inputContext}>
-        <ErrorMessageContextProvider value={errorMessageContext}>
-          <HelperTextContextProvider value={hintMessageContext}>
-            {
-              renderChildren<TextFieldSlotProps>(props.children, slotProps)
-            }
-          </HelperTextContextProvider>
-        </ErrorMessageContextProvider>
-      </InputContextProvider>
-    </LabelContextProvider>
+  const Element: ElementType = as || DEFAULT_ELEMENT
+
+  const childrenProps: TextFieldChildrenProps = {
+    invalid,
+    disabled,
+    optional,
+    required: !optional,
+    clear: () => onChange?.(''),
+  }
+
+  return createElement(LabelContextProvider, { value: labelProps },
+    createElement(TextFieldInputContextProvider, { value: inputProps },
+      createElement(ErrorMessageContextProvider, { value: errorMessageProps },
+        createElement(HelperTextContextProvider, { value: helperTextProps },
+          createElement(Element, attrs, renderChildren(children, childrenProps)),
+        ),
+      ),
+    ),
   )
 }
 
 TextField.displayName = 'TextField'
 
-export {
-  TextField,
-}
+TextField.Label = Label
+TextField.Input = TextFieldInput
+TextField.HelperText = HelperText
+TextField.ErrorMessage = ErrorMessage
+
+export { TextField }

@@ -1,6 +1,6 @@
 import {
   HelperTextContext, HelperTextContextProvider, useHelperTextContext,
-} from '../HelperTextContext'
+} from './HelperTextContext'
 
 test('creates a context for HelperTextContract', () => {
   expect(HelperTextContext).toHaveProperty('Provider')

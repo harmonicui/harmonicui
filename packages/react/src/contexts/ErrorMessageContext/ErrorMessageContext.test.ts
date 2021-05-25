@@ -2,7 +2,7 @@ import {
   ErrorMessageContext,
   useErrorMessageContext,
   ErrorMessageContextProvider,
-} from '../ErrorMessageContext'
+} from './ErrorMessageContext'
 
 test('creates a context for ErrorMessageContract', () => {
   expect(ErrorMessageContext).toHaveProperty('Provider')

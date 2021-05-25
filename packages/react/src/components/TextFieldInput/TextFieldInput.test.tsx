@@ -1,142 +1,229 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { fireEvent, render } from '@testing-library/react'
-import { InputContract } from '@harmonicui/contracts'
-import { InputContextProvider } from '../../contexts'
-import { suppressUnperformedContractWarning } from '../../test-utils'
-import TextFieldInput from './TextFieldInput'
-
-function renderTextFieldInputWithContextProvider (context: Partial<InputContract>) {
-  function Provider () {
-    return (
-      <InputContextProvider value={context}>
-        <TextFieldInput />
-      </InputContextProvider>
-    )
-  }
-
-  return render(<Provider/>)
-}
+import { TextFieldInputContextProvider, TextFieldInputContract } from '../../contexts'
+import { TextFieldInput } from './TextFieldInput'
 
 function getInput () {
-  return document.querySelector('input')
+  return container.querySelector('input')
 }
 
-test('renders an input element',
-  suppressUnperformedContractWarning(() => {
-    render(<TextFieldInput/>)
-    expect(getInput()).not.toBeNull()
-  }),
-)
-
-test('consumes id from TextFieldInputContext', () => {
-  renderTextFieldInputWithContextProvider({ id: 'username' })
-  expect(getInput()).toHaveAttribute('id', 'username')
+test('should have a proper name', () => {
+  expect(TextFieldInput).toHaveBeenNamed('TextFieldInput')
 })
 
-test('does not render id attribute if not provided through context',
-  suppressUnperformedContractWarning(() => {
-    render(<TextFieldInput/>)
-    expect(getInput()).not.toHaveAttribute('id')
-  }),
-)
+describe('rendering', () => {
+  test('renders an input element by default', () => {
+    render(
+      <TextFieldInputContextProvider value={{} as TextFieldInputContract}>
+        <TextFieldInput/>,
+      </TextFieldInputContextProvider>,
+    )
 
-test('consumes disabled from TextFieldInputContext', () => {
-  renderTextFieldInputWithContextProvider({ disabled: true })
-  expect(getInput()).toBeDisabled()
+    expect(getInput()).toBeInTheDocument()
+  })
+
+  test('can be rendered as any element/component', () => {
+    function CustomInput () {
+      return <input name="custom-input"/>
+    }
+
+    render(
+      <TextFieldInputContextProvider value={{} as TextFieldInputContract}>
+        <TextFieldInput as={CustomInput}/>,
+      </TextFieldInputContextProvider>,
+    )
+
+    expect(getInput()).toBeInTheDocument()
+    expect(getInput()).toHaveAttribute('name', 'custom-input')
+  })
+
+  test('forwards attrs to the input element', () => {
+    render(
+      <TextFieldInputContextProvider value={{} as TextFieldInputContract}>
+        <TextFieldInput dir="rtl" name="username" data-test-id="test-id" className="class-name"/>,
+      </TextFieldInputContextProvider>,
+    )
+
+    expect(getInput()).toHaveClass('class-name')
+    expect(getInput()).toHaveAttribute('dir', 'rtl')
+    expect(getInput()).toHaveAttribute('name', 'username')
+    expect(getInput()).toHaveAttribute('data-test-id', 'test-id')
+  })
 })
 
-test('does not render disabled attribute if not provided through context',
-  suppressUnperformedContractWarning(() => {
-    render(<TextFieldInput/>)
-    expect(getInput()).not.toBeDisabled()
-  }),
-)
+test('consumes ref from TextFieldInputContext', () => {
+  let ref: TextFieldInputContract['ref'] = { current: null }
 
-test('consumes required attribute from TextFieldInputContext', () => {
-  renderTextFieldInputWithContextProvider({ required: true })
-  expect(getInput()).toBeRequired()
-})
-
-test('should not be required if not dictated by context', () => {
-  renderTextFieldInputWithContextProvider({ required: false })
-  expect(getInput()).not.toBeRequired()
-})
-
-test('is required by default',
-  suppressUnperformedContractWarning(() => {
-    render(<TextFieldInput/>)
-    expect(getInput()).toBeRequired()
-  }),
-)
-
-test('consumes aria-describedBy from TextFieldInputContext', () => {
-  renderTextFieldInputWithContextProvider({ 'aria-describedby': 'username-description' })
-  expect(getInput()).toHaveAttribute('aria-describedBy', 'username-description')
-})
-
-test('does not render aria-describedBy attribute if not provided through context',
-  suppressUnperformedContractWarning(() => {
-    render(<TextFieldInput/>)
-    expect(getInput()).not.toHaveAttribute('aria-describedBy')
-  }),
-)
-
-test('consumes aria-errormessage from TextFieldInputContext', () => {
-  renderTextFieldInputWithContextProvider({ 'aria-errormessage': 'username-error' })
-  expect(getInput()).toHaveAttribute('aria-errormessage', 'username-error')
-})
-
-test('does not render aria-errormessage attribute if not provided through context',
-  suppressUnperformedContractWarning(() => {
-    render(<TextFieldInput/>)
-    expect(getInput()).not.toHaveAttribute('aria-errormessage')
-  }),
-)
-
-test('consumes and updates the value provided through context', () => {
-  function Provider () {
-    const [value, setValue] = useState('hello world!')
+  function Wrapper () {
+    ref = useRef<TextFieldInputContract['ref']['current']>(null)
 
     return (
-      <InputContextProvider value={{
-        value,
-        setValue,
-      }}>
-        <TextFieldInput data-testid="input"/>
-        <span data-testid="logger">{value}</span>
-      </InputContextProvider>
+      <TextFieldInputContextProvider value={{
+        ref,
+        id: 'input-id',
+      } as TextFieldInputContract}>
+        <TextFieldInput/>,
+      </TextFieldInputContextProvider>
     )
   }
 
-  const { getByTestId } = render(<Provider/>)
+  render(<Wrapper/>)
 
-  expect(getByTestId('logger')).toHaveTextContent('hello world!')
-  expect(getInput()).toHaveValue('hello world!')
+  expect(ref.current).not.toBeNull()
+  expect(ref.current?.id).toEqual('input-id')
+})
 
-  fireEvent.change(getByTestId('input'), { target: { value: 'updated!' } })
+test('consumes and updates the value provided by the TextFieldInputContext', () => {
+  let value
+  let setValue: (newValue: string | number) => void
 
-  expect(getByTestId('logger')).toHaveTextContent('updated')
+  function Wrapper () {
+    [value, setValue] = useState<string | number>('Harmonic UI')
+
+    return (
+      <TextFieldInputContextProvider value={{
+        value,
+        setValue,
+      } as TextFieldInputContract}>
+        <TextFieldInput data-testid="input"/>
+      </TextFieldInputContextProvider>
+    )
+  }
+
+  const { getByTestId } = render(<Wrapper/>)
+
+  expect(getInput()).toHaveValue('Harmonic UI')
+
+  fireEvent.input(getByTestId('input'), { target: { value: 'updated!' } })
+
+  expect(value).toEqual('updated!')
   expect(getInput()).toHaveValue('updated!')
 })
 
-test('consumes invalid state from context', () => {
-  renderTextFieldInputWithContextProvider({
-    'aria-invalid': true,
-    value: 'hello',
+describe('id attribute', () => {
+  test('consumes the id provided from TextFieldInputContext', () => {
+    render(
+      <TextFieldInputContextProvider value={{ id: 'input-id' } as TextFieldInputContract}>
+        <TextFieldInput/>,
+      </TextFieldInputContextProvider>,
+    )
+
+    expect(getInput()).toHaveAttribute('id', 'input-id')
   })
-  expect(getInput()).toBeInvalid()
+
+  test('id should not be overridable by user', () => {
+    render(
+      <TextFieldInputContextProvider value={{ id: 'context' } as TextFieldInputContract}>
+        <TextFieldInput id="props"/>,
+      </TextFieldInputContextProvider>,
+    )
+
+    expect(getInput()).toHaveAttribute('id', 'context')
+  })
 })
 
-test('must be valid by default', () => {
-  renderTextFieldInputWithContextProvider({ value: 'hello world!' })
-  expect(getInput()).toBeValid()
+describe('disabled attribute', () => {
+  test('consumes disabled attribute from TextFieldInputContext', () => {
+    render(
+      <TextFieldInputContextProvider value={{ disabled: true } as TextFieldInputContract}>
+        <TextFieldInput/>,
+      </TextFieldInputContextProvider>,
+    )
+
+    expect(getInput()).toBeDisabled()
+  })
+
+  test('disabled attribute should not be overridable by user', () => {
+    render(
+      <TextFieldInputContextProvider value={{ disabled: false } as TextFieldInputContract}>
+        <TextFieldInput disabled/>,
+      </TextFieldInputContextProvider>,
+    )
+
+    expect(getInput()).not.toBeDisabled()
+  })
 })
 
-test('forwards uncontrolled props to input element',
-  suppressUnperformedContractWarning(() => {
-    render(<TextFieldInput dir="rtl" name="username" data-test-id="test"/>)
-    expect(getInput()).toHaveAttribute('dir', 'rtl')
-    expect(getInput()).toHaveAttribute('name', 'username')
-    expect(getInput()).toHaveAttribute('data-test-id', 'test')
-  }),
-)
+describe('required attribute', () => {
+  test('consumes required attribute from TextFieldInputContext', () => {
+    render(
+      <TextFieldInputContextProvider value={{ required: true } as TextFieldInputContract}>
+        <TextFieldInput/>,
+      </TextFieldInputContextProvider>,
+    )
+
+    expect(getInput()).toBeRequired()
+  })
+
+  test('required attribute should not be overridable by user', () => {
+    render(
+      <TextFieldInputContextProvider value={{ required: false } as TextFieldInputContract}>
+        <TextFieldInput required/>,
+      </TextFieldInputContextProvider>,
+    )
+
+    expect(getInput()).not.toBeRequired()
+  })
+})
+
+describe('aria-* attributes', () => {
+  test('consumes aria-invalid attribute from TextFieldInputContext', () => {
+    render(
+      <TextFieldInputContextProvider value={{ 'aria-invalid': true } as TextFieldInputContract}>
+        <TextFieldInput/>,
+      </TextFieldInputContextProvider>,
+    )
+
+    expect(getInput()).toHaveAttribute('aria-invalid')
+  })
+
+  test('aria-invalid attribute should not be overridable by user', () => {
+    render(
+      <TextFieldInputContextProvider value={{ 'aria-invalid': undefined } as TextFieldInputContract}>
+        <TextFieldInput aria-invalid={true}/>,
+      </TextFieldInputContextProvider>,
+    )
+
+    expect(getInput()).not.toHaveAttribute('aria-invalid')
+  })
+
+  test('consumes aria-errormessage attribute from TextFieldInputContext', () => {
+    render(
+      <TextFieldInputContextProvider value={{ 'aria-errormessage': 'errormessage-id' } as TextFieldInputContract}>
+        <TextFieldInput/>,
+      </TextFieldInputContextProvider>,
+    )
+
+    expect(getInput()).toHaveAttribute('aria-errormessage', 'errormessage-id')
+  })
+
+  test('aria-errormessage attribute should not be overridable by user', () => {
+    render(
+      <TextFieldInputContextProvider value={{ 'aria-errormessage': 'context' } as TextFieldInputContract}>
+        <TextFieldInput aria-errormessage="props"/>,
+      </TextFieldInputContextProvider>,
+    )
+
+    expect(getInput()).toHaveAttribute('aria-errormessage', 'context')
+  })
+
+  test('consumes aria-describedby attribute from TextFieldInputContext', () => {
+    render(
+      <TextFieldInputContextProvider value={{ 'aria-describedby': 'description-id' } as TextFieldInputContract}>
+        <TextFieldInput/>,
+      </TextFieldInputContextProvider>,
+    )
+
+    expect(getInput()).toHaveAttribute('aria-describedby', 'description-id')
+  })
+
+  test('aria-describedby attribute should not be overridable by user', () => {
+    render(
+      <TextFieldInputContextProvider value={{ 'aria-describedby': 'context' } as TextFieldInputContract}>
+        <TextFieldInput aria-describedby="props"/>,
+      </TextFieldInputContextProvider>,
+    )
+
+    expect(getInput()).toHaveAttribute('aria-describedby', 'context')
+  })
+})

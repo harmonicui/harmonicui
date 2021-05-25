@@ -1,62 +1,127 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { render } from '@testing-library/react'
-import { HelperTextContract } from '@harmonicui/contracts'
-import HelperText from './HelperText'
-import { HelperTextContextProvider } from '../../contexts'
-import { suppressUnperformedContractWarning } from '../../test-utils'
+import { HelperText } from './HelperText'
+import { HelperTextContextProvider, HelperTextContract } from '../../contexts'
 
-function renderHelperTextWithProvider (context: Partial<HelperTextContract>) {
-  function Provider () {
+function getHelperText (element = 'div') {
+  return container.querySelector(element)
+}
+
+test('should have a proper name', () => {
+  expect(HelperText).toHaveBeenNamed('HelperText')
+})
+
+describe('rendering', () => {
+  test('renders a div element by default', () => {
+    render(
+      <HelperTextContextProvider value={{} as HelperTextContract}>
+        <HelperText>
+          Something that might help!
+        </HelperText>,
+      </HelperTextContextProvider>,
+    )
+
+    expect(getHelperText()).toBeInTheDocument()
+    expect(getHelperText()).toHaveTextContent('Something that might help!')
+  })
+
+  test('can be rendered as an arbitrary element', () => {
+    render(
+      <HelperTextContextProvider value={{} as HelperTextContract}>
+        <HelperText as="span">
+          Something that might help!
+        </HelperText>,
+      </HelperTextContextProvider>,
+    )
+
+    expect(getHelperText('span')).toBeInTheDocument()
+    expect(getHelperText('span')).toHaveTextContent('Something that might help!')
+  })
+
+  test('forwards uncontrolled props to the inner element', () => {
+    render(
+      <HelperTextContextProvider value={{} as HelperTextContract}>
+        <HelperText dir="rtl" data-test-id="test-id" className="class-name">
+          Something that might help!
+        </HelperText>,
+      </HelperTextContextProvider>,
+    )
+
+    expect(getHelperText()).toHaveClass('class-name')
+    expect(getHelperText()).toHaveAttribute('dir', 'rtl')
+    expect(getHelperText()).toHaveAttribute('data-test-id', 'test-id')
+  })
+})
+
+test('consumes ref from HelperTextContext', () => {
+  let ref: HelperTextContract['ref'] = { current: null }
+
+  function Wrapper () {
+    ref = useRef<HelperTextContract['ref']['current']>(null)
+
     return (
-      <HelperTextContextProvider value={context}>
-        <HelperText/>
+      <HelperTextContextProvider value={{ ref, id: 'helper-id' } as HelperTextContract}>
+        <HelperText>
+          Something that might help!
+        </HelperText>,
       </HelperTextContextProvider>
     )
   }
 
-  return render(<Provider/>)
-}
+  render(<Wrapper/>)
 
-function getHelperText () {
-  return document.querySelector('span')
-}
+  expect(ref.current).not.toBeNull()
+  expect(ref.current?.id).toEqual('helper-id')
+})
 
-test('renders a span element',
-  suppressUnperformedContractWarning(() => {
-    render(<HelperText/>)
-    expect(getHelperText()).not.toBeNull()
-  }),
-)
-
-test('renders children content',
-  suppressUnperformedContractWarning(() => {
+describe('id attribute', () => {
+  test('consumes id from HelperTextContext', () => {
     render(
-      <HelperText>
-        hello <span>world!</span>
-      </HelperText>,
+      <HelperTextContextProvider value={{ id: 'helper-text-id' } as HelperTextContract}>
+        <HelperText>
+          Something that might help!
+        </HelperText>,
+      </HelperTextContextProvider>,
     )
-    expect(getHelperText()).toHaveTextContent('hello world!')
-  }),
-)
 
-test('consumes id from HelperTextContext', () => {
-  renderHelperTextWithProvider({ id: 'description-id' })
-  expect(getHelperText()).toHaveAttribute('id', 'description-id')
+    expect(getHelperText()).toHaveAttribute('id', 'helper-text-id')
+  })
+
+  test('id should not be overridable by user', () => {
+    render(
+      <HelperTextContextProvider value={{ id: 'context' } as HelperTextContract}>
+        <HelperText id="props">
+          Something that might help!
+        </HelperText>,
+      </HelperTextContextProvider>,
+    )
+
+    expect(getHelperText()).toHaveAttribute('id', 'context')
+  })
 })
 
-test('does not render id if not provided through HelperTextContext',
-  suppressUnperformedContractWarning(() => {
-    renderHelperTextWithProvider({})
-    expect(getHelperText()).not.toHaveAttribute('id')
-  }),
-)
+describe('visibility control', () => {
+  test('consumes hidden state from HelperTextContext', () => {
+    render(
+      <HelperTextContextProvider value={{ hidden: true } as HelperTextContract}>
+        <HelperText>
+          Something that might help!
+        </HelperText>,
+      </HelperTextContextProvider>,
+    )
 
-test('should be visible if HelperTextContext.hidden is false', () => {
-  renderHelperTextWithProvider({ hidden: false })
-  expect(getHelperText()).toBeVisible()
-})
+    expect(getHelperText()).not.toBeVisible()
+  })
 
-test('should not be visible if HelperTextContext.hidden is true', () => {
-  renderHelperTextWithProvider({ hidden: true })
-  expect(getHelperText()).not.toBeVisible()
+  test('visibility should not be controllable by user', () => {
+    render(
+      <HelperTextContextProvider value={{ hidden: false } as HelperTextContract}>
+        <HelperText hidden>
+          Something that might help!
+        </HelperText>,
+      </HelperTextContextProvider>,
+    )
+
+    expect(getHelperText()).toBeVisible()
+  })
 })

@@ -13,5 +13,6 @@ module.exports = {
     'comma-dangle': ['error', 'always-multiline'],
     'no-use-before-define': 'off',
     'react/prop-types': 'off',
+    '@typescript-eslint/no-namespace': 0,
   },
 }

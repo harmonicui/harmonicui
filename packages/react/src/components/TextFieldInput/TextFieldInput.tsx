@@ -1,28 +1,34 @@
-import { ChangeEvent, ComponentPropsWithoutRef, createElement, ReactElement, ReactNode } from 'react'
-import { InputContract } from '@harmonicui/contracts'
-import { useInputContext } from '../../contexts'
+import { ChangeEvent, createElement, ElementType, ReactElement } from 'react'
+import { useTextFieldInputContext } from '../../contexts'
+import { PolymorphicPropsWithoutRef } from '../../types'
 
-type PropsWeControl = keyof InputContract | 'onChange'
+const DEFAULT_ELEMENT = 'input'
 
-interface Props extends Omit<ComponentPropsWithoutRef<'input'>, PropsWeControl> {
-  children?: ReactNode
-}
+export type TextFieldInputProps<T extends ElementType = typeof DEFAULT_ELEMENT> =
+  PolymorphicPropsWithoutRef<unknown, T>
 
-function TextFieldInput ({ ...props }: Props): ReactElement {
+function TextFieldInput<T extends ElementType = typeof DEFAULT_ELEMENT> ({
+  as,
+  ...attrs
+}: TextFieldInputProps<T>): ReactElement {
   const {
     setValue,
-    ...restOfContextData
-  } = useInputContext()
+    ...context
+  } = useTextFieldInputContext()
 
   function onChange (event: ChangeEvent<HTMLInputElement>) {
     setValue?.(event.target.value)
   }
 
-  return createElement('input', {
-    ...props,
+  const Element: ElementType = as || DEFAULT_ELEMENT
+
+  return createElement(Element, {
+    ...attrs,
     onChange,
-    ...restOfContextData,
+    ...context,
   })
 }
 
-export default TextFieldInput
+TextFieldInput.displayName = 'TextFieldInput'
+
+export { TextFieldInput }

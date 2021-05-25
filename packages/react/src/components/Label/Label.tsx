@@ -1,20 +1,23 @@
-import React, { ReactElement, ReactNode } from 'react'
+import { createElement, ElementType, ReactElement } from 'react'
+import { PolymorphicPropsWithoutRef } from '../../types'
 import { useLabelContext } from '../../contexts'
-import { LabelContract } from '@harmonicui/contracts'
 
-interface Props extends Omit<React.ComponentPropsWithoutRef<'label'>, keyof LabelContract> {
-  children?: ReactNode
+const DEFAULT_ELEMENT = 'label'
+
+export type LabelProps<T extends ElementType = typeof DEFAULT_ELEMENT> =
+  PolymorphicPropsWithoutRef<unknown, T>
+
+function Label<T extends ElementType = typeof DEFAULT_ELEMENT> ({
+  as,
+  children,
+  ...attrs
+}: LabelProps<T>): ReactElement {
+  const context = useLabelContext()
+
+  const Element: ElementType = as || DEFAULT_ELEMENT
+  return createElement(Element, { ...attrs, ...context }, children)
 }
 
-export function Label (props: Props): ReactElement {
-  const {
-    htmlFor,
-    id,
-  } = useLabelContext()
+Label.displayName = 'Label'
 
-  return (
-    <label htmlFor={htmlFor} id={id} {...props}>
-      {props.children}
-    </label>
-  )
-}
+export { Label }

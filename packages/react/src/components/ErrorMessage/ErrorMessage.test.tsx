@@ -1,85 +1,127 @@
-import React, { ReactElement } from 'react'
+import React, { useRef } from 'react'
 import { render } from '@testing-library/react'
-import { ErrorMessageContract } from '@harmonicui/contracts'
-import { ErrorMessageContextProvider } from '../../contexts'
-import { suppressUnperformedContractWarning } from '../../test-utils'
-import ErrorMessage from './ErrorMessage'
+import { ErrorMessage } from './ErrorMessage'
+import { ErrorMessageContextProvider, ErrorMessageContract } from '../../contexts'
 
-function getErrorMessage () {
-  return document.querySelector('span')
+function getErrorMessage (element = 'div') {
+  return container.querySelector(element)
 }
 
-function renderErrorMessageWithProvider (context: Partial<ErrorMessageContract>, children?: ReactElement) {
-  function Provider () {
-    return (
-      <ErrorMessageContextProvider value={context}>
+test('should have a proper name', () => {
+  expect(ErrorMessage).toHaveBeenNamed('ErrorMessage')
+})
+
+describe('rendering', () => {
+  test('renders a div element by default', () => {
+    render(
+      <ErrorMessageContextProvider value={{} as ErrorMessageContract}>
         <ErrorMessage>
-          {children}
-        </ErrorMessage>
+          Something that might help!
+        </ErrorMessage>,
+      </ErrorMessageContextProvider>,
+    )
+
+    expect(getErrorMessage()).toBeInTheDocument()
+    expect(getErrorMessage()).toHaveTextContent('Something that might help!')
+  })
+
+  test('can be rendered as an arbitrary element', () => {
+    render(
+      <ErrorMessageContextProvider value={{} as ErrorMessageContract}>
+        <ErrorMessage as="span">
+          Something that might help!
+        </ErrorMessage>,
+      </ErrorMessageContextProvider>,
+    )
+
+    expect(getErrorMessage('span')).toBeInTheDocument()
+    expect(getErrorMessage('span')).toHaveTextContent('Something that might help!')
+  })
+
+  test('forwards uncontrolled props to the inner element', () => {
+    render(
+      <ErrorMessageContextProvider value={{} as ErrorMessageContract}>
+        <ErrorMessage dir="rtl" data-test-id="test-id" className="class-name">
+          Something that might help!
+        </ErrorMessage>,
+      </ErrorMessageContextProvider>,
+    )
+
+    expect(getErrorMessage()).toHaveClass('class-name')
+    expect(getErrorMessage()).toHaveAttribute('dir', 'rtl')
+    expect(getErrorMessage()).toHaveAttribute('data-test-id', 'test-id')
+  })
+})
+
+test('consumes ref from ErrorMessageContext', () => {
+  let ref: ErrorMessageContract['ref'] = { current: null }
+
+  function Wrapper () {
+    ref = useRef<ErrorMessageContract['ref']['current']>(null)
+
+    return (
+      <ErrorMessageContextProvider value={{ ref, id: 'error-id' } as ErrorMessageContract}>
+        <ErrorMessage>
+          Something that might help!
+        </ErrorMessage>,
       </ErrorMessageContextProvider>
     )
   }
 
-  return render(<Provider/>)
-}
+  render(<Wrapper/>)
 
-test('renders a span',
-  suppressUnperformedContractWarning(() => {
-    render(<ErrorMessage/>)
-    expect(getErrorMessage()).not.toBeNull()
-  }),
-)
+  expect(ref.current).not.toBeNull()
+  expect(ref.current?.id).toEqual('error-id')
+})
 
-test('renders children content',
-  suppressUnperformedContractWarning(() => {
+describe('id attribute', () => {
+  test('consumes id from ErrorMessageContext', () => {
     render(
-      <ErrorMessage>
-        hello <span>world!</span>
-      </ErrorMessage>,
+      <ErrorMessageContextProvider value={{ id: 'error-message-id' } as ErrorMessageContract}>
+        <ErrorMessage>
+          Something that might help!
+        </ErrorMessage>,
+      </ErrorMessageContextProvider>,
     )
-    expect(getErrorMessage()).toHaveTextContent('hello world!')
-  }),
-)
 
-test('consumes message from ErrorMessageContext', () => {
-  const message = 'Oops! something went wrong!'
-  renderErrorMessageWithProvider({ message })
-  expect(getErrorMessage()).toHaveTextContent(message)
+    expect(getErrorMessage()).toHaveAttribute('id', 'error-message-id')
+  })
+
+  test('id should not be overridable by user', () => {
+    render(
+      <ErrorMessageContextProvider value={{ id: 'context' } as ErrorMessageContract}>
+        <ErrorMessage id="props">
+          Something that might help!
+        </ErrorMessage>,
+      </ErrorMessageContextProvider>,
+    )
+
+    expect(getErrorMessage()).toHaveAttribute('id', 'context')
+  })
 })
 
-test('children contents overrides the ErrorMessageContext.message', () => {
-  const message = 'Oops! something went wrong!'
-  renderErrorMessageWithProvider({ message }, <>hello <span>world!</span></>)
-  expect(getErrorMessage()).toHaveTextContent('hello world!')
+describe('visibility control', () => {
+  test('consumes hidden state from ErrorMessageContext', () => {
+    render(
+      <ErrorMessageContextProvider value={{ hidden: true } as ErrorMessageContract}>
+        <ErrorMessage>
+          Something that might help!
+        </ErrorMessage>,
+      </ErrorMessageContextProvider>,
+    )
+
+    expect(getErrorMessage()).not.toBeVisible()
+  })
+
+  test('visibility should not be controllable by user', () => {
+    render(
+      <ErrorMessageContextProvider value={{ hidden: false } as ErrorMessageContract}>
+        <ErrorMessage hidden>
+          Something that might help!
+        </ErrorMessage>,
+      </ErrorMessageContextProvider>,
+    )
+
+    expect(getErrorMessage()).toBeVisible()
+  })
 })
-
-test('consumes id from ErrorMessageContext', () => {
-  renderErrorMessageWithProvider({ id: 'error-id' })
-  expect(getErrorMessage()).toHaveAttribute('id', 'error-id')
-})
-
-test('does not render id if not provided through ErrorMessageContext',
-  suppressUnperformedContractWarning(() => {
-    renderErrorMessageWithProvider({})
-    expect(getErrorMessage()).not.toHaveAttribute('id')
-  }),
-)
-
-test('should be visible if context provides hidden = false', () => {
-  renderErrorMessageWithProvider({ hidden: false })
-  expect(getErrorMessage()).toBeVisible()
-})
-
-test('should not be visible if context provides hidden = true', () => {
-  renderErrorMessageWithProvider({ hidden: true })
-  expect(getErrorMessage()).not.toBeVisible()
-})
-
-test('forwards other props to span element',
-  suppressUnperformedContractWarning(() => {
-    render(<ErrorMessage dir="rtl" lang="en" className="test"/>)
-    expect(getErrorMessage()).toHaveAttribute('dir', 'rtl')
-    expect(getErrorMessage()).toHaveAttribute('lang', 'en')
-    expect(getErrorMessage()).toHaveClass('test')
-  }),
-)

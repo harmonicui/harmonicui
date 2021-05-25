@@ -1,429 +1,322 @@
 import React, { useState } from 'react'
-import { TextField } from './TextField'
 import { fireEvent, render } from '@testing-library/react'
-import { createContextTestingUtils } from '../../test-utils'
-import { useInputContext } from '../../contexts'
-import { TextFieldProps } from './types'
+import { AssertionsConfigurationOptions, TextFieldAssertions } from './Assertions'
+import { TextField } from './TextField'
 
-beforeEach(() => {
-  jest.isolateModules(() => { require('@reach/auto-id') })
-})
+function getTextField () {
+  return container.querySelector('div')
+}
 
-const {
-  DefaultSlot,
-  LabelContext,
-  InputContext,
-  ContextConsumer,
-  ErrorMessageContext,
-  HelperTextContext,
-} = createContextTestingUtils([
-  'LabelContext',
-  'InputContext',
-  'ErrorMessageContext',
-  'HelperTextContext',
-])
+function renderAndRunAssertions (template: JSX.Element, assertionOptions: AssertionsConfigurationOptions = {}) {
+  render(template)
 
-function renderTextField (props?: Partial<TextFieldProps>) {
-  const requiredProps = {
-    value: '',
-    onChange: (): void => {
-      //
-    },
-  }
-  return render(
-    <TextField {...{ ...requiredProps, ...props }}>
-      {props => <ContextConsumer slotProps={{ ...props }}/>}
-    </TextField>,
-  )
+  const assertions = new TextFieldAssertions(assertionOptions)
+  assertions.runAllAssertions()
 }
 
 test('should have a proper name', () => {
   expect(TextField).toHaveBeenNamed('TextField')
 })
 
-test('should be a render-less component', () => {
-  expect(TextField).toBeRenderLessComponent()
-  expect(TextField).toRendersDefaultSlotContent()
-})
-
-test('generates an id for input', () => {
-  renderTextField()
-
-  const id = 'HarmonicUI-TextField-Input-4'
-
-  expect({ id })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ htmlFor: id })
-    .toHaveBeenProvidedThrough(LabelContext)
-  expect({ id })
-    .toHaveBeenProvidedThrough(InputContext)
-})
-
-test('generates unique input-id for each instance', () => {
-  renderTextField()
-
-  let id = 'HarmonicUI-TextField-Input-5'
-
-  expect({ id })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ htmlFor: id })
-    .toHaveBeenProvidedThrough(LabelContext)
-  expect({ id })
-    .toHaveBeenProvidedThrough(InputContext)
-
-  renderTextField()
-
-  id = 'HarmonicUI-TextField-Input-6'
-
-  expect({ id })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ htmlFor: id })
-    .toHaveBeenProvidedThrough(LabelContext)
-  expect({ id })
-    .toHaveBeenProvidedThrough(InputContext)
-})
-
-test('input id can be overridden via props', () => {
-  const id = 'username'
-
-  renderTextField({ id })
-
-  expect({ id })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ htmlFor: id })
-    .toHaveBeenProvidedThrough(LabelContext)
-  expect({ id })
-    .toHaveBeenProvidedThrough(InputContext)
-})
-
-test('generates an id for label', () => {
-  renderTextField()
-
-  const id = 'HarmonicUI-TextField-Label-8'
-
-  expect({ labelId: id })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ id })
-    .toHaveBeenProvidedThrough(LabelContext)
-})
-
-test('generates a unique label id for each instance', () => {
-  renderTextField()
-
-  let id = 'HarmonicUI-TextField-Label-9'
-
-  expect({ labelId: id })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ id })
-    .toHaveBeenProvidedThrough(LabelContext)
-
-  renderTextField()
-
-  id = 'HarmonicUI-TextField-Label-10'
-
-  expect({ labelId: id })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ id })
-    .toHaveBeenProvidedThrough(LabelContext)
-})
-
-test('input id can be overridden via props', () => {
-  const id = 'username'
-
-  renderTextField({ labelId: id })
-
-  expect({ labelId: id })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ id })
-    .toHaveBeenProvidedThrough(LabelContext)
-})
-
-test('generates an id for error message', () => {
-  renderTextField()
-
-  const id = 'HarmonicUI-TextField-ErrorMessage-12'
-
-  expect({ errorMessageId: id })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ id })
-    .toHaveBeenProvidedThrough(ErrorMessageContext)
-  expect({ 'aria-errormessage': id })
-    .toHaveBeenProvidedThrough(InputContext)
-})
-
-test('generates unique error-message-id for each instance', () => {
-  renderTextField()
-
-  let id = 'HarmonicUI-TextField-ErrorMessage-13'
-
-  expect({ errorMessageId: id })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ id })
-    .toHaveBeenProvidedThrough(ErrorMessageContext)
-  expect({ 'aria-errormessage': id })
-    .toHaveBeenProvidedThrough(InputContext)
-
-  renderTextField()
-
-  id = 'HarmonicUI-TextField-ErrorMessage-14'
-
-  expect({ errorMessageId: id })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ id })
-    .toHaveBeenProvidedThrough(ErrorMessageContext)
-  expect({ 'aria-errormessage': id })
-    .toHaveBeenProvidedThrough(InputContext)
-})
-
-test('error-message-id can be overridden via props', () => {
-  const id = 'username-error'
-
-  renderTextField({ errorMessageId: id })
-
-  expect({ errorMessageId: id })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ id })
-    .toHaveBeenProvidedThrough(ErrorMessageContext)
-  expect({ 'aria-errormessage': id })
-    .toHaveBeenProvidedThrough(InputContext)
-})
-
-test('generates an id for hint message', () => {
-  renderTextField()
-
-  const id = 'HarmonicUI-TextField-HelperText-16'
-
-  expect({ helperTextId: id })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ id })
-    .toHaveBeenProvidedThrough(HelperTextContext)
-  expect({ 'aria-describedby': id })
-    .toHaveBeenProvidedThrough(InputContext)
-})
-
-test('generates unique hint message id for each instance', () => {
-  renderTextField()
-
-  let id = 'HarmonicUI-TextField-HelperText-17'
-
-  expect({ helperTextId: id })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ id })
-    .toHaveBeenProvidedThrough(HelperTextContext)
-  expect({ 'aria-describedby': id })
-    .toHaveBeenProvidedThrough(InputContext)
-
-  renderTextField()
-
-  id = 'HarmonicUI-TextField-HelperText-18'
-
-  expect({ helperTextId: id })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ id })
-    .toHaveBeenProvidedThrough(HelperTextContext)
-  expect({ 'aria-describedby': id })
-    .toHaveBeenProvidedThrough(InputContext)
-})
-
-test('error message id can be overridden via props', () => {
-  const id = 'username-hint-message'
-
-  renderTextField({ helperTextId: id })
-
-  expect({ helperTextId: id })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ id })
-    .toHaveBeenProvidedThrough(HelperTextContext)
-  expect({ 'aria-describedby': id })
-    .toHaveBeenProvidedThrough(InputContext)
-})
-
-test('handles value and onChange passing through default slot', async () => {
-  const Wrapper = (): React.ReactElement => {
-    const [value, setValue] = useState('hello!')
-    return (
-      <>
-        <TextField value={value} onChange={setValue}>
-          {({
-            updateValue,
-            value,
-          }) =>
-            <input data-testid="input"
-                   value={value}
-                   onChange={event => updateValue(event.target.value)}/>
-          }
-        </TextField>
-        <span data-testid="logger">{value}</span>
-      </>
-    )
-  }
-
-  const { getByTestId } = render(<Wrapper/>)
-
-  const input = getByTestId('input')
-  const logger = getByTestId('logger')
-
-  expect(input).toHaveValue('hello!')
-  expect(logger).toHaveTextContent('hello!')
-
-  await fireEvent.change(input, {
-    target: { value: 'hello world!' },
+describe('rendering', () => {
+  test('should be a render-less component by default', () => {
+    expect(TextField).toBeRenderLessComponent()
+    expect(TextField).toRendersChildrenContent()
   })
 
-  expect(input).toHaveValue('hello world!')
-  expect(logger).toHaveTextContent('hello world!')
+  test('can be render as a div', () => {
+    render(<TextField as="div">...</TextField>)
+
+    expect(getTextField()).toBeInTheDocument()
+    expect(getTextField()).toHaveTextContent('...')
+  })
+
+  test('forwards additional props to inner element if not rendered as fragment', () => {
+    render(<TextField as="div" id="TextField" className="awesome"/>)
+
+    expect(getTextField()).toHaveClass('awesome')
+    expect(getTextField()).toHaveAttribute('id', 'TextField')
+  })
+
+  test('rendering with TextFieldInput, TextFieldLabel, TextFieldHelperText and TextFieldErrorMessage components', () => {
+    renderAndRunAssertions(
+      <TextField>
+        <TextField.Label>Username</TextField.Label>
+        <TextField.Input/>
+        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.HelperText>Something that might help!</TextField.HelperText>
+      </TextField>)
+  })
 })
 
-test('handles value and onChange passing through InputContext', async () => {
-  function InputContextConsumer () {
+describe('states', () => {
+  test('TextFieldInput can be optional', () => {
+    renderAndRunAssertions(
+      <TextField optional>
+        <TextField.Label>Username</TextField.Label>
+        <TextField.Input/>
+        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.HelperText>Something that might help!</TextField.HelperText>
+      </TextField>
+      , {
+        states: ['optional'],
+      })
+  })
+
+  test('TextFieldInput can be disabled', () => {
+    renderAndRunAssertions(
+      <TextField disabled>
+        <TextField.Label>Username</TextField.Label>
+        <TextField.Input/>
+        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.HelperText>Something that might help!</TextField.HelperText>
+      </TextField>
+      , {
+        states: ['disabled'],
+      })
+  })
+
+  test('TextFieldInput\'s value may invalid', () => {
+    renderAndRunAssertions(
+      <TextField invalid>
+        <TextField.Label>Username</TextField.Label>
+        <TextField.Input/>
+        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.HelperText>Something that might help!</TextField.HelperText>
+      </TextField>
+      , {
+        states: ['invalid'],
+      })
+  })
+
+  test('multiple states can be applied to TextFieldInput at the same time', () => {
+    renderAndRunAssertions(
+      <TextField invalid disabled optional>
+        <TextField.Label>Username</TextField.Label>
+        <TextField.Input/>
+        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.HelperText>Something that might help!</TextField.HelperText>
+      </TextField>
+      , {
+        states: ['invalid', 'optional', 'disabled'],
+      })
+  })
+
+  test('should expose state props through children render props', () => {
+    const { getByTestId } = render(
+      <TextField invalid disabled>
+        {({
+          disabled,
+          optional,
+          required,
+          invalid,
+        }) => (
+          <>
+            <span data-testid="disabled">{disabled.toString()}</span>
+            <span data-testid="invalid">{invalid.toString()}</span>
+            <span data-testid="required">{required.toString()}</span>
+            <span data-testid="optional">{optional.toString()}</span>
+          </>
+        )}
+      </TextField>,
+    )
+
+    expect(getByTestId('disabled')).toHaveTextContent('true')
+    expect(getByTestId('invalid')).toHaveTextContent('true')
+    expect(getByTestId('required')).toHaveTextContent('true')
+    expect(getByTestId('optional')).toHaveTextContent('false')
+  })
+})
+
+describe('controlling value', () => {
+  test('shares and controls the value through TextFieldInput context', () => {
+    let value
+    let setValue: (newValue: string | number) => void
+
+    function Wrapper () {
+      [value, setValue] = useState<string | number>('Harmonic UI')
+
+      return (
+        <TextField value={value} onChange={(newValue: string | number) => setValue(newValue)}>
+          <TextField.Label>Username</TextField.Label>
+          <TextField.Input/>
+        </TextField>
+      )
+    }
+
+    const { getByLabelText } = render(<Wrapper/>)
+
+    const input = getByLabelText('Username')
+    expect(input).toHaveValue('Harmonic UI')
+
+    fireEvent.input(input, { target: { value: 'updated!' } })
+
+    expect(input).toHaveValue('updated!')
+    expect(value).toEqual('updated!')
+  })
+
+  test('exposes a clear function through children props', () => {
+    let value
+    let setValue: (newValue: string | number) => void
+
+    function Wrapper () {
+      [value, setValue] = useState<string | number>('Harmonic UI')
+
+      return (
+        <TextField value={value} onChange={(newValue: string | number) => setValue(newValue)}>
+          {({ clear }) => (
+            <>
+              <TextField.Label>Username</TextField.Label>
+              <TextField.Input/>
+              <button onClick={clear}>clear</button>
+            </>
+          )}
+        </TextField>
+      )
+    }
+
     const {
-      value,
-      setValue,
-    } = useInputContext()
-    return <input data-testid="input" value={value} onChange={event => setValue?.(event.target.value)}/>
-  }
+      getByLabelText,
+      getByText,
+    } = render(<Wrapper/>)
 
-  function Wrapper () {
-    const [value, setValue] = useState('hello!')
-    return (
-      <>
-        <TextField value={value} onChange={setValue}>
-          <InputContextConsumer/>
-        </TextField>
-        <span data-testid="logger">{value}</span>
-      </>
+    const input = getByLabelText('Username')
+    const clearBtn = getByText('clear')
+    expect(input).toHaveValue('Harmonic UI')
+
+    fireEvent.click(clearBtn)
+
+    expect(input).toHaveValue('')
+    expect(value).toEqual('')
+  })
+})
+
+describe('aria-* attributes', () => {
+  test('TextFieldLabel loses for attribute if Input does not exists', () => {
+    renderAndRunAssertions(
+      <TextField>
+        <TextField.Label>Username</TextField.Label>
+        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.HelperText>Something that might help!</TextField.HelperText>
+      </TextField>
+      , {
+        ignoreAssertions: ['Input'],
+      })
+  })
+
+  test('TextFieldInput loses the aria-describedby attribute if HelperText does not exists', () => {
+    renderAndRunAssertions(
+      <TextField>
+        <TextField.Label>Username</TextField.Label>
+        <TextField.Input/>
+        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+      </TextField>
+      , {
+        ignoreAssertions: ['HelperText'],
+      })
+  })
+
+  test('TextFieldInput loses the aria-errormessage attribute if ErrorMessage does not exists', () => {
+    renderAndRunAssertions(
+      <TextField invalid>
+        <TextField.Label>Username</TextField.Label>
+        <TextField.Input/>
+        <TextField.HelperText>Something that might help!</TextField.HelperText>
+      </TextField>
+      , {
+        states: ['invalid'],
+        ignoreAssertions: ['ErrorMessage'],
+      })
+  })
+})
+
+describe('IDs', () => {
+  test('generates a set of unique Ids for each instance', () => {
+    render(
+      <TextField>
+        <TextField.Label>Username</TextField.Label>
+        <TextField.Input/>
+        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.HelperText>Something that might help!</TextField.HelperText>
+      </TextField>,
     )
-  }
 
-  const { getByTestId } = render(<Wrapper/>)
-
-  const input = getByTestId('input')
-  const logger = getByTestId('logger')
-
-  expect(input).toHaveValue('hello!')
-  expect(logger).toHaveTextContent('hello!')
-
-  await fireEvent.change(input, {
-    target: { value: 'hello world!' },
-  })
-
-  expect(input).toHaveValue('hello world!')
-  expect(logger).toHaveTextContent('hello world!')
-})
-
-test('the input is required by default', () => {
-  renderTextField()
-
-  expect({
-    optional: false,
-    required: true,
-  })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-
-  expect({ optional: false })
-    .toHaveBeenProvidedThrough(LabelContext)
-
-  expect({ required: true })
-    .toHaveBeenProvidedThrough(InputContext)
-})
-
-test('user can make input optional via prop', () => {
-  renderTextField({ optional: true })
-
-  expect({
-    optional: true,
-    required: false,
-  })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ optional: true })
-    .toHaveBeenProvidedThrough(LabelContext)
-  expect({ required: false })
-    .toHaveBeenProvidedThrough(InputContext)
-})
-
-test('should enabled by default', () => {
-  renderTextField()
-
-  expect({ disabled: false })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ disabled: false })
-    .toHaveBeenProvidedThrough(LabelContext)
-  expect({ disabled: false })
-    .toHaveBeenProvidedThrough(InputContext)
-})
-
-test('the input can be disabled via prop', () => {
-  renderTextField({ disabled: true })
-
-  expect({ disabled: true })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ disabled: true })
-    .toHaveBeenProvidedThrough(LabelContext)
-  expect({ disabled: true })
-    .toHaveBeenProvidedThrough(InputContext)
-})
-
-test('is valid by default', () => {
-  renderTextField()
-
-  expect({ invalid: false })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ invalid: false })
-    .toHaveBeenProvidedThrough(LabelContext)
-  expect({ 'aria-invalid': false })
-    .toHaveBeenProvidedThrough(InputContext)
-  expect({ hidden: true })
-    .toHaveBeenProvidedThrough(ErrorMessageContext)
-  expect({ hidden: false })
-    .toHaveBeenProvidedThrough(HelperTextContext)
-})
-
-test('user can control validation state via error prop', () => {
-  renderTextField({ error: true })
-
-  expect({ invalid: true })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ invalid: true })
-    .toHaveBeenProvidedThrough(LabelContext)
-  expect({ 'aria-invalid': true })
-    .toHaveBeenProvidedThrough(InputContext)
-  expect({ hidden: false })
-    .toHaveBeenProvidedThrough(ErrorMessageContext)
-  expect({ hidden: true })
-    .toHaveBeenProvidedThrough(HelperTextContext)
-})
-
-test('exposes the given error message', () => {
-  const errorMessage = 'Whoops! something went wrong.'
-  renderTextField({ errorMessage })
-
-  expect({ errorMessage })
-    .toHaveBeenProvidedThrough(DefaultSlot)
-  expect({ message: errorMessage })
-    .toHaveBeenProvidedThrough(ErrorMessageContext)
-})
-
-test('exposes a clear method through default slot', () => {
-  function Wrapper () {
-    const [value, setValue] = useState('hello!')
-    return (
-      <>
-        <TextField value={value} onChange={setValue}>
-          {({ clear }) => <button data-testid="clear" onClick={clear}>clear</button>}
-        </TextField>
-        <span data-testid="logger">{value}</span>
-      </>
+    render(
+      <TextField>
+        <TextField.Label>Username</TextField.Label>
+        <TextField.Input/>
+        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.HelperText>Something that might help!</TextField.HelperText>
+      </TextField>,
     )
-  }
 
-  const { getByTestId } = render(<Wrapper/>)
+    const inputs = document.body.querySelectorAll('[id^="HUI-TextFieldInput-"]')
+    const labels = document.body.querySelectorAll('[id^="HUI-TextFieldLabel-"]')
+    const helperTexts = document.body.querySelectorAll('[id^="HUI-TextFieldHelperText-"]')
+    const errorMessages = document.body.querySelectorAll('[id^="HUI-TextFieldErrorMessage-"]')
 
-  const clear = getByTestId('clear')
-  const logger = getByTestId('logger')
+    expect(inputs.length).toEqual(2)
+    expect(inputs[0].id).not.toEqual(inputs[1].id)
 
-  expect(logger).toHaveTextContent('hello!')
+    expect(labels.length).toEqual(2)
+    expect(labels[0].id).not.toEqual(labels[1].id)
 
-  fireEvent.click(clear)
+    expect(helperTexts.length).toEqual(2)
+    expect(helperTexts[0].id).not.toEqual(helperTexts[1].id)
 
-  expect(logger).toHaveTextContent('')
+    expect(errorMessages.length).toEqual(2)
+    expect(errorMessages[0].id).not.toEqual(errorMessages[1].id)
+  })
+
+  test('TextFieldInput id should be overridable', () => {
+    renderAndRunAssertions(
+      <TextField inputId="input-id">
+        <TextField.Label>Username</TextField.Label>
+        <TextField.Input/>
+        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.HelperText>Something that might help!</TextField.HelperText>
+      </TextField>
+      , {
+        id: { input: 'input-id' },
+      })
+  })
+
+  test('TextFieldLabel id should be overridable', () => {
+    renderAndRunAssertions(
+      <TextField labelId="label-id">
+        <TextField.Label>Username</TextField.Label>
+        <TextField.Input/>
+        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.HelperText>Something that might help!</TextField.HelperText>
+      </TextField>
+      , {
+        id: { label: 'label-id' },
+      })
+  })
+
+  test('TextFieldHelperText id should be overridable', () => {
+    renderAndRunAssertions(
+      <TextField helperTextId="helper-text-id">
+        <TextField.Label>Username</TextField.Label>
+        <TextField.Input/>
+        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.HelperText>Something that might help!</TextField.HelperText>
+      </TextField>
+      , {
+        id: { helperText: 'helper-text-id' },
+      })
+  })
+
+  test('TextFieldErrorMessage id should be overridable', () => {
+    renderAndRunAssertions(
+      <TextField errorMessageId="error-message-id">
+        <TextField.Label>Username</TextField.Label>
+        <TextField.Input/>
+        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.HelperText>Something that might help!</TextField.HelperText>
+      </TextField>
+      , {
+        id: { errorMessage: 'error-message-id' },
+      })
+  })
 })
