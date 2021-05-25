@@ -1,9 +1,12 @@
 import React, { useRef, useState } from 'react'
 import { fireEvent, render } from '@testing-library/react'
-import { TextFieldInputContextProvider, TextFieldInputContract } from '../../contexts'
+import {
+  TextFieldInputContextProvider,
+  TextFieldInputContract,
+} from '../../contexts'
 import { TextFieldInput } from './TextFieldInput'
 
-function getInput () {
+function getInput() {
   return container.querySelector('input')
 }
 
@@ -15,7 +18,7 @@ describe('rendering', () => {
   test('renders an input element by default', () => {
     render(
       <TextFieldInputContextProvider value={{} as TextFieldInputContract}>
-        <TextFieldInput/>,
+        <TextFieldInput />,
       </TextFieldInputContextProvider>,
     )
 
@@ -23,13 +26,13 @@ describe('rendering', () => {
   })
 
   test('can be rendered as any element/component', () => {
-    function CustomInput () {
-      return <input name="custom-input"/>
+    function CustomInput() {
+      return <input name="custom-input" />
     }
 
     render(
       <TextFieldInputContextProvider value={{} as TextFieldInputContract}>
-        <TextFieldInput as={CustomInput}/>,
+        <TextFieldInput as={CustomInput} />,
       </TextFieldInputContextProvider>,
     )
 
@@ -40,7 +43,13 @@ describe('rendering', () => {
   test('forwards attrs to the input element', () => {
     render(
       <TextFieldInputContextProvider value={{} as TextFieldInputContract}>
-        <TextFieldInput dir="rtl" name="username" data-test-id="test-id" className="class-name"/>,
+        <TextFieldInput
+          dir="rtl"
+          name="username"
+          data-test-id="test-id"
+          className="class-name"
+        />
+        ,
       </TextFieldInputContextProvider>,
     )
 
@@ -54,20 +63,24 @@ describe('rendering', () => {
 test('consumes ref from TextFieldInputContext', () => {
   let ref: TextFieldInputContract['ref'] = { current: null }
 
-  function Wrapper () {
+  function Wrapper() {
     ref = useRef<TextFieldInputContract['ref']['current']>(null)
 
     return (
-      <TextFieldInputContextProvider value={{
-        ref,
-        id: 'input-id',
-      } as TextFieldInputContract}>
-        <TextFieldInput/>,
+      <TextFieldInputContextProvider
+        value={
+          {
+            ref,
+            id: 'input-id',
+          } as TextFieldInputContract
+        }
+      >
+        <TextFieldInput />,
       </TextFieldInputContextProvider>
     )
   }
 
-  render(<Wrapper/>)
+  render(<Wrapper />)
 
   expect(ref.current).not.toBeNull()
   expect(ref.current?.id).toEqual('input-id')
@@ -77,20 +90,24 @@ test('consumes and updates the value provided by the TextFieldInputContext', () 
   let value
   let setValue: (newValue: string | number) => void
 
-  function Wrapper () {
-    [value, setValue] = useState<string | number>('Harmonic UI')
+  function Wrapper() {
+    ;[value, setValue] = useState<string | number>('Harmonic UI')
 
     return (
-      <TextFieldInputContextProvider value={{
-        value,
-        setValue,
-      } as TextFieldInputContract}>
-        <TextFieldInput data-testid="input"/>
+      <TextFieldInputContextProvider
+        value={
+          {
+            value,
+            setValue,
+          } as TextFieldInputContract
+        }
+      >
+        <TextFieldInput data-testid="input" />
       </TextFieldInputContextProvider>
     )
   }
 
-  const { getByTestId } = render(<Wrapper/>)
+  const { getByTestId } = render(<Wrapper />)
 
   expect(getInput()).toHaveValue('Harmonic UI')
 
@@ -103,8 +120,10 @@ test('consumes and updates the value provided by the TextFieldInputContext', () 
 describe('id attribute', () => {
   test('consumes the id provided from TextFieldInputContext', () => {
     render(
-      <TextFieldInputContextProvider value={{ id: 'input-id' } as TextFieldInputContract}>
-        <TextFieldInput/>,
+      <TextFieldInputContextProvider
+        value={{ id: 'input-id' } as TextFieldInputContract}
+      >
+        <TextFieldInput />,
       </TextFieldInputContextProvider>,
     )
 
@@ -113,8 +132,10 @@ describe('id attribute', () => {
 
   test('id should not be overridable by user', () => {
     render(
-      <TextFieldInputContextProvider value={{ id: 'context' } as TextFieldInputContract}>
-        <TextFieldInput id="props"/>,
+      <TextFieldInputContextProvider
+        value={{ id: 'context' } as TextFieldInputContract}
+      >
+        <TextFieldInput id="props" />,
       </TextFieldInputContextProvider>,
     )
 
@@ -125,8 +146,10 @@ describe('id attribute', () => {
 describe('disabled attribute', () => {
   test('consumes disabled attribute from TextFieldInputContext', () => {
     render(
-      <TextFieldInputContextProvider value={{ disabled: true } as TextFieldInputContract}>
-        <TextFieldInput/>,
+      <TextFieldInputContextProvider
+        value={{ disabled: true } as TextFieldInputContract}
+      >
+        <TextFieldInput />,
       </TextFieldInputContextProvider>,
     )
 
@@ -135,8 +158,10 @@ describe('disabled attribute', () => {
 
   test('disabled attribute should not be overridable by user', () => {
     render(
-      <TextFieldInputContextProvider value={{ disabled: false } as TextFieldInputContract}>
-        <TextFieldInput disabled/>,
+      <TextFieldInputContextProvider
+        value={{ disabled: false } as TextFieldInputContract}
+      >
+        <TextFieldInput disabled />,
       </TextFieldInputContextProvider>,
     )
 
@@ -147,8 +172,10 @@ describe('disabled attribute', () => {
 describe('required attribute', () => {
   test('consumes required attribute from TextFieldInputContext', () => {
     render(
-      <TextFieldInputContextProvider value={{ required: true } as TextFieldInputContract}>
-        <TextFieldInput/>,
+      <TextFieldInputContextProvider
+        value={{ required: true } as TextFieldInputContract}
+      >
+        <TextFieldInput />,
       </TextFieldInputContextProvider>,
     )
 
@@ -157,8 +184,10 @@ describe('required attribute', () => {
 
   test('required attribute should not be overridable by user', () => {
     render(
-      <TextFieldInputContextProvider value={{ required: false } as TextFieldInputContract}>
-        <TextFieldInput required/>,
+      <TextFieldInputContextProvider
+        value={{ required: false } as TextFieldInputContract}
+      >
+        <TextFieldInput required />,
       </TextFieldInputContextProvider>,
     )
 
@@ -169,8 +198,10 @@ describe('required attribute', () => {
 describe('aria-* attributes', () => {
   test('consumes aria-invalid attribute from TextFieldInputContext', () => {
     render(
-      <TextFieldInputContextProvider value={{ 'aria-invalid': true } as TextFieldInputContract}>
-        <TextFieldInput/>,
+      <TextFieldInputContextProvider
+        value={{ 'aria-invalid': true } as TextFieldInputContract}
+      >
+        <TextFieldInput />,
       </TextFieldInputContextProvider>,
     )
 
@@ -179,8 +210,10 @@ describe('aria-* attributes', () => {
 
   test('aria-invalid attribute should not be overridable by user', () => {
     render(
-      <TextFieldInputContextProvider value={{ 'aria-invalid': undefined } as TextFieldInputContract}>
-        <TextFieldInput aria-invalid={true}/>,
+      <TextFieldInputContextProvider
+        value={{ 'aria-invalid': undefined } as TextFieldInputContract}
+      >
+        <TextFieldInput aria-invalid={true} />,
       </TextFieldInputContextProvider>,
     )
 
@@ -189,8 +222,12 @@ describe('aria-* attributes', () => {
 
   test('consumes aria-errormessage attribute from TextFieldInputContext', () => {
     render(
-      <TextFieldInputContextProvider value={{ 'aria-errormessage': 'errormessage-id' } as TextFieldInputContract}>
-        <TextFieldInput/>,
+      <TextFieldInputContextProvider
+        value={
+          { 'aria-errormessage': 'errormessage-id' } as TextFieldInputContract
+        }
+      >
+        <TextFieldInput />,
       </TextFieldInputContextProvider>,
     )
 
@@ -199,8 +236,10 @@ describe('aria-* attributes', () => {
 
   test('aria-errormessage attribute should not be overridable by user', () => {
     render(
-      <TextFieldInputContextProvider value={{ 'aria-errormessage': 'context' } as TextFieldInputContract}>
-        <TextFieldInput aria-errormessage="props"/>,
+      <TextFieldInputContextProvider
+        value={{ 'aria-errormessage': 'context' } as TextFieldInputContract}
+      >
+        <TextFieldInput aria-errormessage="props" />,
       </TextFieldInputContextProvider>,
     )
 
@@ -209,8 +248,12 @@ describe('aria-* attributes', () => {
 
   test('consumes aria-describedby attribute from TextFieldInputContext', () => {
     render(
-      <TextFieldInputContextProvider value={{ 'aria-describedby': 'description-id' } as TextFieldInputContract}>
-        <TextFieldInput/>,
+      <TextFieldInputContextProvider
+        value={
+          { 'aria-describedby': 'description-id' } as TextFieldInputContract
+        }
+      >
+        <TextFieldInput />,
       </TextFieldInputContextProvider>,
     )
 
@@ -219,8 +262,10 @@ describe('aria-* attributes', () => {
 
   test('aria-describedby attribute should not be overridable by user', () => {
     render(
-      <TextFieldInputContextProvider value={{ 'aria-describedby': 'context' } as TextFieldInputContract}>
-        <TextFieldInput aria-describedby="props"/>,
+      <TextFieldInputContextProvider
+        value={{ 'aria-describedby': 'context' } as TextFieldInputContract}
+      >
+        <TextFieldInput aria-describedby="props" />,
       </TextFieldInputContextProvider>,
     )
 

@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react'
 
 type Provider<Contract> = {
-  (props: { value: Contract, children?: ReactNode | ReactNode[] }): JSX.Element
-  displayName?: string;
+  (props: { value: Contract; children?: ReactNode | ReactNode[] }): JSX.Element
+  displayName?: string
 }
 
 type Context<Contract> = {
@@ -10,20 +10,19 @@ type Context<Contract> = {
   consume: () => Contract
 }
 
-type EnforceToPassContract<Contract> =
-  Contract extends void ?
-    'Missing type parameter \'Contract\'. You must provide a contract type for creating context.'
-    : string
+type EnforceToPassContract<Contract> = Contract extends void
+  ? "Missing type parameter 'Contract'. You must provide a contract type for creating context."
+  : string
 
-function createContext<Contract = void> (name: string & (EnforceToPassContract<Contract>)): Context<Contract> {
+function createContext<Contract = void>(
+  name: string & EnforceToPassContract<Contract>,
+): Context<Contract> {
   const context = React.createContext<Contract | null>(null)
   context.displayName = name
 
-  const Provider: Provider<Contract> = (props) => {
+  const Provider: Provider<Contract> = props => {
     return (
-      <context.Provider value={props.value}>
-        {props.children}
-      </context.Provider>
+      <context.Provider value={props.value}>{props.children}</context.Provider>
     )
   }
   Provider.displayName = `${name}Provider`

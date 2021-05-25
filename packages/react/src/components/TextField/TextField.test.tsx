@@ -1,13 +1,19 @@
 import React, { useState } from 'react'
 import { fireEvent, render } from '@testing-library/react'
-import { AssertionsConfigurationOptions, TextFieldAssertions } from './Assertions'
+import {
+  AssertionsConfigurationOptions,
+  TextFieldAssertions,
+} from './Assertions'
 import { TextField } from './TextField'
 
-function getTextField () {
+function getTextField() {
   return container.querySelector('div')
 }
 
-function renderAndRunAssertions (template: JSX.Element, assertionOptions: AssertionsConfigurationOptions = {}) {
+function renderAndRunAssertions(
+  template: JSX.Element,
+  assertionOptions: AssertionsConfigurationOptions = {},
+) {
   render(template)
 
   const assertions = new TextFieldAssertions(assertionOptions)
@@ -32,7 +38,7 @@ describe('rendering', () => {
   })
 
   test('forwards additional props to inner element if not rendered as fragment', () => {
-    render(<TextField as="div" id="TextField" className="awesome"/>)
+    render(<TextField as="div" id="TextField" className="awesome" />)
 
     expect(getTextField()).toHaveClass('awesome')
     expect(getTextField()).toHaveAttribute('id', 'TextField')
@@ -42,10 +48,13 @@ describe('rendering', () => {
     renderAndRunAssertions(
       <TextField>
         <TextField.Label>Username</TextField.Label>
-        <TextField.Input/>
-        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.Input />
+        <TextField.ErrorMessage>
+          Oops! something went wrong.
+        </TextField.ErrorMessage>
         <TextField.HelperText>Something that might help!</TextField.HelperText>
-      </TextField>)
+      </TextField>,
+    )
   })
 })
 
@@ -54,63 +63,70 @@ describe('states', () => {
     renderAndRunAssertions(
       <TextField optional>
         <TextField.Label>Username</TextField.Label>
-        <TextField.Input/>
-        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.Input />
+        <TextField.ErrorMessage>
+          Oops! something went wrong.
+        </TextField.ErrorMessage>
         <TextField.HelperText>Something that might help!</TextField.HelperText>
-      </TextField>
-      , {
+      </TextField>,
+      {
         states: ['optional'],
-      })
+      },
+    )
   })
 
   test('TextFieldInput can be disabled', () => {
     renderAndRunAssertions(
       <TextField disabled>
         <TextField.Label>Username</TextField.Label>
-        <TextField.Input/>
-        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.Input />
+        <TextField.ErrorMessage>
+          Oops! something went wrong.
+        </TextField.ErrorMessage>
         <TextField.HelperText>Something that might help!</TextField.HelperText>
-      </TextField>
-      , {
+      </TextField>,
+      {
         states: ['disabled'],
-      })
+      },
+    )
   })
 
-  test('TextFieldInput\'s value may invalid', () => {
+  test("TextFieldInput's value may invalid", () => {
     renderAndRunAssertions(
       <TextField invalid>
         <TextField.Label>Username</TextField.Label>
-        <TextField.Input/>
-        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.Input />
+        <TextField.ErrorMessage>
+          Oops! something went wrong.
+        </TextField.ErrorMessage>
         <TextField.HelperText>Something that might help!</TextField.HelperText>
-      </TextField>
-      , {
+      </TextField>,
+      {
         states: ['invalid'],
-      })
+      },
+    )
   })
 
   test('multiple states can be applied to TextFieldInput at the same time', () => {
     renderAndRunAssertions(
       <TextField invalid disabled optional>
         <TextField.Label>Username</TextField.Label>
-        <TextField.Input/>
-        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.Input />
+        <TextField.ErrorMessage>
+          Oops! something went wrong.
+        </TextField.ErrorMessage>
         <TextField.HelperText>Something that might help!</TextField.HelperText>
-      </TextField>
-      , {
+      </TextField>,
+      {
         states: ['invalid', 'optional', 'disabled'],
-      })
+      },
+    )
   })
 
   test('should expose state props through children render props', () => {
     const { getByTestId } = render(
       <TextField invalid disabled>
-        {({
-          disabled,
-          optional,
-          required,
-          invalid,
-        }) => (
+        {({ disabled, optional, required, invalid }) => (
           <>
             <span data-testid="disabled">{disabled.toString()}</span>
             <span data-testid="invalid">{invalid.toString()}</span>
@@ -133,18 +149,21 @@ describe('controlling value', () => {
     let value
     let setValue: (newValue: string | number) => void
 
-    function Wrapper () {
-      [value, setValue] = useState<string | number>('Harmonic UI')
+    function Wrapper() {
+      ;[value, setValue] = useState<string | number>('Harmonic UI')
 
       return (
-        <TextField value={value} onChange={(newValue: string | number) => setValue(newValue)}>
+        <TextField
+          value={value}
+          onChange={(newValue: string | number) => setValue(newValue)}
+        >
           <TextField.Label>Username</TextField.Label>
-          <TextField.Input/>
+          <TextField.Input />
         </TextField>
       )
     }
 
-    const { getByLabelText } = render(<Wrapper/>)
+    const { getByLabelText } = render(<Wrapper />)
 
     const input = getByLabelText('Username')
     expect(input).toHaveValue('Harmonic UI')
@@ -159,15 +178,18 @@ describe('controlling value', () => {
     let value
     let setValue: (newValue: string | number) => void
 
-    function Wrapper () {
-      [value, setValue] = useState<string | number>('Harmonic UI')
+    function Wrapper() {
+      ;[value, setValue] = useState<string | number>('Harmonic UI')
 
       return (
-        <TextField value={value} onChange={(newValue: string | number) => setValue(newValue)}>
+        <TextField
+          value={value}
+          onChange={(newValue: string | number) => setValue(newValue)}
+        >
           {({ clear }) => (
             <>
               <TextField.Label>Username</TextField.Label>
-              <TextField.Input/>
+              <TextField.Input />
               <button onClick={clear}>clear</button>
             </>
           )}
@@ -175,10 +197,7 @@ describe('controlling value', () => {
       )
     }
 
-    const {
-      getByLabelText,
-      getByText,
-    } = render(<Wrapper/>)
+    const { getByLabelText, getByText } = render(<Wrapper />)
 
     const input = getByLabelText('Username')
     const clearBtn = getByText('clear')
@@ -196,37 +215,44 @@ describe('aria-* attributes', () => {
     renderAndRunAssertions(
       <TextField>
         <TextField.Label>Username</TextField.Label>
-        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.ErrorMessage>
+          Oops! something went wrong.
+        </TextField.ErrorMessage>
         <TextField.HelperText>Something that might help!</TextField.HelperText>
-      </TextField>
-      , {
+      </TextField>,
+      {
         ignoreAssertions: ['Input'],
-      })
+      },
+    )
   })
 
   test('TextFieldInput loses the aria-describedby attribute if HelperText does not exists', () => {
     renderAndRunAssertions(
       <TextField>
         <TextField.Label>Username</TextField.Label>
-        <TextField.Input/>
-        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
-      </TextField>
-      , {
+        <TextField.Input />
+        <TextField.ErrorMessage>
+          Oops! something went wrong.
+        </TextField.ErrorMessage>
+      </TextField>,
+      {
         ignoreAssertions: ['HelperText'],
-      })
+      },
+    )
   })
 
   test('TextFieldInput loses the aria-errormessage attribute if ErrorMessage does not exists', () => {
     renderAndRunAssertions(
       <TextField invalid>
         <TextField.Label>Username</TextField.Label>
-        <TextField.Input/>
+        <TextField.Input />
         <TextField.HelperText>Something that might help!</TextField.HelperText>
-      </TextField>
-      , {
+      </TextField>,
+      {
         states: ['invalid'],
         ignoreAssertions: ['ErrorMessage'],
-      })
+      },
+    )
   })
 })
 
@@ -235,8 +261,10 @@ describe('IDs', () => {
     render(
       <TextField>
         <TextField.Label>Username</TextField.Label>
-        <TextField.Input/>
-        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.Input />
+        <TextField.ErrorMessage>
+          Oops! something went wrong.
+        </TextField.ErrorMessage>
         <TextField.HelperText>Something that might help!</TextField.HelperText>
       </TextField>,
     )
@@ -244,16 +272,22 @@ describe('IDs', () => {
     render(
       <TextField>
         <TextField.Label>Username</TextField.Label>
-        <TextField.Input/>
-        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.Input />
+        <TextField.ErrorMessage>
+          Oops! something went wrong.
+        </TextField.ErrorMessage>
         <TextField.HelperText>Something that might help!</TextField.HelperText>
       </TextField>,
     )
 
     const inputs = document.body.querySelectorAll('[id^="HUI-TextFieldInput-"]')
     const labels = document.body.querySelectorAll('[id^="HUI-TextFieldLabel-"]')
-    const helperTexts = document.body.querySelectorAll('[id^="HUI-TextFieldHelperText-"]')
-    const errorMessages = document.body.querySelectorAll('[id^="HUI-TextFieldErrorMessage-"]')
+    const helperTexts = document.body.querySelectorAll(
+      '[id^="HUI-TextFieldHelperText-"]',
+    )
+    const errorMessages = document.body.querySelectorAll(
+      '[id^="HUI-TextFieldErrorMessage-"]',
+    )
 
     expect(inputs.length).toEqual(2)
     expect(inputs[0].id).not.toEqual(inputs[1].id)
@@ -272,51 +306,63 @@ describe('IDs', () => {
     renderAndRunAssertions(
       <TextField inputId="input-id">
         <TextField.Label>Username</TextField.Label>
-        <TextField.Input/>
-        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.Input />
+        <TextField.ErrorMessage>
+          Oops! something went wrong.
+        </TextField.ErrorMessage>
         <TextField.HelperText>Something that might help!</TextField.HelperText>
-      </TextField>
-      , {
+      </TextField>,
+      {
         id: { input: 'input-id' },
-      })
+      },
+    )
   })
 
   test('TextFieldLabel id should be overridable', () => {
     renderAndRunAssertions(
       <TextField labelId="label-id">
         <TextField.Label>Username</TextField.Label>
-        <TextField.Input/>
-        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.Input />
+        <TextField.ErrorMessage>
+          Oops! something went wrong.
+        </TextField.ErrorMessage>
         <TextField.HelperText>Something that might help!</TextField.HelperText>
-      </TextField>
-      , {
+      </TextField>,
+      {
         id: { label: 'label-id' },
-      })
+      },
+    )
   })
 
   test('TextFieldHelperText id should be overridable', () => {
     renderAndRunAssertions(
       <TextField helperTextId="helper-text-id">
         <TextField.Label>Username</TextField.Label>
-        <TextField.Input/>
-        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.Input />
+        <TextField.ErrorMessage>
+          Oops! something went wrong.
+        </TextField.ErrorMessage>
         <TextField.HelperText>Something that might help!</TextField.HelperText>
-      </TextField>
-      , {
+      </TextField>,
+      {
         id: { helperText: 'helper-text-id' },
-      })
+      },
+    )
   })
 
   test('TextFieldErrorMessage id should be overridable', () => {
     renderAndRunAssertions(
       <TextField errorMessageId="error-message-id">
         <TextField.Label>Username</TextField.Label>
-        <TextField.Input/>
-        <TextField.ErrorMessage>Oops! something went wrong.</TextField.ErrorMessage>
+        <TextField.Input />
+        <TextField.ErrorMessage>
+          Oops! something went wrong.
+        </TextField.ErrorMessage>
         <TextField.HelperText>Something that might help!</TextField.HelperText>
-      </TextField>
-      , {
+      </TextField>,
+      {
         id: { errorMessage: 'error-message-id' },
-      })
+      },
+    )
   })
 })

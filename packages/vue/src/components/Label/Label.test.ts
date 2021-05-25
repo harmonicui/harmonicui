@@ -3,15 +3,18 @@ import { renderInlineComponent } from '../../test-utils'
 import { LabelContract, provideLabelContext } from '../../contexts'
 import LabelComponent from './Label'
 
-function getLabel () {
+function getLabel() {
   return container.querySelector('label')
 }
 
-function renderTemplate (template: string, contextValue: Partial<LabelContract> = {}) {
+function renderTemplate(
+  template: string,
+  contextValue: Partial<LabelContract> = {},
+) {
   return renderInlineComponent({
     template,
     components: { LabelComponent },
-    setup () {
+    setup() {
       provideLabelContext(contextValue as LabelContract)
     },
   })
@@ -54,12 +57,15 @@ describe('rendering', () => {
 test('consumes ref from LabelContext', () => {
   const labelRef = ref<LabelContract['ref']['value']>(null)
 
-  renderTemplate(`
+  renderTemplate(
+    `
     <LabelComponent>Username</LabelComponent>
-  `, {
-    ref: labelRef,
-    id: 'label-id',
-  })
+  `,
+    {
+      ref: labelRef,
+      id: 'label-id',
+    },
+  )
 
   expect(labelRef.value).not.toBeNull()
   expect(labelRef.value?.id).toEqual('label-id')
@@ -67,21 +73,27 @@ test('consumes ref from LabelContext', () => {
 
 describe('id attribute', () => {
   test('consumes the id provided by LabelContext', () => {
-    renderTemplate(`
+    renderTemplate(
+      `
     <LabelComponent>Username</LabelComponent>
-  `, {
-      id: 'label-id',
-    })
+  `,
+      {
+        id: 'label-id',
+      },
+    )
 
     expect(getLabel()).toHaveAttribute('id', 'label-id')
   })
 
   test('id should not be overridable by user', () => {
-    renderTemplate(`
+    renderTemplate(
+      `
     <LabelComponent id="id-from-props">Username</LabelComponent>
-  `, {
-      id: 'id-from-context',
-    })
+  `,
+      {
+        id: 'id-from-context',
+      },
+    )
 
     expect(getLabel()).toHaveAttribute('id', 'id-from-context')
   })
@@ -89,21 +101,27 @@ describe('id attribute', () => {
 
 describe('for attribute', () => {
   test('consumes for property from LabelContext', () => {
-    renderTemplate(`
+    renderTemplate(
+      `
       <LabelComponent>Username</LabelComponent>
-    `, {
-      for: computed(() => 'dummy-input-id'),
-    })
+    `,
+      {
+        for: computed(() => 'dummy-input-id'),
+      },
+    )
 
     expect(getLabel()).toHaveAttribute('for', 'dummy-input-id')
   })
 
   test('for attribute should not be modifiable by user', () => {
-    renderTemplate(`
+    renderTemplate(
+      `
       <LabelComponent id="id-from-props">Username</LabelComponent>
-    `, {
-      for: computed(() => 'id-from-context'),
-    })
+    `,
+      {
+        for: computed(() => 'id-from-context'),
+      },
+    )
 
     expect(getLabel()).toHaveAttribute('for', 'id-from-context')
   })
@@ -111,21 +129,27 @@ describe('for attribute', () => {
 
 describe('data-is attribute', () => {
   test('consumes data-is from LabelContext', () => {
-    renderTemplate(`
+    renderTemplate(
+      `
       <LabelComponent>Username</LabelComponent>
-    `, {
-      'data-is': 'invalid disabled',
-    })
+    `,
+      {
+        'data-is': 'invalid disabled',
+      },
+    )
 
     expect(getLabel()).toHaveAttribute('data-is', 'invalid disabled')
   })
 
   test('data-is attribute should not be modifiable by user', () => {
-    renderTemplate(`
+    renderTemplate(
+      `
       <LabelComponent data-is="props">Username</LabelComponent>
-    `, {
-      'data-is': 'context',
-    })
+    `,
+      {
+        'data-is': 'context',
+      },
+    )
 
     expect(getLabel()).toHaveAttribute('data-is', 'context')
   })

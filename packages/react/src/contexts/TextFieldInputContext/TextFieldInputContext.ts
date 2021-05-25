@@ -9,10 +9,12 @@ export interface TextFieldInputContract {
   'aria-invalid': boolean | undefined
   'aria-describedby': string | undefined
   'aria-errormessage': string | undefined
-  setValue: ((value: string | number) => void)
+  setValue: (value: string | number) => void
   ref: MutableRefObject<HTMLInputElement | null>
 }
 
-export const TextFieldInputContext = createContext<TextFieldInputContract>('TextFieldInputContext')
+export const TextFieldInputContext = createContext<TextFieldInputContract>(
+  'TextFieldInputContext',
+)
 export const useTextFieldInputContext = TextFieldInputContext.consume
 export const TextFieldInputContextProvider = TextFieldInputContext.Provider

@@ -7,7 +7,7 @@ const DEFAULT_ELEMENT = 'label'
 export type LabelProps<T extends ElementType = typeof DEFAULT_ELEMENT> =
   PolymorphicPropsWithoutRef<unknown, T>
 
-function Label<T extends ElementType = typeof DEFAULT_ELEMENT> ({
+function Label<T extends ElementType = typeof DEFAULT_ELEMENT>({
   as,
   children,
   ...attrs

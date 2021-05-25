@@ -2,9 +2,9 @@ import { h } from 'vue'
 import { render as renderer } from './render'
 import { renderInlineComponent } from '../test-utils'
 
-function runRenderFunction (options: Parameters<typeof renderer>[0]) {
+function runRenderFunction(options: Parameters<typeof renderer>[0]) {
   return renderInlineComponent({
-    setup () {
+    setup() {
       return () => renderer(options)
     },
   })
@@ -60,7 +60,7 @@ test('passes the childrenProps to children', () => {
       id: 'child-id',
       class: 'child-class',
     },
-    children: (props) => [h('span', props, 'hello world!')],
+    children: props => [h('span', props, 'hello world!')],
   })
 
   const child = container?.querySelector('#child-id')
@@ -82,7 +82,7 @@ test('passes the childrenProps to children when rendering as fragment', () => {
       id: 'child-id',
       class: 'child-class',
     },
-    children: (props) => [h('span', props, 'hello world!')],
+    children: props => [h('span', props, 'hello world!')],
   })
 
   const child = container?.querySelector('#child-id')

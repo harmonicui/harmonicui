@@ -7,19 +7,18 @@ export default defineComponent({
 
   inheritAttrs: false,
 
-  setup (props, {
-    slots,
-    attrs,
-  }) {
-    const {
-      ref,
-      ...context
-    } = useLabelContext()
+  setup(props, { slots, attrs }) {
+    const { ref, ...context } = useLabelContext()
 
-    return () => h('label', {
-      ...attrs,
-      ref,
-      ...unrefAllRefs(context),
-    }, slots.default?.())
+    return () =>
+      h(
+        'label',
+        {
+          ...attrs,
+          ref,
+          ...unrefAllRefs(context),
+        },
+        slots.default?.(),
+      )
   },
 })

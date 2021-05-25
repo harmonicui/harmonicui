@@ -1,4 +1,8 @@
-import { LabelContext, LabelContextProvider, useLabelContext } from './LabelContext'
+import {
+  LabelContext,
+  LabelContextProvider,
+  useLabelContext,
+} from './LabelContext'
 
 test('creates a context for LabelContract', () => {
   expect(LabelContext).toHaveProperty('Provider')

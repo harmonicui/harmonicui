@@ -1,5 +1,7 @@
 import {
-  HelperTextContext, HelperTextContextProvider, useHelperTextContext,
+  HelperTextContext,
+  HelperTextContextProvider,
+  useHelperTextContext,
 } from './HelperTextContext'
 
 test('creates a context for HelperTextContract', () => {

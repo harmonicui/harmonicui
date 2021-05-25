@@ -6,12 +6,7 @@
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "jsx": "preserve",
-    "lib": [
-      "ESNext",
-      "DOM"
-    ]
+    "lib": ["ESNext", "DOM"]
   },
-  "include": [
-    "packages/*/src"
-  ]
+  "include": ["packages/*/src"]
 }

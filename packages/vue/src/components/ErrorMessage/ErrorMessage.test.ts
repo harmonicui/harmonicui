@@ -1,17 +1,23 @@
 import { ref } from 'vue'
 import { renderInlineComponent } from '../../test-utils'
-import { ErrorMessageContract, provideErrorMessageContext } from '../../contexts'
+import {
+  ErrorMessageContract,
+  provideErrorMessageContext,
+} from '../../contexts'
 import ErrorMessage from './ErrorMessage'
 
-function getErrorMessage (element = 'div') {
+function getErrorMessage(element = 'div') {
   return container.querySelector(element)
 }
 
-function renderTemplate (template: string, contextValue: Partial<ErrorMessageContract> = {}) {
+function renderTemplate(
+  template: string,
+  contextValue: Partial<ErrorMessageContract> = {},
+) {
   return renderInlineComponent({
     template,
     components: { ErrorMessage },
-    setup () {
+    setup() {
       provideErrorMessageContext(contextValue as ErrorMessageContract)
     },
   })
@@ -41,7 +47,9 @@ describe('rendering', () => {
     `)
 
     expect(getErrorMessage('span')).toBeInTheDocument()
-    expect(getErrorMessage('span')).toHaveTextContent('Oops! Something went wrong.')
+    expect(getErrorMessage('span')).toHaveTextContent(
+      'Oops! Something went wrong.',
+    )
   })
 
   test('forwards uncontrolled props to the inner element', () => {
@@ -60,13 +68,16 @@ describe('rendering', () => {
 test('consumes ref from ErrorMessageContext', () => {
   const templateRef = ref<ErrorMessageContract['ref']['value']>(null)
 
-  renderTemplate(`
+  renderTemplate(
+    `
     <ErrorMessage id="error-message-id">
       Oops! Something went wrong.
     </ErrorMessage>
-  `, {
-    ref: templateRef,
-  })
+  `,
+    {
+      ref: templateRef,
+    },
+  )
 
   expect(templateRef.value).not.toBeNull()
   expect(templateRef.value?.id).toEqual('error-message-id')
@@ -74,25 +85,31 @@ test('consumes ref from ErrorMessageContext', () => {
 
 describe('id attribute', () => {
   test('consumes id from ErrorMessageContext', () => {
-    renderTemplate(`
+    renderTemplate(
+      `
     <ErrorMessage>
       Oops! Something went wrong.
     </ErrorMessage>
-  `, {
-      id: 'error-message-id',
-    })
+  `,
+      {
+        id: 'error-message-id',
+      },
+    )
 
     expect(getErrorMessage()).toHaveAttribute('id', 'error-message-id')
   })
 
   test('id should not be overridable by user', () => {
-    renderTemplate(`
+    renderTemplate(
+      `
       <ErrorMessage id="props">
         Oops! Something went wrong.
       </ErrorMessage>
-    `, {
-      id: 'context',
-    })
+    `,
+      {
+        id: 'context',
+      },
+    )
 
     expect(getErrorMessage()).toHaveAttribute('id', 'context')
   })
@@ -100,25 +117,31 @@ describe('id attribute', () => {
 
 describe('visibility control', () => {
   test('consumes hidden state from ErrorMessageContext', () => {
-    renderTemplate(`
+    renderTemplate(
+      `
       <ErrorMessage>
         Oops! Something went wrong.
       </ErrorMessage>
-    `, {
-      hidden: true,
-    })
+    `,
+      {
+        hidden: true,
+      },
+    )
 
     expect(getErrorMessage()).not.toBeVisible()
   })
 
   test('visibility should not be controllable by user', () => {
-    renderTemplate(`
+    renderTemplate(
+      `
       <ErrorMessage hidden>
         Oops! Something went wrong.
       </ErrorMessage>
-    `, {
-      hidden: false,
-    })
+    `,
+      {
+        hidden: false,
+      },
+    )
 
     expect(getErrorMessage()).toBeVisible()
   })

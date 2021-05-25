@@ -2,7 +2,7 @@ import { MutableRefObject } from 'react'
 import { createContext } from '../createContext'
 
 export interface LabelContract {
-  id: string,
+  id: string
   htmlFor: string | undefined
   'data-is': string | undefined
   ref: MutableRefObject<HTMLLabelElement | null>

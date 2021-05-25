@@ -11,18 +11,16 @@ const context = createContext<TestContract>('TestContext')
 
 const consumer = jest.fn()
 
-function Consumer () {
+function Consumer() {
   consumer(context.consume())
-  return (
-    <>{/*  renders nothing. */}</>
-  )
+  return <>{/*  renders nothing. */}</>
 }
 
 test('throws an Error if no provider exits', () => {
   console.error = jest.fn()
 
   expect(() => {
-    render(<Consumer/>)
+    render(<Consumer />)
   }).toThrowError('Error: No provider found for TestContext')
 
   jest.restoreAllMocks()
@@ -34,15 +32,15 @@ test('created context should work properly', () => {
     lastName: 'Doe',
   }
 
-  function Provider () {
+  function Provider() {
     return (
       <context.Provider value={contextInput}>
-        <Consumer/>
+        <Consumer />
       </context.Provider>
     )
   }
 
-  render(<Provider/>)
+  render(<Provider />)
 
   expect(consumer).toHaveBeenCalledWith(contextInput)
 })

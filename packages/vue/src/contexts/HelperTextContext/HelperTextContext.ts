@@ -7,7 +7,8 @@ export interface HelperTextContract {
   ref: Ref<HTMLDivElement | null>
 }
 
-export const HelperTextContext = createContext<HelperTextContract>('HelperTextContext')
+export const HelperTextContext =
+  createContext<HelperTextContract>('HelperTextContext')
 
 export const provideHelperTextContext = HelperTextContext.provide
 export const useHelperTextContext = HelperTextContext.consume

@@ -7,13 +7,15 @@ export interface TextFieldInputContract {
   required: boolean
   disabled: boolean
   value: string | number | undefined
-  setValue: ((value: string | number) => void)
+  setValue: (value: string | number) => void
   'aria-invalid': boolean | undefined
   'aria-errormessage': ComputedRef<string | undefined>
   'aria-describedby': ComputedRef<string | undefined>
 }
 
-export const TextFieldInputContext = createContext<TextFieldInputContract>('TextFieldInputContext')
+export const TextFieldInputContext = createContext<TextFieldInputContract>(
+  'TextFieldInputContext',
+)
 
 export const provideTextFieldInputContext = TextFieldInputContext.provide
 export const useTextFieldInputContext = TextFieldInputContext.consume

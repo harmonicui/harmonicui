@@ -68,11 +68,7 @@ export default defineComponent({
 
   emits: ['update:modelValue'],
 
-  setup (props, {
-    slots,
-    emit,
-    attrs,
-  }) {
+  setup(props, { slots, emit, attrs }) {
     const refs = {
       input: ref<TextFieldInputContract['ref']['value']>(null),
       label: ref<LabelContract['ref']['value']>(null),
@@ -80,7 +76,7 @@ export default defineComponent({
       errorMessage: ref<ErrorMessageContract['ref']['value']>(null),
     }
 
-    function setValue (value: string | number) {
+    function setValue(value: string | number) {
       emit('update:modelValue', value)
     }
 
@@ -90,10 +86,14 @@ export default defineComponent({
       disabled: props.disabled,
       'aria-invalid': props.invalid ? true : undefined,
       'aria-describedby': computed(() => {
-        return refs.helperText.value && !props.invalid ? props.helperTextId : undefined
+        return refs.helperText.value && !props.invalid
+          ? props.helperTextId
+          : undefined
       }),
       'aria-errormessage': computed(() => {
-        return refs.errorMessage.value && props.invalid ? props.errorMessageId : undefined
+        return refs.errorMessage.value && props.invalid
+          ? props.errorMessageId
+          : undefined
       }),
     }
 
@@ -130,28 +130,36 @@ export default defineComponent({
     provideErrorMessageContext({ ref: refs.errorMessage, ...errorMessageProps })
     provideHelperTextContext({ ref: refs.helperText, ...helperTextProps })
 
-    return () => render({
-      as: props.as,
-      props: attrs,
-      children: slots.default,
-      childrenProps: {
-        inputProps: {
-          ref: refs.input,
-          value: props.modelValue,
-          onInput: (event: { target: { value: string } }) => setValue(event.target.value),
-          ...unrefAllRefs(inputProps),
+    return () =>
+      render({
+        as: props.as,
+        props: attrs,
+        children: slots.default,
+        childrenProps: {
+          inputProps: {
+            ref: refs.input,
+            value: props.modelValue,
+            onInput: (event: { target: { value: string } }) =>
+              setValue(event.target.value),
+            ...unrefAllRefs(inputProps),
+          },
+
+          labelProps: { ref: refs.label, ...unrefAllRefs(labelProps) },
+          errorMessageProps: {
+            ref: refs.errorMessage,
+            ...unrefAllRefs(errorMessageProps),
+          },
+          helperTextProps: {
+            ref: refs.helperText,
+            ...unrefAllRefs(helperTextProps),
+          },
+
+          required: !props.optional,
+          disabled: props.disabled,
+          invalid: props.invalid,
+          optional: props.optional,
+          clear: () => setValue(''),
         },
-
-        labelProps: { ref: refs.label, ...unrefAllRefs(labelProps) },
-        errorMessageProps: { ref: refs.errorMessage, ...unrefAllRefs(errorMessageProps) },
-        helperTextProps: { ref: refs.helperText, ...unrefAllRefs(helperTextProps) },
-
-        required: !props.optional,
-        disabled: props.disabled,
-        invalid: props.invalid,
-        optional: props.optional,
-        clear: () => setValue(''),
-      },
-    })
+      })
   },
 })

@@ -7,6 +7,8 @@ export interface ErrorMessageContract {
   ref: MutableRefObject<HTMLDivElement | null>
 }
 
-export const ErrorMessageContext = createContext<ErrorMessageContract>('ErrorMessageContext')
+export const ErrorMessageContext = createContext<ErrorMessageContract>(
+  'ErrorMessageContext',
+)
 export const ErrorMessageContextProvider = ErrorMessageContext.Provider
 export const useErrorMessageContext = ErrorMessageContext.consume

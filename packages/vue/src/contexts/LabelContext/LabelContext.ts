@@ -2,7 +2,7 @@ import { ComputedRef, Ref } from 'vue'
 import { createContext } from '../createContext'
 
 export interface LabelContract {
-  id: string,
+  id: string
   'data-is': string | undefined
   ref: Ref<HTMLLabelElement | null>
   for: ComputedRef<string | undefined>

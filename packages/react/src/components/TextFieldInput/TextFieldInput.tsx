@@ -4,19 +4,17 @@ import { PolymorphicPropsWithoutRef } from '../../types'
 
 const DEFAULT_ELEMENT = 'input'
 
-export type TextFieldInputProps<T extends ElementType = typeof DEFAULT_ELEMENT> =
-  PolymorphicPropsWithoutRef<unknown, T>
+export type TextFieldInputProps<
+  T extends ElementType = typeof DEFAULT_ELEMENT,
+> = PolymorphicPropsWithoutRef<unknown, T>
 
-function TextFieldInput<T extends ElementType = typeof DEFAULT_ELEMENT> ({
+function TextFieldInput<T extends ElementType = typeof DEFAULT_ELEMENT>({
   as,
   ...attrs
 }: TextFieldInputProps<T>): ReactElement {
-  const {
-    setValue,
-    ...context
-  } = useTextFieldInputContext()
+  const { setValue, ...context } = useTextFieldInputContext()
 
-  function onChange (event: ChangeEvent<HTMLInputElement>) {
+  function onChange(event: ChangeEvent<HTMLInputElement>) {
     setValue?.(event.target.value)
   }
 

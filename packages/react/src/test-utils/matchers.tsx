@@ -5,22 +5,25 @@ import '@testing-library/jest-dom'
 declare global {
   namespace jest {
     interface Matchers<R> {
-      toBeRenderLessComponent (): R
+      toBeRenderLessComponent(): R
 
-      toHaveBeenNamed (expectedName: string): R
+      toHaveBeenNamed(expectedName: string): R
 
-      toRendersChildrenContent (slotContent?: string): R
+      toRendersChildrenContent(slotContent?: string): R
     }
   }
 }
 
 expect.extend({
   toBeRenderLessComponent: function (Component) {
-    const { container } = render(<Component/>)
+    const { container } = render(<Component />)
 
     return {
       message: () =>
-        this.utils.matcherHint('toBeRenderLessComponent', Component.displayName) +
+        this.utils.matcherHint(
+          'toBeRenderLessComponent',
+          Component.displayName,
+        ) +
         '\n\n' +
         `Expected: The ${Component.displayName} component should not render any content by default. \n` +
         `Received: ${this.utils.printReceived(container.innerHTML)}`,
@@ -31,7 +34,11 @@ expect.extend({
   toHaveBeenNamed: function (Component, expectedName) {
     return {
       message: () =>
-        this.utils.matcherHint('toHaveBeenNamed', Component.displayName, expectedName) +
+        this.utils.matcherHint(
+          'toHaveBeenNamed',
+          Component.displayName,
+          expectedName,
+        ) +
         '\n\n' +
         `Expected: ${expectedName} \n` +
         `Received: ${Component.displayName}`,
@@ -39,7 +46,7 @@ expect.extend({
     }
   },
 
-  toRendersChildrenContent: (Component) => {
+  toRendersChildrenContent: Component => {
     const { container } = render(
       <Component>
         <span>Some dummy content!</span>

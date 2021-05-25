@@ -9,24 +9,20 @@ export default defineComponent({
 
   inheritAttrs: false,
 
-  setup (props, { attrs }) {
-    const {
-      ref,
-      value,
-      setValue,
-      ...context
-    } = useTextFieldInputContext()
+  setup(props, { attrs }) {
+    const { ref, value, setValue, ...context } = useTextFieldInputContext()
 
     const onInput = (event: InputEvent) => {
       setValue(event.target.value)
     }
 
-    return () => h('input', {
-      ...attrs,
-      ref,
-      value,
-      onInput,
-      ...unrefAllRefs(context),
-    })
+    return () =>
+      h('input', {
+        ...attrs,
+        ref,
+        value,
+        onInput,
+        ...unrefAllRefs(context),
+      })
   },
 })

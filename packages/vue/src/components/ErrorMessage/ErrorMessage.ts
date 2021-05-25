@@ -17,16 +17,14 @@ export default defineComponent({
     },
   },
 
-  setup (props, {
-    slots,
-    attrs,
-  }) {
+  setup(props, { slots, attrs }) {
     const context = useErrorMessageContext()
 
-    return () => render({
-      as: props.as,
-      props: { ...attrs, ...context },
-      children: slots.default,
-    })
+    return () =>
+      render({
+        as: props.as,
+        props: { ...attrs, ...context },
+        children: slots.default,
+      })
   },
 })

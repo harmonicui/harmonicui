@@ -3,7 +3,7 @@ import { render } from '@testing-library/react'
 import { LabelContextProvider, LabelContract } from '../../contexts'
 import { Label } from './Label'
 
-function getLabel () {
+function getLabel() {
   return container.querySelector('label')
 }
 
@@ -15,7 +15,7 @@ describe('rendering', () => {
   test('renders a label element', () => {
     render(
       <LabelContextProvider value={{} as LabelContract}>
-        <Label/>
+        <Label />
       </LabelContextProvider>,
     )
 
@@ -60,19 +60,17 @@ describe('rendering', () => {
 test('consumes ref from LabelContext', () => {
   let ref: LabelContract['ref'] = { current: null }
 
-  function Wrapper () {
+  function Wrapper() {
     ref = useRef<LabelContract['ref']['current']>(null)
 
     return (
       <LabelContextProvider value={{ ref, id: 'label-id' } as LabelContract}>
-        <Label>
-          Something that might help!
-        </Label>,
+        <Label>Something that might help!</Label>,
       </LabelContextProvider>
     )
   }
 
-  render(<Wrapper/>)
+  render(<Wrapper />)
 
   expect(ref.current).not.toBeNull()
   expect(ref.current?.id).toEqual('label-id')
@@ -103,7 +101,9 @@ describe('id attribute', () => {
 describe('for attribute', () => {
   test('consumes for property from LabelContext', () => {
     render(
-      <LabelContextProvider value={{ htmlFor: 'dummy-input-id' } as LabelContract}>
+      <LabelContextProvider
+        value={{ htmlFor: 'dummy-input-id' } as LabelContract}
+      >
         <Label>Username</Label>
       </LabelContextProvider>,
     )
@@ -125,7 +125,9 @@ describe('for attribute', () => {
 describe('data-is attribute', () => {
   test('consumes data-is from LabelContext', () => {
     render(
-      <LabelContextProvider value={{ 'data-is': 'invalid disabled' } as LabelContract}>
+      <LabelContextProvider
+        value={{ 'data-is': 'invalid disabled' } as LabelContract}
+      >
         <Label>Username</Label>
       </LabelContextProvider>,
     )

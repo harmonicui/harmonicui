@@ -1,6 +1,6 @@
 export * from './render'
 
-export function getElement (query: string): Element {
+export function getElement(query: string): Element {
   const element = container.querySelector(query)
 
   if (element === null) {

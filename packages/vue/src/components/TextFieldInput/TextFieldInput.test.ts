@@ -1,20 +1,26 @@
 import { computed, ref } from 'vue'
 import { fireEvent } from '@testing-library/vue'
 import { renderInlineComponent } from '../../test-utils'
-import { provideTextFieldInputContext, TextFieldInputContract } from '../../contexts'
+import {
+  provideTextFieldInputContext,
+  TextFieldInputContract,
+} from '../../contexts'
 import TextFieldInput from './TextFieldInput'
 
-function getInput () {
+function getInput() {
   return container.querySelector('input')
 }
 
-function renderTemplate (template: string, contextValue: Partial<TextFieldInputContract> = {}) {
+function renderTemplate(
+  template: string,
+  contextValue: Partial<TextFieldInputContract> = {},
+) {
   return renderInlineComponent({
     template,
     components: {
       TextFieldInput,
     },
-    setup () {
+    setup() {
       provideTextFieldInputContext(contextValue as TextFieldInputContract)
     },
   })
@@ -48,12 +54,15 @@ describe('rendering', () => {
 test('consumes ref from TextFieldInputContext', () => {
   const inputRef = ref<TextFieldInputContract['ref']['value']>(null)
 
-  renderTemplate(`
+  renderTemplate(
+    `
     <TextFieldInput dir="rtl" name="username" data-test-id="test-id" />
-  `, {
-    ref: inputRef,
-    id: 'input',
-  })
+  `,
+    {
+      ref: inputRef,
+      id: 'input',
+    },
+  )
 
   expect(inputRef.value).not.toBeNull()
   expect(inputRef.value?.id).toEqual('input')
@@ -61,16 +70,19 @@ test('consumes ref from TextFieldInputContext', () => {
 
 test('consumes and updates the value provided by the TextFieldInputContext', async () => {
   const value = ref<TextFieldInputContract['value']>('initial value')
-  const setValue: TextFieldInputContract['setValue'] = (newValue) => {
+  const setValue: TextFieldInputContract['setValue'] = newValue => {
     value.value = newValue
   }
 
-  const { getByTestId } = renderTemplate(`
+  const { getByTestId } = renderTemplate(
+    `
     <TextFieldInput data-testid="input" />
-  `, {
-    value: value.value,
-    setValue,
-  })
+  `,
+    {
+      value: value.value,
+      setValue,
+    },
+  )
 
   expect(getInput()).toHaveValue('initial value')
 
@@ -82,21 +94,27 @@ test('consumes and updates the value provided by the TextFieldInputContext', asy
 
 describe('id attribute', () => {
   test('consumes the id provided from TextFieldInputContext', () => {
-    renderTemplate(`
+    renderTemplate(
+      `
       <TextFieldInput />
-    `, {
-      id: 'input-id',
-    })
+    `,
+      {
+        id: 'input-id',
+      },
+    )
 
     expect(getInput()).toHaveAttribute('id', 'input-id')
   })
 
   test('id should not be overridable by user', () => {
-    renderTemplate(`
+    renderTemplate(
+      `
       <TextFieldInput id="id-from-props" />
-    `, {
-      id: 'id-from-context',
-    })
+    `,
+      {
+        id: 'id-from-context',
+      },
+    )
 
     expect(getInput()).toHaveAttribute('id', 'id-from-context')
   })
@@ -104,19 +122,13 @@ describe('id attribute', () => {
 
 describe('disabled attribute', () => {
   test('consumes disabled attribute from TextFieldInputContext', () => {
-    renderTemplate(
-      '<TextFieldInput disabled />',
-      { disabled: true },
-    )
+    renderTemplate('<TextFieldInput disabled />', { disabled: true })
 
     expect(getInput()).toBeDisabled()
   })
 
   test('disabled attribute should not be overridable by user', () => {
-    renderTemplate(
-      '<TextFieldInput disabled />',
-      { disabled: false },
-    )
+    renderTemplate('<TextFieldInput disabled />', { disabled: false })
 
     expect(getInput()).not.toBeDisabled()
   })
@@ -124,19 +136,13 @@ describe('disabled attribute', () => {
 
 describe('required attribute', () => {
   test('consumes required attribute from TextFieldInputContext', () => {
-    renderTemplate(
-      '<TextFieldInput />',
-      { required: true },
-    )
+    renderTemplate('<TextFieldInput />', { required: true })
 
     expect(getInput()).toBeRequired()
   })
 
   test('required attribute should not be overridable by user', () => {
-    renderTemplate(
-      '<TextFieldInput required />',
-      { required: false },
-    )
+    renderTemplate('<TextFieldInput required />', { required: false })
 
     expect(getInput()).not.toBeRequired()
   })
@@ -144,52 +150,44 @@ describe('required attribute', () => {
 
 describe('aria-* attributes', () => {
   test('consumes aria-invalid attribute from TextFieldInputContext', () => {
-    renderTemplate(
-      '<TextFieldInput /> ',
-      { 'aria-invalid': true },
-    )
+    renderTemplate('<TextFieldInput /> ', { 'aria-invalid': true })
     expect(getInput()).toHaveAttribute('aria-invalid')
   })
 
   test('aria-invalid attribute should not be overridable by user', () => {
-    renderTemplate(
-      '<TextFieldInput aria-invalid /> ',
-      { 'aria-invalid': undefined },
-    )
+    renderTemplate('<TextFieldInput aria-invalid /> ', {
+      'aria-invalid': undefined,
+    })
 
     expect(getInput()).not.toHaveAttribute('aria-invalid')
   })
 
   test('consumes aria-errormessage attribute from TextFieldInputContext', () => {
-    renderTemplate(
-      '<TextFieldInput /> ',
-      { 'aria-errormessage': computed(() => 'errormessage-id') },
-    )
+    renderTemplate('<TextFieldInput /> ', {
+      'aria-errormessage': computed(() => 'errormessage-id'),
+    })
     expect(getInput()).toHaveAttribute('aria-errormessage', 'errormessage-id')
   })
 
   test('aria-errormessage attribute should not be overridable by user', () => {
-    renderTemplate(
-      '<TextFieldInput aria-errormessage="props" /> ',
-      { 'aria-errormessage': computed(() => 'context') },
-    )
+    renderTemplate('<TextFieldInput aria-errormessage="props" /> ', {
+      'aria-errormessage': computed(() => 'context'),
+    })
 
     expect(getInput()).toHaveAttribute('aria-errormessage', 'context')
   })
 
   test('consumes aria-describedby attribute from TextFieldInputContext', () => {
-    renderTemplate(
-      '<TextFieldInput /> ',
-      { 'aria-describedby': computed(() => 'description-id') },
-    )
+    renderTemplate('<TextFieldInput /> ', {
+      'aria-describedby': computed(() => 'description-id'),
+    })
     expect(getInput()).toHaveAttribute('aria-describedby', 'description-id')
   })
 
   test('aria-describedby attribute should not be overridable by user', () => {
-    renderTemplate(
-      '<TextFieldInput aria-describedby="props" /> ',
-      { 'aria-describedby': computed(() => 'context') },
-    )
+    renderTemplate('<TextFieldInput aria-describedby="props" /> ', {
+      'aria-describedby': computed(() => 'context'),
+    })
 
     expect(getInput()).toHaveAttribute('aria-describedby', 'context')
   })

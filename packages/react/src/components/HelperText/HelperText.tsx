@@ -7,7 +7,7 @@ const DEFAULT_ELEMENT = 'div'
 export type HelperTextProps<T extends ElementType = typeof DEFAULT_ELEMENT> =
   PolymorphicPropsWithoutRef<unknown, T>
 
-function HelperText<T extends ElementType = typeof DEFAULT_ELEMENT> ({
+function HelperText<T extends ElementType = typeof DEFAULT_ELEMENT>({
   as,
   children,
   ...attrs

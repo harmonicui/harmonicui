@@ -14,9 +14,11 @@ test('throws error if no provider exists', () => {
 
   expect(() => {
     renderInlineComponent({
-      setup () {
+      setup() {
         context.consume()
-        return () => { /*  renders nothing. */ }
+        return () => {
+          /*  renders nothing. */
+        }
       },
     })
   }).toThrowError('Error: No provider found for TestContext,')
@@ -33,16 +35,18 @@ test('created context should work properly', () => {
   }
 
   const ConsumerComponent = defineComponent({
-    setup () {
+    setup() {
       consumer(context.consume())
-      return () => { /*  renders nothing. */ }
+      return () => {
+        /*  renders nothing. */
+      }
     },
   })
 
   renderInlineComponent({
     template: '<ConsumerComponent />',
     components: { ConsumerComponent },
-    setup () {
+    setup() {
       context.provide(contextInput)
     },
   })

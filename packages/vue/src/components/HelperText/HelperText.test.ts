@@ -3,15 +3,18 @@ import { renderInlineComponent } from '../../test-utils'
 import { HelperTextContract, provideHelperTextContext } from '../../contexts'
 import HelperText from './HelperText'
 
-function getHelperText (element = 'div') {
+function getHelperText(element = 'div') {
   return container.querySelector(element)
 }
 
-function renderTemplate (template: string, contextValue: Partial<HelperTextContract> = {}) {
+function renderTemplate(
+  template: string,
+  contextValue: Partial<HelperTextContract> = {},
+) {
   return renderInlineComponent({
     template,
     components: { HelperText },
-    setup () {
+    setup() {
       provideHelperTextContext(contextValue as HelperTextContract)
     },
   })
@@ -41,7 +44,9 @@ describe('rendering', () => {
     `)
 
     expect(getHelperText('span')).toBeInTheDocument()
-    expect(getHelperText('span')).toHaveTextContent('Something that might help!')
+    expect(getHelperText('span')).toHaveTextContent(
+      'Something that might help!',
+    )
   })
 
   test('forwards uncontrolled props to the inner element', () => {
@@ -60,13 +65,16 @@ describe('rendering', () => {
 test('consumes ref from HelperTextContext', () => {
   const templateRef = ref<HelperTextContract['ref']['value']>(null)
 
-  renderTemplate(`
+  renderTemplate(
+    `
     <HelperText id="helper-id">
       Something that might help!
     </HelperText>
-  `, {
-    ref: templateRef,
-  })
+  `,
+    {
+      ref: templateRef,
+    },
+  )
 
   expect(templateRef.value).not.toBeNull()
   expect(templateRef.value?.id).toEqual('helper-id')
@@ -74,25 +82,31 @@ test('consumes ref from HelperTextContext', () => {
 
 describe('id attribute', () => {
   test('consumes id from HelperTextContext', () => {
-    renderTemplate(`
+    renderTemplate(
+      `
     <HelperText>
       Something that might help!
     </HelperText>
-  `, {
-      id: 'helper-text-id',
-    })
+  `,
+      {
+        id: 'helper-text-id',
+      },
+    )
 
     expect(getHelperText()).toHaveAttribute('id', 'helper-text-id')
   })
 
   test('id should not be overridable by user', () => {
-    renderTemplate(`
+    renderTemplate(
+      `
       <HelperText id="props">
         Something that might help!
       </HelperText>
-    `, {
-      id: 'context',
-    })
+    `,
+      {
+        id: 'context',
+      },
+    )
 
     expect(getHelperText()).toHaveAttribute('id', 'context')
   })
@@ -100,25 +114,31 @@ describe('id attribute', () => {
 
 describe('visibility control', () => {
   test('consumes hidden state from HelperTextContext', () => {
-    renderTemplate(`
+    renderTemplate(
+      `
       <HelperText>
         Something that might help!
       </HelperText>
-    `, {
-      hidden: true,
-    })
+    `,
+      {
+        hidden: true,
+      },
+    )
 
     expect(getHelperText()).not.toBeVisible()
   })
 
   test('visibility should not be controllable by user', () => {
-    renderTemplate(`
+    renderTemplate(
+      `
       <HelperText hidden>
         Something that might help!
       </HelperText>
-    `, {
-      hidden: false,
-    })
+    `,
+      {
+        hidden: false,
+      },
+    )
 
     expect(getHelperText()).toBeVisible()
   })

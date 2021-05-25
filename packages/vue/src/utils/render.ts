@@ -10,7 +10,7 @@ interface RenderOptions {
 
 type RenderResult = VNode[] | VNode | undefined
 
-export function render (options: RenderOptions): RenderResult {
+export function render(options: RenderOptions): RenderResult {
   if (options.as === 'fragment') {
     return renderAsFragment(options.children, options.childrenProps)
   }
@@ -18,18 +18,13 @@ export function render (options: RenderOptions): RenderResult {
   return renderAsNode(options)
 }
 
-function renderAsFragment (
+function renderAsFragment(
   children: RenderOptions['children'],
   childrenProps: RenderOptions['childrenProps'],
 ) {
   return children?.(childrenProps)
 }
 
-function renderAsNode ({
-  as,
-  children,
-  childrenProps,
-  props,
-}: RenderOptions) {
+function renderAsNode({ as, children, childrenProps, props }: RenderOptions) {
   return h(as, props, children?.(childrenProps))
 }

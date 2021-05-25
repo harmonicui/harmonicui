@@ -6,18 +6,19 @@ interface Context<T> {
   consume: () => T
 }
 
-type EnforceToPassContract<Contract> =
-  Contract extends void ?
-    'Missing type parameter \'Contract\'. You must provide a contract type for creating context.'
-    : string
+type EnforceToPassContract<Contract> = Contract extends void
+  ? "Missing type parameter 'Contract'. You must provide a contract type for creating context."
+  : string
 
-export function createContext<Contract = void> (name: string & (EnforceToPassContract<Contract>)): Context<Contract> {
+export function createContext<Contract = void>(
+  name: string & EnforceToPassContract<Contract>,
+): Context<Contract> {
   const injectionKey: InjectionKey<Contract | null> = Symbol(name)
 
   return {
     key: injectionKey,
 
-    provide: (value) => {
+    provide: value => {
       provide(injectionKey, value)
     },
 

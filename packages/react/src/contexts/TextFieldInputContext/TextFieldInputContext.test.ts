@@ -1,4 +1,8 @@
-import { TextFieldInputContext, TextFieldInputContextProvider, useTextFieldInputContext } from './TextFieldInputContext'
+import {
+  TextFieldInputContext,
+  TextFieldInputContextProvider,
+  useTextFieldInputContext,
+} from './TextFieldInputContext'
 
 test('creates a context for InputContract', () => {
   expect(TextFieldInputContext).toHaveProperty('Provider')

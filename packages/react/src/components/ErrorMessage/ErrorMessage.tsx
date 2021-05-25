@@ -7,7 +7,7 @@ const DEFAULT_ELEMENT = 'div'
 export type ErrorMessageProps<T extends ElementType = typeof DEFAULT_ELEMENT> =
   PolymorphicPropsWithoutRef<unknown, T>
 
-function ErrorMessage<T extends ElementType = typeof DEFAULT_ELEMENT> ({
+function ErrorMessage<T extends ElementType = typeof DEFAULT_ELEMENT>({
   as,
   children,
   ...attrs
