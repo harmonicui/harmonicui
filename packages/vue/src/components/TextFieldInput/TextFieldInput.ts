@@ -10,7 +10,7 @@ export default defineComponent({
   inheritAttrs: false,
 
   setup(props, { attrs }) {
-    const { ref, value, setValue, ...context } = useTextFieldInputContext()
+    const { ref, setValue, ...context } = useTextFieldInputContext()
 
     const onInput = (event: InputEvent) => {
       setValue(event.target.value)
@@ -20,7 +20,6 @@ export default defineComponent({
       h('input', {
         ...attrs,
         ref,
-        value,
         onInput,
         ...unrefAllRefs(context),
       })

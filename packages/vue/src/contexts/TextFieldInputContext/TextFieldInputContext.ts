@@ -6,7 +6,7 @@ export interface TextFieldInputContract {
   id: string
   required: boolean
   disabled: boolean
-  value: string | number | undefined
+  value: ComputedRef<string | number | undefined>
   setValue: (value: string | number) => void
   'aria-invalid': boolean | undefined
   'aria-errormessage': ComputedRef<string | undefined>

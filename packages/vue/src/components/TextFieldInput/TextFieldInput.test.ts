@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { fireEvent } from '@testing-library/vue'
 import { renderInlineComponent } from '../../test-utils'
 import {
@@ -41,7 +41,7 @@ describe('rendering', () => {
 
   test('forwards attrs to the input element', () => {
     renderTemplate(`
-      <TextFieldInput dir="rtl" name="username" data-test-id="test-id" class="class-name" />
+      <TextFieldInput dir='rtl' name='username' data-test-id='test-id' class='class-name' />
   `)
 
     expect(getInput()).toHaveAttribute('dir', 'rtl')
@@ -56,7 +56,7 @@ test('consumes ref from TextFieldInputContext', () => {
 
   renderTemplate(
     `
-    <TextFieldInput dir="rtl" name="username" data-test-id="test-id" />
+    <TextFieldInput dir='rtl' name='username' data-test-id='test-id' />
   `,
     {
       ref: inputRef,
@@ -69,17 +69,17 @@ test('consumes ref from TextFieldInputContext', () => {
 })
 
 test('consumes and updates the value provided by the TextFieldInputContext', async () => {
-  const value = ref<TextFieldInputContract['value']>('initial value')
+  const value = ref<TextFieldInputContract['value']['value']>('initial value')
   const setValue: TextFieldInputContract['setValue'] = newValue => {
     value.value = newValue
   }
 
   const { getByTestId } = renderTemplate(
     `
-    <TextFieldInput data-testid="input" />
+    <TextFieldInput data-testid='input' />
   `,
     {
-      value: value.value,
+      value: computed(() => value.value),
       setValue,
     },
   )
@@ -87,9 +87,12 @@ test('consumes and updates the value provided by the TextFieldInputContext', asy
   expect(getInput()).toHaveValue('initial value')
 
   await fireEvent.update(getByTestId('input'), 'updated!')
-
   expect(value.value).toEqual('updated!')
   expect(getInput()).toHaveValue('updated!')
+
+  value.value = 'updated again!'
+  await nextTick()
+  expect(getByTestId('input')).toHaveValue('updated again!')
 })
 
 describe('id attribute', () => {
@@ -109,7 +112,7 @@ describe('id attribute', () => {
   test('id should not be overridable by user', () => {
     renderTemplate(
       `
-      <TextFieldInput id="id-from-props" />
+      <TextFieldInput id='id-from-props' />
     `,
       {
         id: 'id-from-context',

@@ -1,6 +1,6 @@
 import { computed, defineComponent, ref } from 'vue'
 import { useGenerateDataIsAttribute, useGenerateId } from '../../composable'
-import { render, unrefAllRefs } from '../../utils'
+import { render } from '../../utils'
 import {
   ErrorMessageContract,
   HelperTextContract,
@@ -80,7 +80,10 @@ export default defineComponent({
       emit('update:modelValue', value)
     }
 
-    const inputProps = {
+    provideTextFieldInputContext({
+      setValue,
+      ref: refs.input,
+      value: computed(() => props.modelValue),
       id: props.inputId,
       required: !props.optional,
       disabled: props.disabled,
@@ -95,9 +98,10 @@ export default defineComponent({
           ? props.errorMessageId
           : undefined
       }),
-    }
+    })
 
-    const labelProps = {
+    provideLabelContext({
+      ref: refs.label,
       id: props.labelId,
       for: computed(() => {
         return refs.input.value ? props.inputId : undefined
@@ -107,28 +111,23 @@ export default defineComponent({
         optional: props.optional,
         disabled: props.disabled,
       }),
-    }
-
-    const errorMessageProps = {
-      id: props.errorMessageId,
-      hidden: !props.invalid ? true : undefined,
-    }
-
-    const helperTextProps = {
-      id: props.helperTextId,
-      hidden: props.invalid ? true : undefined,
-    }
-
-    provideTextFieldInputContext({
-      setValue,
-      ref: refs.input,
-      value: props.modelValue,
-      ...inputProps,
     })
 
-    provideLabelContext({ ref: refs.label, ...labelProps })
-    provideErrorMessageContext({ ref: refs.errorMessage, ...errorMessageProps })
-    provideHelperTextContext({ ref: refs.helperText, ...helperTextProps })
+    provideErrorMessageContext({
+      ref: refs.errorMessage,
+      id: props.errorMessageId,
+      hidden: !props.invalid ? true : undefined,
+    })
+
+    provideHelperTextContext({
+      ref: refs.helperText,
+      id: props.helperTextId,
+      hidden: props.invalid ? true : undefined,
+    })
+
+    function clear(): void {
+      setValue('')
+    }
 
     return () =>
       render({
@@ -136,29 +135,11 @@ export default defineComponent({
         props: attrs,
         children: slots.default,
         childrenProps: {
-          inputProps: {
-            ref: refs.input,
-            value: props.modelValue,
-            onInput: (event: { target: { value: string } }) =>
-              setValue(event.target.value),
-            ...unrefAllRefs(inputProps),
-          },
-
-          labelProps: { ref: refs.label, ...unrefAllRefs(labelProps) },
-          errorMessageProps: {
-            ref: refs.errorMessage,
-            ...unrefAllRefs(errorMessageProps),
-          },
-          helperTextProps: {
-            ref: refs.helperText,
-            ...unrefAllRefs(helperTextProps),
-          },
-
           required: !props.optional,
           disabled: props.disabled,
           invalid: props.invalid,
           optional: props.optional,
-          clear: () => setValue(''),
+          clear,
         },
       })
   },
