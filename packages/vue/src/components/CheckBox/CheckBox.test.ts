@@ -182,16 +182,19 @@ describe('states', () => {
   })
 
   test('should expose state props through default slot', async () => {
-    renderTemplate(`
-      <CheckBox invalid disabled checked v-slot="{ invalid, disabled, optional, required }">
-        <label :class="{required: optional === false, invalid: invalid}">Username</label>
-        <input type="checkbox" :disabled="disabled" :required="required"/>
+    const { getByTestId } = renderTemplate(`
+      <CheckBox invalid disabled v-slot='{ invalid, disabled, optional, required }'>
+        <span data-testid='disabled'>{{ disabled.toString() }}</span>
+        <span data-testid='invalid'>{{ invalid.toString() }}</span>
+        <span data-testid='required'>{{ required.toString() }}</span>
+        <span data-testid='optional'>{{ optional.toString() }}</span>
       </CheckBox>
     `)
 
-    expect(container.querySelector('input')).toBeRequired()
-    expect(container.querySelector('input')).toBeDisabled()
-    expect(container.querySelector('label')).toHaveClass('invalid', 'required')
+    expect(getByTestId('disabled')).toHaveTextContent('true')
+    expect(getByTestId('invalid')).toHaveTextContent('true')
+    expect(getByTestId('required')).toHaveTextContent('true')
+    expect(getByTestId('optional')).toHaveTextContent('false')
   })
 })
 
