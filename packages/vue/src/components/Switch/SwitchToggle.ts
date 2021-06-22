@@ -14,17 +14,12 @@ export default defineComponent({
   },
 
   setup(props, { slots, attrs }) {
-    const { ref, toggleValue, handleKeyDown, ...context } =
-      useSwitchToggleContext()
+    const { ref, toggleValue, ...context } = useSwitchToggleContext()
 
     const Element = props.as ?? 'button'
 
     const onClick = () => {
       toggleValue()
-    }
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      handleKeyDown(event)
     }
 
     return () =>
@@ -34,7 +29,6 @@ export default defineComponent({
           ...attrs,
           ref,
           onClick,
-          onKeyDown,
           ...unrefAllRefs(context),
         },
         slots.default?.(),

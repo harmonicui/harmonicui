@@ -1,7 +1,6 @@
 import { renderInlineComponent } from '../../test-utils'
 import { provideSwitchThumbContext, SwitchThumbContract } from '../../contexts'
 import Thumb from './SwitchThumb'
-import { computed } from '@vue/runtime-core'
 
 function renderTemplate(
   template: string,
@@ -98,7 +97,7 @@ describe('data-is attribute', () => {
       <Thumb />
     `,
       {
-        'data-is': computed(() => 'on'),
+        'data-is': 'on',
       },
     )
 
@@ -111,7 +110,7 @@ describe('data-is attribute', () => {
       <Thumb data-is='off' />
     `,
       {
-        'data-is': computed(() => 'on'),
+        'data-is': 'on',
       },
     )
 

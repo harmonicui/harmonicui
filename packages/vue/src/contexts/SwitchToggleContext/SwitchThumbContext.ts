@@ -1,9 +1,8 @@
-import { ComputedRef } from '@vue/reactivity'
 import { createContext } from '../createContext'
 
 export interface SwitchThumbContract {
   tabindex: string
-  'data-is': ComputedRef<string | undefined> | undefined
+  'data-is': string | undefined
 }
 
 export const SwitchThumbContext =

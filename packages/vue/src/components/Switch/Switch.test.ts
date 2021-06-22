@@ -131,7 +131,7 @@ describe('v-model', () => {
   test('shares and controls the modelValue through SwitchToggle context', async () => {
     const modelValue = ref(false)
 
-    const { getByLabelText, getByTestId } = renderTemplate(
+    const { getByLabelText } = renderTemplate(
       `
       <Switch v-model="modelValue" >
         <SwitchLabel >Username</SwitchLabel>
@@ -146,19 +146,16 @@ describe('v-model', () => {
     await nextTick()
 
     const toggle = getByLabelText('Username')
-    const thumb = getByTestId('thumb')
 
     await fireEvent.click(toggle)
 
     expect(modelValue.value).toEqual(true)
     expect(toggle).toHaveAttribute('aria-checked', 'true')
-    expect(thumb).toHaveAttribute('data-is', 'on')
 
     await fireEvent.click(toggle)
 
     expect(modelValue.value).toEqual(false)
     expect(toggle).toHaveAttribute('aria-checked', 'false')
-    expect(thumb).toHaveAttribute('data-is', 'off')
   })
 })
 
@@ -187,6 +184,32 @@ describe('Keyboard interactions', () => {
     await nextTick()
 
     expect(modelValue.value).toBe(true)
+  })
+
+  test('when disable should not to be toggled', async () => {
+    const modelValue = ref(false)
+
+    const { getByLabelText } = renderTemplate(
+      `
+      <Switch v-model="modelValue" disabled>
+        <SwitchLabel>Username</SwitchLabel>
+        <SwitchToggle>
+          <SwitchThumb />
+        </SwitchToggle>
+      </Switch>
+    `,
+      () => ({ modelValue }),
+    )
+
+    await nextTick()
+    const toggle = getByLabelText('Username')
+
+    fireEvent.focus(toggle)
+    fireEvent.keyDown(toggle, { key: 'Space' })
+
+    await nextTick()
+
+    expect(modelValue.value).toBe(false)
   })
 })
 

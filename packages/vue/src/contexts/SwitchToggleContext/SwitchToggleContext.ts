@@ -10,7 +10,7 @@ export interface SwitchToggleContract {
   modelValue: ComputedRef<boolean | undefined>
   value: string | undefined
   toggleValue: () => void
-  handleKeyDown: (event: KeyboardEvent) => void
+  onKeyDown: (event: KeyboardEvent) => void
   'aria-checked': ComputedRef<boolean | undefined>
   'aria-describedby': ComputedRef<string | undefined>
   'aria-labelledby': ComputedRef<string | undefined>

@@ -67,21 +67,15 @@ export default defineComponent({
       emit('update:modelValue', !props.modelValue)
     }
 
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Space') {
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Space' && !props.disabled) {
         toggleValue()
       }
     }
 
-    function resolveDataIs() {
-      return computed(() => {
-        return props.disabled ? 'disabled' : props.modelValue ? 'on' : 'off'
-      })
-    }
-
     provideSwitchToggleContext({
       toggleValue,
-      handleKeyDown,
+      onKeyDown,
       ref: refs.toggle,
       id: props.toggleId,
       tabindex: '0',
@@ -100,9 +94,9 @@ export default defineComponent({
       ref: refs.label,
       id: props.labelId,
       for: computed(() => undefined),
-      'data-is': resolveDataIs(),
       ...useGenerateDataIsAttribute({
         disabled: props.disabled,
+        on: props.modelValue,
       }),
     })
 
@@ -114,7 +108,10 @@ export default defineComponent({
 
     provideSwitchThumbContext({
       tabindex: '-1',
-      'data-is': resolveDataIs(),
+      ...useGenerateDataIsAttribute({
+        disabled: props.disabled,
+        on: props.modelValue,
+      }),
     })
 
     return () =>
