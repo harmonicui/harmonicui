@@ -1,0 +1,5 @@
+export { default as Switch } from './Switch'
+export { default as SwitchToggle } from './SwitchToggle'
+export { default as SwitchThumb } from './SwitchThumb'
+export { Label as SwitchLabel } from '../Label'
+export { HelperText as SwitchHelperText } from '../HelperText'
