@@ -1,4 +1,4 @@
-import { fireEvent, RenderResult, screen } from '@testing-library/vue'
+import { fireEvent, screen } from '@testing-library/vue'
 import {
   assertMenuButtonDoesNotHaveAriaExpandedAttribute,
   assertMenuButtonHasAriaExpandedAttribute,
@@ -19,11 +19,10 @@ import {
   assertMenuListIsVisible,
 } from './assertions'
 import { Keys, Menu, MenuState } from './Menu'
-import { DefineComponent } from 'vue'
 import { MenuItem } from './MenuItem'
 import { MenuList } from './MenuList'
 import { MenuButton } from './MenuButton'
-import { renderInlineComponent } from '../../test-utils'
+import { createRenderer } from '../../test-utils'
 
 export function getMenuButton(): HTMLElement {
   return screen.getByRole('button')
@@ -43,25 +42,12 @@ export function getMenuItems(
   })
 }
 
-export function renderTemplate(
-  ui: string | Partial<DefineComponent>,
-): RenderResult {
-  const components = {
-    Menu,
-    MenuItem,
-    MenuList,
-    MenuButton,
-  }
-
-  if (typeof ui === 'string') {
-    return renderInlineComponent({
-      template: ui,
-      components,
-    })
-  }
-
-  return renderInlineComponent({ components, ...ui })
-}
+export const render = createRenderer({
+  Menu,
+  MenuItem,
+  MenuList,
+  MenuButton,
+})
 
 export async function press(
   key: Keys,

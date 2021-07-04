@@ -10,11 +10,11 @@ import {
   assertNoActiveMenuItem,
   getMenuButton,
   getMenuItems,
-  renderTemplate,
+  render,
 } from './test-utils'
 
 it('`Click` on MenuButton should open the menu', async () => {
-  renderTemplate(`
+  render(`
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
@@ -35,7 +35,7 @@ it('`Click` on MenuButton should open the menu', async () => {
 })
 
 it('`Right Click` on MenuButton should not open the menu', async () => {
-  renderTemplate(`
+  render(`
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
@@ -56,7 +56,7 @@ it('`Right Click` on MenuButton should not open the menu', async () => {
 })
 
 it('`Click` on MenuButton should not open the menu when MenuButton is disabled', async () => {
-  renderTemplate(`
+  render(`
     <Menu>
       <MenuButton disabled>Options</MenuButton>
       <MenuList>
@@ -77,7 +77,7 @@ it('`Click` on MenuButton should not open the menu when MenuButton is disabled',
 })
 
 it('`Click` on MenuButton should close the menu when its open', async () => {
-  renderTemplate(`
+  render(`
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
@@ -103,7 +103,7 @@ it('`Click` on MenuButton should close the menu when its open', async () => {
 })
 
 it('`Click` outside of the Menu should close the menu', async () => {
-  renderTemplate(`
+  render(`
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
@@ -129,7 +129,7 @@ it('`Click` outside of the Menu should close the menu', async () => {
 })
 
 it('`Click` outside of the Menu should do noting when the menu is closed', async () => {
-  renderTemplate(`
+  render(`
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
@@ -150,7 +150,7 @@ it('`Click` outside of the Menu should do noting when the menu is closed', async
 })
 
 it('`Click` outside of the menu on another MenuButton should close the currently opened menu and open the new menu', async () => {
-  renderTemplate(`
+  render(`
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
@@ -199,7 +199,7 @@ it('`Click` outside of the menu on another MenuButton should close the currently
 })
 
 it('`Hover` on a MenuItem should activate it', async () => {
-  renderTemplate(`
+  render(`
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
@@ -237,7 +237,7 @@ it('`Hover` on a MenuItem should activate it', async () => {
 })
 
 it('`Hover` on an already activated MenuItem should do nothing', async () => {
-  renderTemplate(`
+  render(`
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
@@ -267,7 +267,7 @@ it('`Hover` on an already activated MenuItem should do nothing', async () => {
 })
 
 it('`Hover` on a disable MenuItem should not activate it', async () => {
-  renderTemplate(`
+  render(`
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
@@ -293,7 +293,7 @@ it('`Hover` on a disable MenuItem should not activate it', async () => {
 })
 
 it('`UnHover` an already active MenuItem should inactivate it', async () => {
-  renderTemplate(`
+  render(`
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
@@ -323,7 +323,7 @@ it('`UnHover` an already active MenuItem should inactivate it', async () => {
 })
 
 it('`UnHover` a disabled MenuItem should do nothing', async () => {
-  renderTemplate(`
+  render(`
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
@@ -359,7 +359,7 @@ it('`UnHover` a disabled MenuItem should do nothing', async () => {
 it('`Click` on a MenuItem should invoke a clickEvent on it an closes the menu', async () => {
   const clickHandler = jest.fn()
 
-  renderTemplate({
+  render({
     template: `
       <Menu>
       <MenuButton>Options</MenuButton>
@@ -391,7 +391,7 @@ it('`Click` on a MenuItem should invoke a clickEvent on it an closes the menu', 
 it('`Click` on a disabled MenuItem should do nothing', async () => {
   const clickHandler = jest.fn()
 
-  renderTemplate({
+  render({
     template: `
       <Menu>
       <MenuButton>Options</MenuButton>
@@ -421,7 +421,7 @@ it('`Click` on a disabled MenuItem should do nothing', async () => {
 })
 
 it('`Focus` on a MenuItem should activate it', async () => {
-  renderTemplate(`
+  render(`
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
@@ -447,7 +447,7 @@ it('`Focus` on a MenuItem should activate it', async () => {
 })
 
 it('should not be possible to `Focus` on a disabled MenuItem', async () => {
-  renderTemplate(`
+  render(`
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>

@@ -9,7 +9,7 @@ import {
   assertNoActiveMenuItem,
   getMenuButton,
   press,
-  renderTemplate,
+  render,
 } from './test-utils'
 import { Keys } from './Menu'
 
@@ -17,16 +17,16 @@ jest.useFakeTimers()
 
 describe('`Space` key', () => {
   test('`Space` key should open the menu', async () => {
-    renderTemplate(`
-    <Menu>
-      <MenuButton>Options</MenuButton>
-      <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
-      </MenuList>
-    </Menu>
-  `)
+    render(`
+      <Menu>
+        <MenuButton>Options</MenuButton>
+        <MenuList>
+          <MenuItem>Settings</MenuItem>
+          <MenuItem>Profile</MenuItem>
+          <MenuItem>Sign out</MenuItem>
+        </MenuList>
+      </Menu>
+    `)
 
     await nextTick()
     assertMenuIsFullyAccessible()
@@ -41,16 +41,16 @@ describe('`Space` key', () => {
   })
 
   test('`Space` key should not open the menu when MenuButton is disabled', async () => {
-    renderTemplate(`
-    <Menu>
-      <MenuButton disabled>Options</MenuButton>
-      <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
-      </MenuList>
-    </Menu>
-  `)
+    render(`
+      <Menu>
+        <MenuButton disabled>Options</MenuButton>
+        <MenuList>
+          <MenuItem>Settings</MenuItem>
+          <MenuItem>Profile</MenuItem>
+          <MenuItem>Sign out</MenuItem>
+        </MenuList>
+      </Menu>
+    `)
 
     await nextTick()
     assertMenuIsFullyAccessible()
@@ -62,16 +62,16 @@ describe('`Space` key', () => {
   })
 
   test('`Space` key should open the menu and focus on the first non-disabled MenuItem', async () => {
-    renderTemplate(`
-    <Menu>
-      <MenuButton>Options</MenuButton>
-      <MenuList>
-        <MenuItem disabled>Settings</MenuItem>
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
-      </MenuList>
-    </Menu>
-  `)
+    render(`
+      <Menu>
+        <MenuButton>Options</MenuButton>
+        <MenuList>
+          <MenuItem disabled>Settings</MenuItem>
+          <MenuItem>Profile</MenuItem>
+          <MenuItem>Sign out</MenuItem>
+        </MenuList>
+      </Menu>
+    `)
 
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [0] })
@@ -85,7 +85,7 @@ describe('`Space` key', () => {
   })
 
   test('`Space` key should open the menu, skip all disabled MenuItems and focus on the first non-disabled one', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -108,7 +108,7 @@ describe('`Space` key', () => {
   })
 
   test('`Space` key should open the menu and menu should have no active item when no MenuItem exits', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList/>
@@ -124,7 +124,7 @@ describe('`Space` key', () => {
   })
 
   test('`Space` key should open the menu and menu should have no active item when all MenuItems are disabled', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -147,7 +147,7 @@ describe('`Space` key', () => {
   })
 
   test('`Space` key will close the menu when there is no active MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -174,7 +174,7 @@ describe('`Space` key', () => {
   test('`Space` key should invoke the active MenuItem and close the menu', async () => {
     const clickHandler = jest.fn()
 
-    renderTemplate({
+    render({
       template: `
         <Menu>
         <MenuButton>Options</MenuButton>
@@ -205,7 +205,7 @@ describe('`Space` key', () => {
 
 describe('`Enter` key', () => {
   test('`Enter` key should open the menu', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -229,7 +229,7 @@ describe('`Enter` key', () => {
   })
 
   test('`Enter` key should not open the menu when MenuButton is disabled', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton disabled>Options</MenuButton>
         <MenuList>
@@ -250,7 +250,7 @@ describe('`Enter` key', () => {
   })
 
   test('`Enter` key should open the menu and focus on the first non-disabled MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -273,7 +273,7 @@ describe('`Enter` key', () => {
   })
 
   test('`Enter` key should open the menu, skip all disabled MenuItems and focus on the first non-disabled one', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -296,7 +296,7 @@ describe('`Enter` key', () => {
   })
 
   test('`Enter` key should open the menu and menu should have no active item when no MenuItem exits', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList/>
@@ -312,7 +312,7 @@ describe('`Enter` key', () => {
   })
 
   test('`Enter` key should open the menu and menu should have no active item when all MenuItems are disabled', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -335,7 +335,7 @@ describe('`Enter` key', () => {
   })
 
   test('`Enter` key will close the menu when there is no active MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -362,7 +362,7 @@ describe('`Enter` key', () => {
   test('`Enter` key should invoke the active MenuItem and close the menu', async () => {
     const clickHandler = jest.fn()
 
-    renderTemplate({
+    render({
       template: `
         <Menu>
         <MenuButton>Options</MenuButton>
@@ -393,7 +393,7 @@ describe('`Enter` key', () => {
 
 describe('`ArrowDown` key', () => {
   test('`ArrowDown` key should open the menu', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -416,7 +416,7 @@ describe('`ArrowDown` key', () => {
   })
 
   test('`ArrowDown` key should not open the menu when MenuButton is disabled', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton disabled>Options</MenuButton>
         <MenuList>
@@ -437,7 +437,7 @@ describe('`ArrowDown` key', () => {
   })
 
   test('`ArrowDown` key should open the menu and menu should have no active item when no MenuItem exits', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList/>
@@ -453,7 +453,7 @@ describe('`ArrowDown` key', () => {
   })
 
   test('`ArrowDown` key should open the menu and focus on the first non-disabled MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -476,7 +476,7 @@ describe('`ArrowDown` key', () => {
   })
 
   test('`ArrowDown` key should open the menu, skip all disabled MenuItems and focus on the first non-disabled one', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -499,7 +499,7 @@ describe('`ArrowDown` key', () => {
   })
 
   test('`ArrowDown` key should navigate the MenuItems while menu is open', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -530,7 +530,7 @@ describe('`ArrowDown` key', () => {
   })
 
   test('`ArrowDown` key should navigate the MenuItems and skip the disabled MenuItems while navigating', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -557,7 +557,7 @@ describe('`ArrowDown` key', () => {
   })
 
   test('`ArrowDown` key should navigate the MenuItems and skip all disabled MenuItems while navigating', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -585,7 +585,7 @@ describe('`ArrowDown` key', () => {
   })
 
   test('`ArrowDown` key should navigate the MenuItems and stop on the last item', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -615,7 +615,7 @@ describe('`ArrowDown` key', () => {
 
 describe('`ArrowUp` key', () => {
   test('`ArrowUp` key should open the menu', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -638,7 +638,7 @@ describe('`ArrowUp` key', () => {
   })
 
   test('`ArrowUp` key should not open the menu when MenuButton is disabled', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton disabled>Options</MenuButton>
         <MenuList>
@@ -659,7 +659,7 @@ describe('`ArrowUp` key', () => {
   })
 
   test('`ArrowUp` key should open the menu and menu should have no active item when no MenuItem exits', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList/>
@@ -675,7 +675,7 @@ describe('`ArrowUp` key', () => {
   })
 
   test('`ArrowUp` key should open the menu and focus on the last non-disabled MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -698,7 +698,7 @@ describe('`ArrowUp` key', () => {
   })
 
   test('`ArrowUp` key should open the menu, skip all disabled MenuItems and focus on the first non-disabled one', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -721,7 +721,7 @@ describe('`ArrowUp` key', () => {
   })
 
   test('`ArrowUp` key should navigate the MenuItems while menu is open', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -752,7 +752,7 @@ describe('`ArrowUp` key', () => {
   })
 
   test('`ArrowUp` key should navigate the MenuItems and skip the disabled MenuItems while navigating', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -779,7 +779,7 @@ describe('`ArrowUp` key', () => {
   })
 
   test('`ArrowUp` key should navigate the MenuItems and skip all disabled MenuItems while navigating', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -807,7 +807,7 @@ describe('`ArrowUp` key', () => {
   })
 
   test('`ArrowUp` key should navigate the MenuItems and stop on the last item', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -837,7 +837,7 @@ describe('`ArrowUp` key', () => {
 
 describe('`Escape` key', () => {
   test('`Escape` Key should close the menu', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -866,7 +866,7 @@ describe('`Escape` key', () => {
 
 describe('`End` key', () => {
   test('`End` key should jump to last MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -892,7 +892,7 @@ describe('`End` key', () => {
   })
 
   test('`End` key should jump to last non-disabled MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -918,7 +918,7 @@ describe('`End` key', () => {
   })
 
   test('`End` key should jump to last non-disabled MenuItem (skips multiple disabled MenuItems)', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -944,7 +944,7 @@ describe('`End` key', () => {
   })
 
   test('`End` key should be ignored when no non-disabled MenuItems exists', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -972,7 +972,7 @@ describe('`End` key', () => {
 
 describe('`PageDown` key', () => {
   test('`PageDown` key should jump to last MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -998,7 +998,7 @@ describe('`PageDown` key', () => {
   })
 
   test('`PageDown` key should jump to last non-disabled MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -1024,7 +1024,7 @@ describe('`PageDown` key', () => {
   })
 
   test('`PageDown` key should jump to last non-disabled MenuItem (skips multiple disabled MenuItems)', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -1050,7 +1050,7 @@ describe('`PageDown` key', () => {
   })
 
   test('`PageDown` key should be ignored when no non-disabled MenuItems exists', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -1078,7 +1078,7 @@ describe('`PageDown` key', () => {
 
 describe('`Home` key', () => {
   test('`Home` key should jump to first MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -1104,7 +1104,7 @@ describe('`Home` key', () => {
   })
 
   test('`Home` key should jump to first non-disabled MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -1130,7 +1130,7 @@ describe('`Home` key', () => {
   })
 
   test('`Home` key should jump to first non-disabled MenuItem (skips multiple disabled MenuItems)', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -1156,7 +1156,7 @@ describe('`Home` key', () => {
   })
 
   test('`Home` key should be ignored when no non-disabled MenuItems exists', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -1184,7 +1184,7 @@ describe('`Home` key', () => {
 
 describe('`PageUp` key', () => {
   test('`PageUp` key should jump to first MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -1210,7 +1210,7 @@ describe('`PageUp` key', () => {
   })
 
   test('`PageUp` key should jump to first non-disabled MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -1236,7 +1236,7 @@ describe('`PageUp` key', () => {
   })
 
   test('`PageUp` key should jump to first non-disabled MenuItem (skips multiple disabled MenuItems)', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -1262,7 +1262,7 @@ describe('`PageUp` key', () => {
   })
 
   test('`PageUp` key should be ignored when no non-disabled MenuItems exists', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -1290,7 +1290,7 @@ describe('`PageUp` key', () => {
 
 describe('`Any` key / searching', () => {
   test('typing a single character should jump to the first matching MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -1321,7 +1321,7 @@ describe('`Any` key / searching', () => {
   })
 
   test('typing a single character (case-insensitive) should jump to the first matching MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -1352,7 +1352,7 @@ describe('`Any` key / searching', () => {
   })
 
   test('typing a full world should jump to the first matching MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -1383,7 +1383,7 @@ describe('`Any` key / searching', () => {
   })
 
   test('typing a full world (case-insensitive) should jump to the first matching MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -1414,7 +1414,7 @@ describe('`Any` key / searching', () => {
   })
 
   test('typing a world partially should jump to the first matching MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -1451,7 +1451,7 @@ describe('`Any` key / searching', () => {
   })
 
   test('typing a world which contains whitespaces should jump to the first matching MenuItem', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>
@@ -1476,7 +1476,7 @@ describe('`Any` key / searching', () => {
   })
 
   test('should not activate a disabled matching MenuItem while searching', async () => {
-    renderTemplate(`
+    render(`
       <Menu>
         <MenuButton>Options</MenuButton>
         <MenuList>

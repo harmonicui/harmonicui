@@ -1,3 +1,4 @@
+export * from './createRenderer'
 export * from './render'
 
 export function getElement(query: string): Element {
