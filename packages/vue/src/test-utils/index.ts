@@ -1,4 +1,5 @@
 export * from './createRenderer'
+export * from './interaction-utilities'
 export * from './render'
 
 export function getElement(query: string): Element {

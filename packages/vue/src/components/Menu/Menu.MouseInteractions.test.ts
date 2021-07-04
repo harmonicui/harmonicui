@@ -1,6 +1,6 @@
 import { nextTick } from 'vue'
-import userEvent from '@testing-library/user-event'
-import { screen } from '@testing-library/react'
+import { screen } from '@testing-library/vue'
+import { click, focus, hover, unHover } from '../../test-utils'
 import {
   assertActiveMenuItemIs,
   assertMenuButtonIsFocused,
@@ -28,8 +28,7 @@ it('`Click` on MenuButton should open the menu', async () => {
   await nextTick()
   assertMenuIsFullyAccessible()
 
-  userEvent.click(getMenuButton())
-  await nextTick()
+  await click(getMenuButton())
   assertMenuIsOpen()
   assertNoActiveMenuItem()
 })
@@ -49,8 +48,7 @@ it('`Right Click` on MenuButton should not open the menu', async () => {
   await nextTick()
   assertMenuIsFullyAccessible()
 
-  userEvent.click(getMenuButton(), { button: 2 })
-  await nextTick()
+  await click(getMenuButton(), { button: 2 })
   assertMenuIsFullyAccessible()
   assertMenuIsClosed()
 })
@@ -71,8 +69,7 @@ it('`Click` on MenuButton should not open the menu when MenuButton is disabled',
   assertMenuIsFullyAccessible()
   expect(getMenuButton()).toBeDisabled()
 
-  userEvent.click(getMenuButton())
-  await nextTick()
+  await click(getMenuButton())
   assertMenuIsClosed()
 })
 
@@ -91,13 +88,11 @@ it('`Click` on MenuButton should close the menu when its open', async () => {
   await nextTick()
   assertMenuIsFullyAccessible()
 
-  userEvent.click(getMenuButton())
-  await nextTick()
+  await click(getMenuButton())
   assertMenuIsOpen()
   assertNoActiveMenuItem()
 
-  userEvent.click(getMenuButton())
-  await nextTick()
+  await click(getMenuButton())
   assertMenuIsClosed()
   assertMenuButtonIsFocused()
 })
@@ -117,13 +112,11 @@ it('`Click` outside of the Menu should close the menu', async () => {
   await nextTick()
   assertMenuIsFullyAccessible()
 
-  userEvent.click(getMenuButton())
-  await nextTick()
+  await click(getMenuButton())
   assertMenuIsOpen()
   assertNoActiveMenuItem()
 
-  userEvent.click(document.body)
-  await nextTick()
+  await click(document.body)
   assertMenuIsClosed()
   assertMenuButtonIsFocused()
 })
@@ -144,8 +137,7 @@ it('`Click` outside of the Menu should do noting when the menu is closed', async
   assertMenuIsFullyAccessible()
   assertMenuIsClosed()
 
-  userEvent.click(document.body)
-  await nextTick()
+  await click(document.body)
   assertMenuIsClosed()
 })
 
@@ -188,12 +180,10 @@ it('`Click` outside of the menu on another MenuButton should close the currently
   assertMenuIsFullyAccessible(editMenu)
   assertMenuIsClosed(editMenu)
 
-  userEvent.click(optionsMenu.menuButton)
-  await nextTick()
+  await click(optionsMenu.menuButton)
   assertMenuIsOpen(optionsMenu)
 
-  userEvent.click(editMenu.menuButton)
-  await nextTick()
+  await click(editMenu.menuButton)
   assertMenuIsClosed(optionsMenu)
   assertMenuIsOpen(editMenu)
 })
@@ -214,25 +204,20 @@ it('`Hover` on a MenuItem should activate it', async () => {
   assertMenuIsFullyAccessible()
   assertMenuIsClosed()
 
-  userEvent.click(getMenuButton())
-  await nextTick()
+  await click(getMenuButton())
   assertMenuIsOpen()
   assertNoActiveMenuItem()
 
-  userEvent.hover(getMenuItems()[1])
-  await nextTick()
+  await hover(getMenuItems()[1])
   assertActiveMenuItemIs(1)
 
-  userEvent.hover(getMenuItems()[2])
-  await nextTick()
+  await hover(getMenuItems()[2])
   assertActiveMenuItemIs(2)
 
-  userEvent.hover(getMenuItems()[0])
-  await nextTick()
+  await hover(getMenuItems()[0])
   assertActiveMenuItemIs(0)
 
-  userEvent.hover(getMenuItems()[1])
-  await nextTick()
+  await hover(getMenuItems()[1])
   assertActiveMenuItemIs(1)
 })
 
@@ -252,17 +237,14 @@ it('`Hover` on an already activated MenuItem should do nothing', async () => {
   assertMenuIsFullyAccessible()
   assertMenuIsClosed()
 
-  userEvent.click(getMenuButton())
-  await nextTick()
+  await click(getMenuButton())
   assertMenuIsOpen()
   assertNoActiveMenuItem()
 
-  userEvent.hover(getMenuItems()[1])
-  await nextTick()
+  await hover(getMenuItems()[1])
   assertActiveMenuItemIs(1)
 
-  userEvent.hover(getMenuItems()[1])
-  await nextTick()
+  await hover(getMenuItems()[1])
   assertActiveMenuItemIs(1)
 })
 
@@ -282,13 +264,11 @@ it('`Hover` on a disable MenuItem should not activate it', async () => {
   assertMenuIsFullyAccessible({ disabledItems: [1] })
   assertMenuIsClosed()
 
-  userEvent.click(getMenuButton())
-  await nextTick()
+  await click(getMenuButton())
   assertMenuIsOpen()
   assertNoActiveMenuItem()
 
-  userEvent.hover(getMenuItems()[1])
-  await nextTick()
+  await hover(getMenuItems()[1])
   assertNoActiveMenuItem()
 })
 
@@ -308,17 +288,14 @@ it('`UnHover` an already active MenuItem should inactivate it', async () => {
   assertMenuIsFullyAccessible()
   assertMenuIsClosed()
 
-  userEvent.click(getMenuButton())
-  await nextTick()
+  await click(getMenuButton())
   assertMenuIsOpen()
   assertNoActiveMenuItem()
 
-  userEvent.hover(getMenuItems()[1])
-  await nextTick()
+  await hover(getMenuItems()[1])
   assertActiveMenuItemIs(1)
 
-  userEvent.unhover(getMenuItems()[1])
-  await nextTick()
+  await unHover(getMenuItems()[1])
   assertNoActiveMenuItem()
 })
 
@@ -338,21 +315,17 @@ it('`UnHover` a disabled MenuItem should do nothing', async () => {
   assertMenuIsFullyAccessible({ disabledItems: [1] })
   assertMenuIsClosed()
 
-  userEvent.click(getMenuButton())
-  await nextTick()
+  await click(getMenuButton())
   assertMenuIsOpen()
   assertNoActiveMenuItem()
 
-  userEvent.hover(getMenuItems()[0])
-  await nextTick()
+  await hover(getMenuItems()[0])
   assertActiveMenuItemIs(0)
 
-  userEvent.hover(getMenuItems()[1])
-  await nextTick()
+  await hover(getMenuItems()[1])
   assertActiveMenuItemIs(0)
 
-  userEvent.unhover(getMenuItems()[1])
-  await nextTick()
+  await unHover(getMenuItems()[1])
   assertActiveMenuItemIs(0)
 })
 
@@ -377,13 +350,11 @@ it('`Click` on a MenuItem should invoke a clickEvent on it an closes the menu', 
   assertMenuIsFullyAccessible()
   assertMenuIsClosed()
 
-  userEvent.click(getMenuButton())
-  await nextTick()
+  await click(getMenuButton())
   assertMenuIsOpen()
   assertNoActiveMenuItem()
 
-  userEvent.click(getMenuItems()[1])
-  await nextTick()
+  await click(getMenuItems()[1])
   assertMenuIsClosed()
   expect(clickHandler).toHaveBeenCalled()
 })
@@ -409,13 +380,11 @@ it('`Click` on a disabled MenuItem should do nothing', async () => {
   assertMenuIsFullyAccessible({ disabledItems: [1] })
   assertMenuIsClosed()
 
-  userEvent.click(getMenuButton())
-  await nextTick()
+  await click(getMenuButton())
   assertMenuIsOpen()
   assertNoActiveMenuItem()
 
-  userEvent.click(getMenuItems()[1])
-  await nextTick()
+  await click(getMenuItems()[1])
   assertMenuIsOpen()
   expect(clickHandler).not.toHaveBeenCalled()
 })
@@ -436,13 +405,11 @@ it('`Focus` on a MenuItem should activate it', async () => {
   assertMenuIsFullyAccessible()
   assertMenuIsClosed()
 
-  userEvent.click(getMenuButton())
-  await nextTick()
+  await click(getMenuButton())
   assertMenuIsOpen()
   assertNoActiveMenuItem()
 
-  getMenuItems()[1].focus()
-  await nextTick()
+  await focus(getMenuItems()[1])
   assertActiveMenuItemIs(1)
 })
 
@@ -462,12 +429,10 @@ it('should not be possible to `Focus` on a disabled MenuItem', async () => {
   assertMenuIsFullyAccessible({ disabledItems: [1] })
   assertMenuIsClosed()
 
-  userEvent.click(getMenuButton())
-  await nextTick()
+  await click(getMenuButton())
   assertMenuIsOpen()
   assertNoActiveMenuItem()
 
-  getMenuItems()[1].focus()
-  await nextTick()
+  await focus(getMenuItems()[1])
   assertNoActiveMenuItem()
 })
