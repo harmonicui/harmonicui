@@ -1,5 +1,5 @@
 import { nextTick } from 'vue'
-import userEvent from '@testing-library/user-event'
+import { click, focus, Keyboard, press, type } from '../../test-utils'
 import {
   assertActiveMenuItemIs,
   assertMenuButtonIsFocused,
@@ -8,12 +8,8 @@ import {
   assertMenuIsOpen,
   assertNoActiveMenuItem,
   getMenuButton,
-  press,
   render,
 } from './test-utils'
-import { Keys } from './Menu'
-
-jest.useFakeTimers()
 
 describe('`Space` key', () => {
   test('`Space` key should open the menu', async () => {
@@ -32,10 +28,10 @@ describe('`Space` key', () => {
     assertMenuIsFullyAccessible()
     assertMenuIsClosed()
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Space)
+    await press(Keyboard.Space)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
   })
@@ -56,8 +52,8 @@ describe('`Space` key', () => {
     assertMenuIsFullyAccessible()
     assertMenuIsClosed()
 
-    getMenuButton().focus()
-    await press(Keys.Space)
+    await focus(getMenuButton())
+    await press(Keyboard.Space)
     assertMenuIsClosed()
   })
 
@@ -76,10 +72,10 @@ describe('`Space` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [0] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Space)
+    await press(Keyboard.Space)
     assertMenuIsOpen()
     assertActiveMenuItemIs(1)
   })
@@ -99,10 +95,10 @@ describe('`Space` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [0, 1] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Space)
+    await press(Keyboard.Space)
     assertMenuIsOpen()
     assertActiveMenuItemIs(2)
   })
@@ -115,10 +111,10 @@ describe('`Space` key', () => {
       </Menu>
     `)
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Space)
+    await press(Keyboard.Space)
     assertMenuIsOpen()
     assertNoActiveMenuItem()
   })
@@ -138,10 +134,10 @@ describe('`Space` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [0, 1, 2] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Space)
+    await press(Keyboard.Space)
     assertMenuIsOpen()
     assertNoActiveMenuItem()
   })
@@ -162,12 +158,11 @@ describe('`Space` key', () => {
     assertMenuIsFullyAccessible()
     assertMenuIsClosed()
 
-    userEvent.click(getMenuButton())
-    await nextTick()
+    await click(getMenuButton())
     assertMenuIsOpen()
     assertNoActiveMenuItem()
 
-    await press(Keys.Space)
+    await press(Keyboard.Space)
     assertMenuIsClosed()
   })
 
@@ -192,12 +187,12 @@ describe('`Space` key', () => {
     assertMenuIsFullyAccessible()
     assertMenuIsClosed()
 
-    getMenuButton().focus()
-    await press(Keys.Space)
+    await focus(getMenuButton())
+    await press(Keyboard.Space)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
 
-    await press(Keys.Space)
+    await press(Keyboard.Space)
     assertMenuIsClosed()
     expect(clickHandler).toHaveBeenCalled()
   })
@@ -220,10 +215,10 @@ describe('`Enter` key', () => {
     assertMenuIsFullyAccessible()
     assertMenuIsClosed()
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Enter)
+    await press(Keyboard.Enter)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
   })
@@ -244,8 +239,8 @@ describe('`Enter` key', () => {
     assertMenuIsFullyAccessible()
     assertMenuIsClosed()
 
-    getMenuButton().focus()
-    await press(Keys.Enter)
+    await focus(getMenuButton())
+    await press(Keyboard.Enter)
     assertMenuIsClosed()
   })
 
@@ -264,10 +259,10 @@ describe('`Enter` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [0] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Enter)
+    await press(Keyboard.Enter)
     assertMenuIsOpen()
     assertActiveMenuItemIs(1)
   })
@@ -287,10 +282,10 @@ describe('`Enter` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [0, 1] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Enter)
+    await press(Keyboard.Enter)
     assertMenuIsOpen()
     assertActiveMenuItemIs(2)
   })
@@ -303,10 +298,10 @@ describe('`Enter` key', () => {
       </Menu>
     `)
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Enter)
+    await press(Keyboard.Enter)
     assertMenuIsOpen()
     assertNoActiveMenuItem()
   })
@@ -326,10 +321,10 @@ describe('`Enter` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [0, 1, 2] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Enter)
+    await press(Keyboard.Enter)
     assertMenuIsOpen()
     assertNoActiveMenuItem()
   })
@@ -350,12 +345,11 @@ describe('`Enter` key', () => {
     assertMenuIsFullyAccessible()
     assertMenuIsClosed()
 
-    userEvent.click(getMenuButton())
-    await nextTick()
+    await click(getMenuButton())
     assertMenuIsOpen()
     assertNoActiveMenuItem()
 
-    await press(Keys.Enter)
+    await press(Keyboard.Enter)
     assertMenuIsClosed()
   })
 
@@ -380,12 +374,12 @@ describe('`Enter` key', () => {
     assertMenuIsFullyAccessible()
     assertMenuIsClosed()
 
-    getMenuButton().focus()
-    await press(Keys.Enter)
+    await focus(getMenuButton())
+    await press(Keyboard.Enter)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
 
-    await press(Keys.Enter)
+    await press(Keyboard.Enter)
     assertMenuIsClosed()
     expect(clickHandler).toHaveBeenCalled()
   })
@@ -407,10 +401,10 @@ describe('`ArrowDown` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible()
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowDown)
+    await press(Keyboard.ArrowDown)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
   })
@@ -431,8 +425,8 @@ describe('`ArrowDown` key', () => {
     assertMenuIsFullyAccessible()
     assertMenuIsClosed()
 
-    getMenuButton().focus()
-    await press(Keys.ArrowDown)
+    await focus(getMenuButton())
+    await press(Keyboard.ArrowDown)
     assertMenuIsClosed()
   })
 
@@ -444,10 +438,10 @@ describe('`ArrowDown` key', () => {
       </Menu>
     `)
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowDown)
+    await press(Keyboard.ArrowDown)
     assertMenuIsOpen()
     assertNoActiveMenuItem()
   })
@@ -467,10 +461,10 @@ describe('`ArrowDown` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [0] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowDown)
+    await press(Keyboard.ArrowDown)
     assertMenuIsOpen()
     assertActiveMenuItemIs(1)
   })
@@ -490,10 +484,10 @@ describe('`ArrowDown` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [0, 1] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowDown)
+    await press(Keyboard.ArrowDown)
     assertMenuIsOpen()
     assertActiveMenuItemIs(2)
   })
@@ -513,18 +507,18 @@ describe('`ArrowDown` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible()
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowDown)
+    await press(Keyboard.ArrowDown)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
 
-    await press(Keys.ArrowDown)
+    await press(Keyboard.ArrowDown)
     assertMenuIsOpen()
     assertActiveMenuItemIs(1)
 
-    await press(Keys.ArrowDown)
+    await press(Keyboard.ArrowDown)
     assertMenuIsOpen()
     assertActiveMenuItemIs(2)
   })
@@ -544,14 +538,14 @@ describe('`ArrowDown` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [1] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowDown)
+    await press(Keyboard.ArrowDown)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
 
-    await press(Keys.ArrowDown)
+    await press(Keyboard.ArrowDown)
     assertMenuIsOpen()
     assertActiveMenuItemIs(2)
   })
@@ -572,14 +566,14 @@ describe('`ArrowDown` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [1, 2] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowDown)
+    await press(Keyboard.ArrowDown)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
 
-    await press(Keys.ArrowDown)
+    await press(Keyboard.ArrowDown)
     assertMenuIsOpen()
     assertActiveMenuItemIs(3)
   })
@@ -599,16 +593,16 @@ describe('`ArrowDown` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible()
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowDown)
-    await press(Keys.ArrowDown)
-    await press(Keys.ArrowDown)
+    await press(Keyboard.ArrowDown)
+    await press(Keyboard.ArrowDown)
+    await press(Keyboard.ArrowDown)
     assertMenuIsOpen()
     assertActiveMenuItemIs(2)
 
-    await press(Keys.ArrowDown)
+    await press(Keyboard.ArrowDown)
     assertActiveMenuItemIs(2)
   })
 })
@@ -629,10 +623,10 @@ describe('`ArrowUp` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible()
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertActiveMenuItemIs(2)
   })
@@ -653,8 +647,8 @@ describe('`ArrowUp` key', () => {
     assertMenuIsFullyAccessible()
     assertMenuIsClosed()
 
-    getMenuButton().focus()
-    await press(Keys.ArrowUp)
+    await focus(getMenuButton())
+    await press(Keyboard.ArrowUp)
     assertMenuIsClosed()
   })
 
@@ -666,10 +660,10 @@ describe('`ArrowUp` key', () => {
       </Menu>
     `)
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertNoActiveMenuItem()
   })
@@ -689,10 +683,10 @@ describe('`ArrowUp` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [2] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertActiveMenuItemIs(1)
   })
@@ -712,10 +706,10 @@ describe('`ArrowUp` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [1, 2] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
   })
@@ -735,18 +729,18 @@ describe('`ArrowUp` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible()
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertActiveMenuItemIs(2)
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertActiveMenuItemIs(1)
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
   })
@@ -766,14 +760,14 @@ describe('`ArrowUp` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [1] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertActiveMenuItemIs(2)
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
   })
@@ -794,14 +788,14 @@ describe('`ArrowUp` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [1, 2] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertActiveMenuItemIs(3)
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
   })
@@ -821,16 +815,16 @@ describe('`ArrowUp` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible()
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowUp)
-    await press(Keys.ArrowUp)
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
+    await press(Keyboard.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertActiveMenuItemIs(0)
   })
 })
@@ -851,14 +845,14 @@ describe('`Escape` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible()
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Enter)
+    await press(Keyboard.Enter)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
 
-    await press(Keys.Escape)
+    await press(Keyboard.Escape)
     assertMenuIsClosed()
     assertMenuButtonIsFocused()
   })
@@ -880,14 +874,14 @@ describe('`End` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible()
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Enter)
+    await press(Keyboard.Enter)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
 
-    await press(Keys.End)
+    await press(Keyboard.End)
     assertActiveMenuItemIs(2)
   })
 
@@ -906,14 +900,14 @@ describe('`End` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [2] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Enter)
+    await press(Keyboard.Enter)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
 
-    await press(Keys.End)
+    await press(Keyboard.End)
     assertActiveMenuItemIs(1)
   })
 
@@ -932,14 +926,14 @@ describe('`End` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [1, 2] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Enter)
+    await press(Keyboard.Enter)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
 
-    await press(Keys.End)
+    await press(Keyboard.End)
     assertActiveMenuItemIs(0)
   })
 
@@ -958,14 +952,14 @@ describe('`End` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [0, 1, 2] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Enter)
+    await press(Keyboard.Enter)
     assertMenuIsOpen()
     assertNoActiveMenuItem()
 
-    await press(Keys.End)
+    await press(Keyboard.End)
     assertNoActiveMenuItem()
   })
 })
@@ -986,14 +980,14 @@ describe('`PageDown` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible()
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Enter)
+    await press(Keyboard.Enter)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
 
-    await press(Keys.PageDown)
+    await press(Keyboard.PageDown)
     assertActiveMenuItemIs(2)
   })
 
@@ -1012,14 +1006,14 @@ describe('`PageDown` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [2] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Enter)
+    await press(Keyboard.Enter)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
 
-    await press(Keys.PageDown)
+    await press(Keyboard.PageDown)
     assertActiveMenuItemIs(1)
   })
 
@@ -1038,14 +1032,14 @@ describe('`PageDown` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [1, 2] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Enter)
+    await press(Keyboard.Enter)
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
 
-    await press(Keys.PageDown)
+    await press(Keyboard.PageDown)
     assertActiveMenuItemIs(0)
   })
 
@@ -1064,14 +1058,14 @@ describe('`PageDown` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [0, 1, 2] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.Enter)
+    await press(Keyboard.Enter)
     assertMenuIsOpen()
     assertNoActiveMenuItem()
 
-    await press(Keys.PageDown)
+    await press(Keyboard.PageDown)
     assertNoActiveMenuItem()
   })
 })
@@ -1092,14 +1086,14 @@ describe('`Home` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible()
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertActiveMenuItemIs(2)
 
-    await press(Keys.Home)
+    await press(Keyboard.Home)
     assertActiveMenuItemIs(0)
   })
 
@@ -1118,14 +1112,14 @@ describe('`Home` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [0] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertActiveMenuItemIs(2)
 
-    await press(Keys.Home)
+    await press(Keyboard.Home)
     assertActiveMenuItemIs(1)
   })
 
@@ -1144,14 +1138,14 @@ describe('`Home` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [0, 1] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertActiveMenuItemIs(2)
 
-    await press(Keys.Home)
+    await press(Keyboard.Home)
     assertActiveMenuItemIs(2)
   })
 
@@ -1170,14 +1164,14 @@ describe('`Home` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [0, 1, 2] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertNoActiveMenuItem()
 
-    await press(Keys.Home)
+    await press(Keyboard.Home)
     assertNoActiveMenuItem()
   })
 })
@@ -1198,14 +1192,14 @@ describe('`PageUp` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible()
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertActiveMenuItemIs(2)
 
-    await press(Keys.PageUp)
+    await press(Keyboard.PageUp)
     assertActiveMenuItemIs(0)
   })
 
@@ -1224,14 +1218,14 @@ describe('`PageUp` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [0] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertActiveMenuItemIs(2)
 
-    await press(Keys.PageUp)
+    await press(Keyboard.PageUp)
     assertActiveMenuItemIs(1)
   })
 
@@ -1250,14 +1244,14 @@ describe('`PageUp` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [0, 1] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertActiveMenuItemIs(2)
 
-    await press(Keys.PageUp)
+    await press(Keyboard.PageUp)
     assertActiveMenuItemIs(2)
   })
 
@@ -1276,14 +1270,14 @@ describe('`PageUp` key', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [0, 1, 2] })
 
-    getMenuButton().focus()
+    await focus(getMenuButton())
     assertMenuButtonIsFocused()
 
-    await press(Keys.ArrowUp)
+    await press(Keyboard.ArrowUp)
     assertMenuIsOpen()
     assertNoActiveMenuItem()
 
-    await press(Keys.PageUp)
+    await press(Keyboard.PageUp)
     assertNoActiveMenuItem()
   })
 })
@@ -1304,19 +1298,14 @@ describe('`Any` key / searching', () => {
     await nextTick()
     assertMenuIsFullyAccessible()
 
-    userEvent.click(getMenuButton())
-    await nextTick()
+    await click(getMenuButton())
     assertMenuIsOpen()
     assertNoActiveMenuItem()
 
-    userEvent.keyboard('P')
-    await nextTick()
+    await type('P')
     assertActiveMenuItemIs(1)
 
-    jest.runOnlyPendingTimers()
-
-    userEvent.keyboard('S')
-    await nextTick()
+    await type('S')
     assertActiveMenuItemIs(0)
   })
 
@@ -1335,19 +1324,14 @@ describe('`Any` key / searching', () => {
     await nextTick()
     assertMenuIsFullyAccessible()
 
-    userEvent.click(getMenuButton())
-    await nextTick()
+    await click(getMenuButton())
     assertMenuIsOpen()
     assertNoActiveMenuItem()
 
-    userEvent.keyboard('p')
-    await nextTick()
+    await type('p')
     assertActiveMenuItemIs(1)
 
-    jest.runOnlyPendingTimers()
-
-    userEvent.keyboard('s')
-    await nextTick()
+    await type('s')
     assertActiveMenuItemIs(0)
   })
 
@@ -1366,19 +1350,14 @@ describe('`Any` key / searching', () => {
     await nextTick()
     assertMenuIsFullyAccessible()
 
-    userEvent.click(getMenuButton())
-    await nextTick()
+    await click(getMenuButton())
     assertMenuIsOpen()
     assertNoActiveMenuItem()
 
-    userEvent.keyboard('Profile')
-    await nextTick()
+    await type('Profile')
     assertActiveMenuItemIs(1)
 
-    jest.runOnlyPendingTimers()
-
-    userEvent.keyboard('Settings')
-    await nextTick()
+    await type('Settings')
     assertActiveMenuItemIs(0)
   })
 
@@ -1397,19 +1376,14 @@ describe('`Any` key / searching', () => {
     await nextTick()
     assertMenuIsFullyAccessible()
 
-    userEvent.click(getMenuButton())
-    await nextTick()
+    await click(getMenuButton())
     assertMenuIsOpen()
     assertNoActiveMenuItem()
 
-    userEvent.keyboard('profile')
-    await nextTick()
+    await type('profile')
     assertActiveMenuItemIs(1)
 
-    jest.runOnlyPendingTimers()
-
-    userEvent.keyboard('settings')
-    await nextTick()
+    await type('settings')
     assertActiveMenuItemIs(0)
   })
 
@@ -1428,25 +1402,17 @@ describe('`Any` key / searching', () => {
     await nextTick()
     assertMenuIsFullyAccessible()
 
-    userEvent.click(getMenuButton())
-    await nextTick()
+    await click(getMenuButton())
     assertMenuIsOpen()
     assertNoActiveMenuItem()
 
-    userEvent.keyboard('prof')
-    await nextTick()
+    await type('prof')
     assertActiveMenuItemIs(1)
 
-    jest.runOnlyPendingTimers()
-
-    userEvent.keyboard('sig')
-    await nextTick()
+    await type('sig')
     assertActiveMenuItemIs(2)
 
-    jest.runOnlyPendingTimers()
-
-    userEvent.keyboard('se')
-    await nextTick()
+    await type('se')
     assertActiveMenuItemIs(0)
   })
 
@@ -1465,13 +1431,11 @@ describe('`Any` key / searching', () => {
     await nextTick()
     assertMenuIsFullyAccessible()
 
-    userEvent.click(getMenuButton())
-    await nextTick()
+    await click(getMenuButton())
     assertMenuIsOpen()
     assertNoActiveMenuItem()
 
-    userEvent.keyboard('sign out')
-    await nextTick()
+    await type('sign out')
     assertActiveMenuItemIs(2)
   })
 
@@ -1490,13 +1454,11 @@ describe('`Any` key / searching', () => {
     await nextTick()
     assertMenuIsFullyAccessible({ disabledItems: [1] })
 
-    userEvent.click(getMenuButton())
-    await nextTick()
+    await click(getMenuButton())
     assertMenuIsOpen()
     assertNoActiveMenuItem()
 
-    userEvent.keyboard('profile')
-    await nextTick()
+    await type('profile')
     assertNoActiveMenuItem()
   })
 })

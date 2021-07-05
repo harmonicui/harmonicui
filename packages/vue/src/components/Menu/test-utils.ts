@@ -49,17 +49,6 @@ export const render = createRenderer({
   MenuButton,
 })
 
-export async function press(
-  key: Keys,
-  element = document.activeElement,
-): Promise<void> {
-  if (!element) {
-    return expect(element).not.toBeNull()
-  }
-
-  await fireEvent.keyDown(element, { key })
-}
-
 interface Options {
   disabledItems?: Array<number>
   state?: MenuState
