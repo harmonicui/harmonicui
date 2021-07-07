@@ -104,16 +104,30 @@ export function assertMenuIsClosed({
 }
 
 export function assertActiveMenuItemIs(index: number): void {
+  const activeItem = getMenuItems()[index]
   assertMenuListHasProperAriaActiveDescendantAttribute(
     getMenuList(MenuState.Open),
-    getMenuItems()[index].id,
+    activeItem.id,
   )
+  assertMenuItemHasActiveDataState(activeItem)
+
+  getMenuItems()
+    .filter((_, i) => i !== index)
+    .forEach(menuItem => {
+      assertMenuItemDoesNotHaveActiveDataState(menuItem)
+    })
 }
 
 export function assertNoActiveMenuItem(): void {
   assertMenuListDoesNotHaveAriaActiveDescendantAttribute(
     getMenuList(MenuState.Open),
   )
+
+  if (screen.queryAllByRole('menuitem').length !== 0) {
+    getMenuItems(MenuState.Open).forEach(menuItem => {
+      assertMenuItemDoesNotHaveActiveDataState(menuItem)
+    })
+  }
 }
 
 function assertAllMenuItemsHaveProperTabindex(
@@ -133,10 +147,41 @@ function assertAllMenuItemsHaveProperAriaDisabledAttribute(
   disabledItems: Options['disabledItems'],
   state: MenuState,
 ): void {
-  getMenuItems(state).forEach((element, index) => {
-    assertMenuItemHasProperAriaDisabledAttribute(
-      element,
-      !!disabledItems?.includes(index),
-    )
+  getMenuItems(state).forEach((menuItem, index) => {
+    if (disabledItems?.includes(index)) {
+      assertMenuItemHasProperAriaDisabledAttribute(menuItem, true)
+      assertMenuItemHasDisabledDataState(menuItem)
+    } else {
+      assertMenuItemHasProperAriaDisabledAttribute(menuItem, false)
+      assertMenuItemDoesNotHaveDisabledDataState(menuItem)
+    }
   })
+}
+
+function assertMenuItemHasActiveDataState(element: Element): void {
+  expect(element).toHaveAttribute(
+    'data-state',
+    expect.stringContaining('active'),
+  )
+}
+
+function assertMenuItemDoesNotHaveActiveDataState(element: Element): void {
+  expect(element).not.toHaveAttribute(
+    'data-state',
+    expect.stringContaining('active'),
+  )
+}
+
+function assertMenuItemHasDisabledDataState(element: Element): void {
+  expect(element).toHaveAttribute(
+    'data-state',
+    expect.stringContaining('disabled'),
+  )
+}
+
+function assertMenuItemDoesNotHaveDisabledDataState(element: Element): void {
+  expect(element).not.toHaveAttribute(
+    'data-state',
+    expect.stringContaining('disabled'),
+  )
 }

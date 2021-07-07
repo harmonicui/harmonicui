@@ -251,6 +251,11 @@ export const Menu = defineComponent({
         setActiveItem(Items.None)
       },
       close: closeMenu,
+      data: readonly(
+        reactive({
+          activeItemId: computed(() => activeItem.value?.id || null),
+        }),
+      ),
     })
 
     return () =>

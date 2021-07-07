@@ -11,6 +11,9 @@ export interface MenuItemContract {
   focus: (id: string) => void
   unFocus: () => void
   close: () => void
+  data: {
+    activeItemId: string | null
+  }
 }
 
 export const MenuItemContext =

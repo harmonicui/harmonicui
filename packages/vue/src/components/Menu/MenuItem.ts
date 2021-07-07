@@ -1,7 +1,7 @@
-import { defineComponent, onMounted } from 'vue'
+import { defineComponent, nextTick, onMounted, watchEffect } from 'vue'
 import { render } from '../../utils'
 import { useMenuItemContext } from '../../contexts'
-import { useGenerateId } from '../../composable'
+import { useGenerateId, useComposeDataState } from '../../composable'
 
 export const MenuItem = defineComponent({
   name: 'MenuItem',
@@ -24,7 +24,7 @@ export const MenuItem = defineComponent({
   },
 
   setup(props, { slots }) {
-    const { close, subscribe, focus, unFocus } = useMenuItemContext()
+    const { close, data, subscribe, focus, unFocus } = useMenuItemContext()
 
     onMounted(() => {
       subscribe({
@@ -32,6 +32,16 @@ export const MenuItem = defineComponent({
         disabled: props.disabled,
         text: document.getElementById(props.id)?.textContent || '',
       })
+    })
+
+    watchEffect(() => {
+      if (data.activeItemId === props.id) {
+        nextTick(() =>
+          document.getElementById(props.id)?.scrollIntoView?.({
+            block: 'nearest',
+          }),
+        )
+      }
     })
 
     function onFocusHandler() {
@@ -76,8 +86,15 @@ export const MenuItem = defineComponent({
           onPointerleave: onUnHoverHandler,
           onClick: onCLickHandler,
           onFocus: onFocusHandler,
+          'data-state': useComposeDataState({
+            active: data.activeItemId === props.id,
+            disabled: props.disabled,
+          }),
         },
         children: slots.default,
+        childrenProps: {
+          isActive: data.activeItemId === props.id,
+        },
       })
   },
 })

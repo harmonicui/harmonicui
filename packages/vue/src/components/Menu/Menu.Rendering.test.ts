@@ -2,6 +2,7 @@ import { defineComponent, nextTick } from 'vue'
 import { screen } from '@testing-library/vue'
 import { Keyboard, press, suppressWarnings } from '../../test-utils'
 import {
+  assertActiveMenuItemIs,
   assertMenuIsClosed,
   assertMenuIsFullyAccessible,
   assertMenuIsOpen,
@@ -654,7 +655,34 @@ describe('MenuItem', () => {
     expect(getMenuItems(MenuState.Closed)[0]).toHaveAttribute('id', 'menu-item')
   })
 
-  test.skip('should expose its active state through default slot', () => {
-    // TODO
+  test('should expose its active state through default slot', async () => {
+    render(`
+      <Menu>
+        <MenuButton>Options</MenuButton>
+        <MenuList>
+          <MenuItem v-slot='{ isActive }'>
+            <button :class="{ 'bg-blue': isActive }">Settings</button>
+          </MenuItem>
+          <MenuItem v-slot='{ isActive }'>
+            <button :class="{ 'bg-blue': isActive }">Profile</button>
+          </MenuItem>
+        </MenuList>
+      </Menu>
+    `)
+
+    await nextTick()
+    assertMenuIsFullyAccessible()
+    assertMenuIsClosed()
+
+    await press(Keyboard.Space, getMenuButton())
+    assertMenuIsOpen()
+    assertActiveMenuItemIs(0)
+    expect(getMenuItems(MenuState.Open)[0]).toHaveClass('bg-blue')
+    expect(getMenuItems(MenuState.Open)[1]).not.toHaveClass('bg-blue')
+
+    await press(Keyboard.ArrowDown)
+    assertActiveMenuItemIs(1)
+    expect(getMenuItems(MenuState.Open)[0]).not.toHaveClass('bg-blue')
+    expect(getMenuItems(MenuState.Open)[1]).toHaveClass('bg-blue')
   })
 })
