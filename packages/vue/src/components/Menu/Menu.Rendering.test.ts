@@ -15,6 +15,7 @@ import { Menu, MenuState } from './Menu'
 import { MenuButton } from './MenuButton'
 import { MenuItem } from './MenuItem'
 import { MenuList } from './MenuList'
+import { UnableToPassPropsThroughFragmentError } from '../../utils'
 
 function getMenu() {
   return screen.getByTestId('menu')
@@ -39,9 +40,7 @@ describe('Menu', () => {
             </MenuList>
           </Menu>
         `)
-      }).toThrowError(
-        /Unable to pass props to fragment(.+?)<Menu \/> component/s,
-      )
+      }).toThrowError(new UnableToPassPropsThroughFragmentError('Menu'))
     }),
   )
 
@@ -510,9 +509,7 @@ describe('MenuItem', () => {
           </MenuList>
         </Menu>
       `)
-      }).toThrowError(
-        /Unable to pass props to fragment(.+?)<MenuItem \/> component/s,
-      )
+      }).toThrowError(new UnableToPassPropsThroughFragmentError('MenuItem'))
     }),
   )
 
