@@ -8,11 +8,8 @@ export const MenuItem = defineComponent({
 
   props: {
     as: {
-      type: String,
-      default: 'div',
-      validator: (value: string) => {
-        return ['div', 'span', 'a'].indexOf(value) !== -1
-      },
+      type: [String, Object],
+      default: 'fragment',
     },
 
     id: {

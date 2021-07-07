@@ -18,9 +18,9 @@ it('`Click` on MenuButton should open the menu', async () => {
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
+        <MenuItem as='a'>Settings</MenuItem>
+        <MenuItem as='a'>Profile</MenuItem>
+        <MenuItem as='a'>Sign out</MenuItem>
       </MenuList>
     </Menu>
   `)
@@ -38,9 +38,9 @@ it('`Right Click` on MenuButton should not open the menu', async () => {
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
+        <MenuItem as='a'>Settings</MenuItem>
+        <MenuItem as='a'>Profile</MenuItem>
+        <MenuItem as='a'>Sign out</MenuItem>
       </MenuList>
     </Menu>
   `)
@@ -58,9 +58,9 @@ it('`Click` on MenuButton should not open the menu when MenuButton is disabled',
     <Menu>
       <MenuButton disabled>Options</MenuButton>
       <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
+        <MenuItem as='a'>Settings</MenuItem>
+        <MenuItem as='a'>Profile</MenuItem>
+        <MenuItem as='a'>Sign out</MenuItem>
       </MenuList>
     </Menu>
   `)
@@ -78,9 +78,9 @@ it('`Click` on MenuButton should close the menu when its open', async () => {
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
+        <MenuItem as='a'>Settings</MenuItem>
+        <MenuItem as='a'>Profile</MenuItem>
+        <MenuItem as='a'>Sign out</MenuItem>
       </MenuList>
     </Menu>
   `)
@@ -102,9 +102,9 @@ it('`Click` outside of the Menu should close the menu', async () => {
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
+        <MenuItem as='a'>Settings</MenuItem>
+        <MenuItem as='a'>Profile</MenuItem>
+        <MenuItem as='a'>Sign out</MenuItem>
       </MenuList>
     </Menu>
   `)
@@ -126,9 +126,9 @@ it('`Click` outside of the Menu should do noting when the menu is closed', async
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
+        <MenuItem as='a'>Settings</MenuItem>
+        <MenuItem as='a'>Profile</MenuItem>
+        <MenuItem as='a'>Sign out</MenuItem>
       </MenuList>
     </Menu>
   `)
@@ -146,19 +146,19 @@ it('`Click` outside of the menu on another MenuButton should close the currently
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
+        <MenuItem as='a'>Settings</MenuItem>
+        <MenuItem as='a'>Profile</MenuItem>
+        <MenuItem as='a'>Sign out</MenuItem>
       </MenuList>
     </Menu>
 
     <Menu>
       <MenuButton>Edit</MenuButton>
       <MenuList>
-        <MenuItem>Undo</MenuItem>
-        <MenuItem>Redo</MenuItem>
-        <MenuItem>Copy</MenuItem>
-        <MenuItem>Paste</MenuItem>
+        <MenuItem as='a'>Undo</MenuItem>
+        <MenuItem as='a'>Redo</MenuItem>
+        <MenuItem as='a'>Copy</MenuItem>
+        <MenuItem as='a'>Paste</MenuItem>
       </MenuList>
     </Menu>
   `)
@@ -193,9 +193,9 @@ it('`Hover` on a MenuItem should activate it', async () => {
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
+        <MenuItem as='a'>Settings</MenuItem>
+        <MenuItem as='a'>Profile</MenuItem>
+        <MenuItem as='a'>Sign out</MenuItem>
       </MenuList>
     </Menu>
   `)
@@ -226,9 +226,9 @@ it('`Hover` on an already activated MenuItem should do nothing', async () => {
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
+        <MenuItem as='a'>Settings</MenuItem>
+        <MenuItem as='a'>Profile</MenuItem>
+        <MenuItem as='a'>Sign out</MenuItem>
       </MenuList>
     </Menu>
   `)
@@ -253,9 +253,9 @@ it('`Hover` on a disable MenuItem should not activate it', async () => {
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem disabled>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
+        <MenuItem as='a'>Settings</MenuItem>
+        <MenuItem as='a' disabled>Profile</MenuItem>
+        <MenuItem as='a'>Sign out</MenuItem>
       </MenuList>
     </Menu>
   `)
@@ -277,9 +277,9 @@ it('`UnHover` an already active MenuItem should inactivate it', async () => {
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
+        <MenuItem as='a'>Settings</MenuItem>
+        <MenuItem as='a'>Profile</MenuItem>
+        <MenuItem as='a'>Sign out</MenuItem>
       </MenuList>
     </Menu>
   `)
@@ -304,9 +304,9 @@ it('`UnHover` a disabled MenuItem should do nothing', async () => {
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem disabled>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
+        <MenuItem as='a'>Settings</MenuItem>
+        <MenuItem as='a' disabled>Profile</MenuItem>
+        <MenuItem as='a'>Sign out</MenuItem>
       </MenuList>
     </Menu>
   `)
@@ -337,9 +337,9 @@ it('`Click` on a MenuItem should invoke a clickEvent on it an closes the menu', 
       <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem @click='clickHandler'>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
+        <MenuItem as='a'>Settings</MenuItem>
+        <MenuItem as='a' @click='clickHandler'>Profile</MenuItem>
+        <MenuItem as='a'>Sign out</MenuItem>
       </MenuList>
       </Menu>
     `,
@@ -367,9 +367,9 @@ it('`Click` on a disabled MenuItem should do nothing', async () => {
       <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem disabled @click='clickHandler'>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
+        <MenuItem as='a'>Settings</MenuItem>
+        <MenuItem as='a' disabled @click='clickHandler'>Profile</MenuItem>
+        <MenuItem as='a'>Sign out</MenuItem>
       </MenuList>
       </Menu>
     `,
@@ -394,9 +394,9 @@ it('`Focus` on a MenuItem should activate it', async () => {
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
+        <MenuItem as='a'>Settings</MenuItem>
+        <MenuItem as='a'>Profile</MenuItem>
+        <MenuItem as='a'>Sign out</MenuItem>
       </MenuList>
     </Menu>
   `)
@@ -418,9 +418,9 @@ it('should not be possible to `Focus` on a disabled MenuItem', async () => {
     <Menu>
       <MenuButton>Options</MenuButton>
       <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem disabled>Profile</MenuItem>
-        <MenuItem>Sign out</MenuItem>
+        <MenuItem as='a'>Settings</MenuItem>
+        <MenuItem as='a' disabled>Profile</MenuItem>
+        <MenuItem as='a'>Sign out</MenuItem>
       </MenuList>
     </Menu>
   `)

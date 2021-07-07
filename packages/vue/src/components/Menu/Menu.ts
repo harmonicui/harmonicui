@@ -57,11 +57,8 @@ export const Menu = defineComponent({
 
   props: {
     as: {
-      type: String,
+      type: [String, Object],
       default: 'fragment',
-      validator: (value: string) => {
-        return ['div', 'fragment'].indexOf(value) !== -1
-      },
     },
   },
 
@@ -261,6 +258,9 @@ export const Menu = defineComponent({
         as: props.as,
         props: attrs,
         children: slots.default,
+        childrenProps: {
+          isOpen: menuIsOpen(),
+        },
       })
   },
 })

@@ -7,13 +7,12 @@ import { Items, Keys } from './Menu'
 export const MenuList = defineComponent({
   name: 'MenuList',
 
+  inheritAttrs: false,
+
   props: {
     as: {
-      type: String,
+      type: [String, Object],
       default: 'div',
-      validator: (value: string) => {
-        return ['div', 'ul'].indexOf(value) !== -1
-      },
     },
 
     id: {
@@ -22,7 +21,7 @@ export const MenuList = defineComponent({
     },
   },
 
-  setup(props, { slots }) {
+  setup(props, { slots, attrs }) {
     const { closeMenu, subscribe, search, setActiveItem, data } =
       useMenuListContext()
 
@@ -86,6 +85,7 @@ export const MenuList = defineComponent({
       render({
         as: props.as,
         props: {
+          ...attrs,
           id: props.id,
           role: 'menu',
           tabindex: -1,

@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/vue'
+import { screen } from '@testing-library/vue'
 import {
   assertMenuButtonDoesNotHaveAriaExpandedAttribute,
   assertMenuButtonHasAriaExpandedAttribute,
@@ -18,7 +18,7 @@ import {
   assertMenuListIsNotVisible,
   assertMenuListIsVisible,
 } from './assertions'
-import { Keys, Menu, MenuState } from './Menu'
+import { Menu, MenuState } from './Menu'
 import { MenuItem } from './MenuItem'
 import { MenuList } from './MenuList'
 import { MenuButton } from './MenuButton'

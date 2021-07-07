@@ -7,13 +7,12 @@ import { Items, Keys } from './Menu'
 export const MenuButton = defineComponent({
   name: 'MenuButton',
 
+  inheritAttrs: false,
+
   props: {
     as: {
-      type: String,
+      type: [String, Object],
       default: 'button',
-      validator: (value: string) => {
-        return ['span', 'button'].indexOf(value) !== -1
-      },
     },
 
     id: {
@@ -27,7 +26,7 @@ export const MenuButton = defineComponent({
     },
   },
 
-  setup(props, { slots }) {
+  setup(props, { slots, attrs }) {
     const { data, openMenu, subscribe, toggleMenu } = useMenuButtonContext()
 
     onMounted(() => {
@@ -61,6 +60,7 @@ export const MenuButton = defineComponent({
       render({
         as: props.as,
         props: {
+          ...attrs,
           id: props.id,
           disabled: props.disabled,
           role: 'button',
