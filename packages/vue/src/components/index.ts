@@ -1,3 +1,4 @@
+export * from './CheckBox'
 export * from './ErrorMessage'
 export * from './HelperText'
 export * from './Label'
