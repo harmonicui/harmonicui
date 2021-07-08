@@ -1,8 +1,8 @@
 import { defineComponent, onMounted } from 'vue'
-import { render } from '../../utils'
+import { Keys, render } from '../../utils'
 import { useMenuButtonContext } from '../../contexts'
 import { useGenerateId } from '../../composable'
-import { Items, Keys } from './Menu'
+import { Items } from './Menu'
 
 export const MenuButton = defineComponent({
   name: 'MenuButton',

@@ -34,8 +34,12 @@ export const MenuItem = defineComponent({
       })
     })
 
+    function isActive() {
+      return data.activeItemId === props.id
+    }
+
     watchEffect(() => {
-      if (data.activeItemId === props.id) {
+      if (isActive()) {
         nextTick(() =>
           document.getElementById(props.id)?.scrollIntoView?.({
             block: 'nearest',
@@ -87,13 +91,13 @@ export const MenuItem = defineComponent({
           onClick: onCLickHandler,
           onFocus: onFocusHandler,
           'data-state': useComposeDataState({
-            active: data.activeItemId === props.id,
+            active: isActive(),
             disabled: props.disabled,
           }),
         },
         children: slots.default,
         childrenProps: {
-          isActive: data.activeItemId === props.id,
+          isActive: isActive(),
         },
       })
   },
