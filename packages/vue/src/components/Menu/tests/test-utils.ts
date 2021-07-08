@@ -18,11 +18,11 @@ import {
   assertMenuListIsNotVisible,
   assertMenuListIsVisible,
 } from './assertions'
-import { Menu, MenuState } from './Menu'
-import { MenuItem } from './MenuItem'
-import { MenuList } from './MenuList'
-import { MenuButton } from './MenuButton'
-import { createRenderer } from '../../test-utils'
+import { Menu, MenuState } from '../Menu'
+import { MenuItem } from '../MenuItem'
+import { MenuList } from '../MenuList'
+import { MenuButton } from '../MenuButton'
+import { createRenderer } from '../../../test-utils'
 
 export function getMenuButton(): HTMLElement {
   return screen.getByRole('button')

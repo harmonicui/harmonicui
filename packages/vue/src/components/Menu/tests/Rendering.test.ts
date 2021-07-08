@@ -1,6 +1,6 @@
 import { defineComponent, nextTick } from 'vue'
 import { screen } from '@testing-library/vue'
-import { Keyboard, press, suppressWarnings } from '../../test-utils'
+import { Keyboard, press, suppressWarnings } from '../../../test-utils'
 import {
   assertActiveMenuItemIs,
   assertMenuIsClosed,
@@ -11,11 +11,11 @@ import {
   getMenuList,
   render,
 } from './test-utils'
-import { Menu, MenuState } from './Menu'
-import { MenuButton } from './MenuButton'
-import { MenuItem } from './MenuItem'
-import { MenuList } from './MenuList'
-import { UnableToPassPropsThroughFragmentError } from '../../utils'
+import { Menu, MenuState } from '../Menu'
+import { MenuButton } from '../MenuButton'
+import { MenuItem } from '../MenuItem'
+import { MenuList } from '../MenuList'
+import { UnableToPassPropsThroughFragmentError } from '../../../utils'
 
 function getMenu() {
   return screen.getByTestId('menu')

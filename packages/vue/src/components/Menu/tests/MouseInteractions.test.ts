@@ -1,6 +1,6 @@
 import { nextTick } from 'vue'
 import { screen } from '@testing-library/vue'
-import { click, focus, hover, unHover } from '../../test-utils'
+import { click, focus, hover, unHover } from '../../../test-utils'
 import {
   assertActiveMenuItemIs,
   assertMenuButtonIsFocused,

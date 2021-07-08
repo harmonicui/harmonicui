@@ -1,5 +1,5 @@
 import { nextTick } from 'vue'
-import { click, focus, Keyboard, press, type } from '../../test-utils'
+import { click, focus, Keyboard, press, type } from '../../../test-utils'
 import {
   assertActiveMenuItemIs,
   assertMenuButtonIsFocused,
