@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/vue'
+import { ByRoleOptions, screen } from '@testing-library/vue'
 import {
   assertMenuButtonDoesNotHaveAriaExpandedAttribute,
   assertMenuButtonHasAriaExpandedAttribute,
@@ -24,22 +24,20 @@ import { MenuList } from '../MenuList'
 import { MenuButton } from '../MenuButton'
 import { createRenderer } from '../../../test-utils'
 
+export function getMenu(): HTMLElement {
+  return screen.getByTestId('menu')
+}
+
 export function getMenuButton(): HTMLElement {
   return screen.getByRole('button')
 }
 
-export function getMenuList(state: MenuState): HTMLElement {
-  return screen.getByRole('menu', {
-    hidden: state === MenuState.Closed,
-  })
+export function getMenuList(options?: ByRoleOptions): HTMLElement {
+  return screen.getByRole('menu', options)
 }
 
-export function getMenuItems(
-  state: MenuState = MenuState.Open,
-): Array<HTMLElement> {
-  return screen.getAllByRole('menuitem', {
-    hidden: state === MenuState.Closed,
-  })
+export function getMenuItems(options?: ByRoleOptions): Array<HTMLElement> {
+  return screen.getAllByRole('menuitem', options)
 }
 
 export const render = createRenderer({
@@ -60,7 +58,7 @@ export function assertMenuIsFullyAccessible({
   disabledItems = [],
   state = MenuState.Closed,
   menuButton = getMenuButton(),
-  menuList = getMenuList(state),
+  menuList = getMenuList({ hidden: state === MenuState.Closed }),
 }: Options = {}): void {
   assertMenuButtonHasProperRole(menuButton)
   assertMenuButtonHasProperAriaHasPopupAttribute(menuButton)
@@ -73,7 +71,7 @@ export function assertMenuIsFullyAccessible({
   assertAllMenuItemsHaveProperRole(state)
   assertAllMenuItemsHaveProperTabindex(disabledItems, state)
 
-  assertAllMenuItemsHaveProperAriaDisabledAttribute(disabledItems, state)
+  assertAllMenuItemsHaveProperDisabledStatus(disabledItems, state)
 }
 
 export function assertMenuButtonIsFocused(): void {
@@ -86,7 +84,7 @@ export function assertMenuButtonIsNotFocused(): void {
 
 export function assertMenuIsOpen({
   menuButton = getMenuButton(),
-  menuList = getMenuList(MenuState.Open),
+  menuList = getMenuList(),
 }: Pick<Options, 'menuButton' | 'menuList'> = {}): void {
   assertMenuButtonHasAriaExpandedAttribute(menuButton)
   assertMenuListIsVisible(menuList)
@@ -95,7 +93,7 @@ export function assertMenuIsOpen({
 
 export function assertMenuIsClosed({
   menuButton = getMenuButton(),
-  menuList = getMenuList(MenuState.Closed),
+  menuList = getMenuList({ hidden: true }),
 }: Pick<Options, 'menuButton' | 'menuList'> = {}): void {
   assertMenuButtonDoesNotHaveAriaExpandedAttribute(menuButton)
   assertMenuListDoesNotHaveAriaActiveDescendantAttribute(menuList)
@@ -106,7 +104,7 @@ export function assertMenuIsClosed({
 export function assertActiveMenuItemIs(index: number): void {
   const activeItem = getMenuItems()[index]
   assertMenuListHasProperAriaActiveDescendantAttribute(
-    getMenuList(MenuState.Open),
+    getMenuList(),
     activeItem.id,
   )
   assertMenuItemHasActiveDataState(activeItem)
@@ -119,12 +117,10 @@ export function assertActiveMenuItemIs(index: number): void {
 }
 
 export function assertNoActiveMenuItem(): void {
-  assertMenuListDoesNotHaveAriaActiveDescendantAttribute(
-    getMenuList(MenuState.Open),
-  )
+  assertMenuListDoesNotHaveAriaActiveDescendantAttribute(getMenuList())
 
   if (screen.queryAllByRole('menuitem').length !== 0) {
-    getMenuItems(MenuState.Open).forEach(menuItem => {
+    getMenuItems().forEach(menuItem => {
       assertMenuItemDoesNotHaveActiveDataState(menuItem)
     })
   }
@@ -134,28 +130,34 @@ function assertAllMenuItemsHaveProperTabindex(
   disabledItems: Options['disabledItems'],
   state: MenuState,
 ): void {
-  getMenuItems(state).forEach((element, index) => {
-    assertMenuItemHasProperTabindex(element, !!disabledItems?.includes(index))
-  })
+  getMenuItems({ hidden: state === MenuState.Closed }).forEach(
+    (element, index) => {
+      assertMenuItemHasProperTabindex(element, !!disabledItems?.includes(index))
+    },
+  )
 }
 
 function assertAllMenuItemsHaveProperRole(state: MenuState): void {
-  getMenuItems(state).forEach(element => assertMenuItemHasProperRole(element))
+  getMenuItems({ hidden: state === MenuState.Closed }).forEach(element =>
+    assertMenuItemHasProperRole(element),
+  )
 }
 
-function assertAllMenuItemsHaveProperAriaDisabledAttribute(
+function assertAllMenuItemsHaveProperDisabledStatus(
   disabledItems: Options['disabledItems'],
   state: MenuState,
 ): void {
-  getMenuItems(state).forEach((menuItem, index) => {
-    if (disabledItems?.includes(index)) {
-      assertMenuItemHasProperAriaDisabledAttribute(menuItem, true)
-      assertMenuItemHasDisabledDataState(menuItem)
-    } else {
-      assertMenuItemHasProperAriaDisabledAttribute(menuItem, false)
-      assertMenuItemDoesNotHaveDisabledDataState(menuItem)
-    }
-  })
+  getMenuItems({ hidden: state === MenuState.Closed }).forEach(
+    (menuItem, index) => {
+      if (disabledItems?.includes(index)) {
+        assertMenuItemHasProperAriaDisabledAttribute(menuItem, true)
+        assertMenuItemHasDisabledDataState(menuItem)
+      } else {
+        assertMenuItemHasProperAriaDisabledAttribute(menuItem, false)
+        assertMenuItemDoesNotHaveDisabledDataState(menuItem)
+      }
+    },
+  )
 }
 
 function assertMenuItemHasActiveDataState(element: Element): void {

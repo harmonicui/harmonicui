@@ -1,25 +1,21 @@
 import { defineComponent, nextTick } from 'vue'
-import { screen } from '@testing-library/vue'
 import { Keyboard, press, suppressWarnings } from '../../../test-utils'
 import {
   assertActiveMenuItemIs,
   assertMenuIsClosed,
   assertMenuIsFullyAccessible,
   assertMenuIsOpen,
+  getMenu,
   getMenuButton,
   getMenuItems,
   getMenuList,
   render,
 } from './test-utils'
-import { Menu, MenuState } from '../Menu'
+import { Menu } from '../Menu'
 import { MenuButton } from '../MenuButton'
 import { MenuItem } from '../MenuItem'
 import { MenuList } from '../MenuList'
 import { UnableToPassPropsThroughFragmentError } from '../../../utils'
-
-function getMenu() {
-  return screen.getByTestId('menu')
-}
 
 describe('Menu', () => {
   test('should be named properly', () => {
@@ -345,7 +341,7 @@ describe('MenuList', () => {
       </Menu>
     `)
 
-    expect(getMenuList(MenuState.Closed)).toBeInstanceOf(HTMLDivElement)
+    expect(getMenuList({ hidden: true })).toBeInstanceOf(HTMLDivElement)
   })
 
   test('should render default slot content', () => {
@@ -358,7 +354,7 @@ describe('MenuList', () => {
       </Menu>
     `)
 
-    expect(getMenuList(MenuState.Closed)).toHaveTextContent('...')
+    expect(getMenuList({ hidden: true })).toHaveTextContent('...')
   })
 
   test('can be rendered as any html element', async () => {
@@ -375,7 +371,7 @@ describe('MenuList', () => {
 
     await nextTick()
     assertMenuIsFullyAccessible()
-    expect(getMenuList(MenuState.Closed)).toBeInstanceOf(HTMLUListElement)
+    expect(getMenuList({ hidden: true })).toBeInstanceOf(HTMLUListElement)
   })
 
   test('can be rendered as any custom component', async () => {
@@ -402,9 +398,9 @@ describe('MenuList', () => {
 
     await nextTick()
     assertMenuIsFullyAccessible()
-    expect(getMenuList(MenuState.Closed)).toBeInstanceOf(HTMLUListElement)
-    expect(getMenuList(MenuState.Closed)).toHaveClass('bg-white')
-    expect(getMenuList(MenuState.Closed)).toHaveTextContent(
+    expect(getMenuList({ hidden: true })).toBeInstanceOf(HTMLUListElement)
+    expect(getMenuList({ hidden: true })).toHaveClass('bg-white')
+    expect(getMenuList({ hidden: true })).toHaveTextContent(
       ['Settings', 'Profile', 'Sign out'].join(''),
     )
   })
@@ -423,9 +419,9 @@ describe('MenuList', () => {
 
     await nextTick()
     assertMenuIsFullyAccessible()
-    expect(getMenuList(MenuState.Closed)).toHaveClass('bg-white')
-    expect(getMenuList(MenuState.Closed)).toHaveAttribute('dir', 'rtl')
-    expect(getMenuList(MenuState.Closed)).toHaveAttribute(
+    expect(getMenuList({ hidden: true })).toHaveClass('bg-white')
+    expect(getMenuList({ hidden: true })).toHaveAttribute('dir', 'rtl')
+    expect(getMenuList({ hidden: true })).toHaveAttribute(
       'data-test-id',
       'test-id',
     )
@@ -447,8 +443,8 @@ describe('MenuList', () => {
 
     await nextTick()
     assertMenuIsFullyAccessible()
-    expect(getMenuList(MenuState.Closed)).toBeInstanceOf(HTMLUListElement)
-    expect(getMenuList(MenuState.Closed)).toHaveTextContent(
+    expect(getMenuList({ hidden: true })).toBeInstanceOf(HTMLUListElement)
+    expect(getMenuList({ hidden: true })).toHaveTextContent(
       ['Settings', 'Profile', 'Sign out'].join(''),
     )
   })
@@ -467,8 +463,8 @@ describe('MenuList', () => {
 
     await nextTick()
     assertMenuIsFullyAccessible()
-    expect(getMenuList(MenuState.Closed)).not.toHaveAttribute('role', 'alert')
-    expect(getMenuList(MenuState.Closed)).not.toHaveAttribute(
+    expect(getMenuList({ hidden: true })).not.toHaveAttribute('role', 'alert')
+    expect(getMenuList({ hidden: true })).not.toHaveAttribute(
       'aria-activedescendant',
       'fake-id',
     )
@@ -488,7 +484,7 @@ describe('MenuList', () => {
 
     await nextTick()
     assertMenuIsFullyAccessible()
-    expect(getMenuList(MenuState.Closed)).toHaveAttribute('id', 'menu-list')
+    expect(getMenuList({ hidden: true })).toHaveAttribute('id', 'menu-list')
   })
 })
 
@@ -525,7 +521,7 @@ describe('MenuItem', () => {
 
     await nextTick()
     assertMenuIsFullyAccessible()
-    expect(getMenuItems(MenuState.Closed)[0]).toHaveTextContent('Settings')
+    expect(getMenuItems({ hidden: true })[0]).toHaveTextContent('Settings')
   })
 
   test('can be rendered as any html element', async () => {
@@ -540,7 +536,7 @@ describe('MenuItem', () => {
 
     await nextTick()
     assertMenuIsFullyAccessible()
-    expect(getMenuItems(MenuState.Closed)[0]).toBeInstanceOf(HTMLLIElement)
+    expect(getMenuItems({ hidden: true })[0]).toBeInstanceOf(HTMLLIElement)
   })
 
   test('can be rendered as any custom component', async () => {
@@ -565,10 +561,10 @@ describe('MenuItem', () => {
 
     await nextTick()
     assertMenuIsFullyAccessible()
-    expect(getMenuItems(MenuState.Closed)[0]).toBeInstanceOf(HTMLLIElement)
-    expect(getMenuItems(MenuState.Closed)[0]).toHaveClass('text-blue')
-    expect(getMenuItems(MenuState.Closed)[0]).toHaveTextContent('Settings')
-    expect(getMenuItems(MenuState.Closed)[0]).toHaveAttribute(
+    expect(getMenuItems({ hidden: true })[0]).toBeInstanceOf(HTMLLIElement)
+    expect(getMenuItems({ hidden: true })[0]).toHaveClass('text-blue')
+    expect(getMenuItems({ hidden: true })[0]).toHaveTextContent('Settings')
+    expect(getMenuItems({ hidden: true })[0]).toHaveAttribute(
       'role',
       'menuitem',
     )
@@ -588,9 +584,9 @@ describe('MenuItem', () => {
 
     await nextTick()
     assertMenuIsFullyAccessible()
-    expect(getMenuItems(MenuState.Closed)[0]).toHaveClass('bg-white')
-    expect(getMenuItems(MenuState.Closed)[0]).toHaveAttribute('dir', 'rtl')
-    expect(getMenuItems(MenuState.Closed)[0]).toHaveAttribute(
+    expect(getMenuItems({ hidden: true })[0]).toHaveClass('bg-white')
+    expect(getMenuItems({ hidden: true })[0]).toHaveAttribute('dir', 'rtl')
+    expect(getMenuItems({ hidden: true })[0]).toHaveAttribute(
       'data-test-id',
       'test-id',
     )
@@ -610,7 +606,7 @@ describe('MenuItem', () => {
 
     await nextTick()
     assertMenuIsFullyAccessible()
-    expect(getMenuItems(MenuState.Closed)[0]).toBeInstanceOf(HTMLAnchorElement)
+    expect(getMenuItems({ hidden: true })[0]).toBeInstanceOf(HTMLAnchorElement)
   })
 
   test('should not be possible to override controlled props', async () => {
@@ -627,11 +623,11 @@ describe('MenuItem', () => {
 
     await nextTick()
     assertMenuIsFullyAccessible()
-    expect(getMenuItems(MenuState.Closed)[0]).not.toHaveAttribute(
+    expect(getMenuItems({ hidden: true })[0]).not.toHaveAttribute(
       'role',
       'alert',
     )
-    expect(getMenuItems(MenuState.Closed)[0]).not.toHaveAttribute(
+    expect(getMenuItems({ hidden: true })[0]).not.toHaveAttribute(
       'aria-disabled',
       'true',
     )
@@ -649,7 +645,7 @@ describe('MenuItem', () => {
 
     await nextTick()
     assertMenuIsFullyAccessible()
-    expect(getMenuItems(MenuState.Closed)[0]).toHaveAttribute('id', 'menu-item')
+    expect(getMenuItems({ hidden: true })[0]).toHaveAttribute('id', 'menu-item')
   })
 
   test('should expose its active state through default slot', async () => {
@@ -674,12 +670,12 @@ describe('MenuItem', () => {
     await press(Keyboard.Space, getMenuButton())
     assertMenuIsOpen()
     assertActiveMenuItemIs(0)
-    expect(getMenuItems(MenuState.Open)[0]).toHaveClass('bg-blue')
-    expect(getMenuItems(MenuState.Open)[1]).not.toHaveClass('bg-blue')
+    expect(getMenuItems()[0]).toHaveClass('bg-blue')
+    expect(getMenuItems()[1]).not.toHaveClass('bg-blue')
 
     await press(Keyboard.ArrowDown)
     assertActiveMenuItemIs(1)
-    expect(getMenuItems(MenuState.Open)[0]).not.toHaveClass('bg-blue')
-    expect(getMenuItems(MenuState.Open)[1]).toHaveClass('bg-blue')
+    expect(getMenuItems()[0]).not.toHaveClass('bg-blue')
+    expect(getMenuItems()[1]).toHaveClass('bg-blue')
   })
 })
