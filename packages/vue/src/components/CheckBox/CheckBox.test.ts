@@ -79,7 +79,7 @@ describe('rendering', () => {
     const spy = jest.spyOn(console, 'warn')
 
     renderTemplate(`
-      <CheckBox class='className' id='CheckBox'>
+      <CheckBox as='div' class='className' id='CheckBox'>
         Inner content!
       </CheckBox>
     `)

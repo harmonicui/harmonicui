@@ -76,7 +76,7 @@ describe('rendering', () => {
     const spy = jest.spyOn(console, 'warn')
 
     renderTemplate(`
-      <Switch class='className' id='switch'>
+      <Switch as='div' class='className' id='switch'>
         Inner content!
       </Switch>
     `)

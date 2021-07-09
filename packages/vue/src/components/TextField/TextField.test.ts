@@ -79,7 +79,7 @@ describe('rendering', () => {
     const spy = jest.spyOn(console, 'warn')
 
     renderTemplate(`
-      <TextField class='className' id='TextField'>
+      <TextField as='div' class='className' id='TextField'>
         Inner content!
       </TextField>
     `)
