@@ -1,6 +1,8 @@
 import { HybridChildren, RenderProp } from '../types'
 import { ReactNode } from 'react'
 
+export * from './Keyboard'
+
 function isRenderProp<Props>(
   node: HybridChildren<Props>,
 ): node is RenderProp<Props> {

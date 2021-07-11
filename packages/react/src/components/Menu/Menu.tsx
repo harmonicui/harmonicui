@@ -1,20 +1,29 @@
+import type { ReactElement, ReactNode } from 'react'
 import { createElement, Fragment, useEffect, useState } from 'react'
-import type { ReactNode, ReactElement } from 'react'
 import { renderChildren } from '../../utils'
-import {
-  MenuButtonContextProvider,
-  MenuListContextProvider,
-  MenuItemContextProvider,
-} from '../../contexts'
 import type {
   MenuButtonContract,
-  MenuListContract,
   MenuItemContract,
-  SubscriptionRequirements,
+  MenuListContract,
+  SubscribedMenuItem,
+} from '../../contexts'
+import {
+  MenuButtonContextProvider,
+  MenuItemContextProvider,
+  MenuListContextProvider,
 } from '../../contexts'
 import { MenuList } from './MenuList'
 import { MenuButton } from './MenuButton'
 import { MenuItem } from './MenuItem'
+
+export enum Items {
+  First = 'First',
+  Last = 'Last',
+  Next = 'Next',
+  Previous = 'Previous',
+  Specific = 'Specific',
+  None = 'None',
+}
 
 export enum MenuState {
   Open,
@@ -25,9 +34,65 @@ function Menu({ children }: { children?: ReactNode }): ReactElement {
   const [menuListId, setMenuListId] = useState<string | null>(null)
   const [menuButtonId, setMenuButtonId] = useState<string | null>(null)
   const [menuState, setMenuState] = useState<MenuState>(MenuState.Closed)
-  const [items, setItems] = useState<Array<SubscriptionRequirements>>([])
+  const [items, setItems] = useState<Array<SubscribedMenuItem>>([])
   const [activeItem, setActiveItem] =
-    useState<SubscriptionRequirements | undefined>(undefined)
+    useState<SubscribedMenuItem | undefined>(undefined)
+  const [searchDebounce, setSearchDebounce] =
+    useState<ReturnType<typeof setTimeout> | null>(null)
+  const [searchQuery, setSearchQuery] = useState<string>('')
+
+  function selectItem(item: Items.Specific, id: string): void
+  function selectItem(item: Exclude<Items, Items.Specific>): void
+  function selectItem(item: Items, id?: string) {
+    switch (item) {
+      case Items.First:
+        setActiveItem(items.find(item => !item.disabled))
+        break
+
+      case Items.Last:
+        setActiveItem(
+          items
+            .slice()
+            .reverse()
+            .find(item => !item.disabled),
+        )
+        break
+
+      case Items.Next:
+        setActiveItem(
+          items.find((item, index) => {
+            const currentIndex = items.findIndex(i => i.id === activeItem?.id)
+
+            return index > currentIndex && !item.disabled
+          }) || activeItem,
+        )
+        break
+
+      case Items.Previous:
+        setActiveItem(
+          items
+            .slice()
+            .reverse()
+            .find((item, index) => {
+              const currentIndex = items
+                .slice()
+                .reverse()
+                .findIndex(i => i.id === activeItem?.id)
+
+              return index > currentIndex && !item.disabled
+            }) || activeItem,
+        )
+        break
+
+      case Items.Specific:
+        setActiveItem(items.find(item => item.id === id))
+        break
+
+      case Items.None:
+        setActiveItem(undefined)
+        break
+    }
+  }
 
   function menuIsOpen() {
     return menuState === MenuState.Open
@@ -71,6 +136,11 @@ function Menu({ children }: { children?: ReactNode }): ReactElement {
     subscribe: data => {
       setMenuButtonId(data.id)
     },
+    openMenu: activeItem => {
+      setMenuState(MenuState.Open)
+      menuListId && document.getElementById(menuListId)?.focus()
+      selectItem(activeItem)
+    },
     toggleMenu: () => {
       if (menuIsClosed()) {
         setMenuState(MenuState.Open)
@@ -89,7 +159,31 @@ function Menu({ children }: { children?: ReactNode }): ReactElement {
     subscribe: data => {
       setMenuListId(data.id)
     },
+    setActiveItem: selectItem,
+    search: function (value: string) {
+      if (searchDebounce) {
+        clearTimeout(searchDebounce)
+      }
+
+      const currentSearchQuery = searchQuery + value
+
+      setActiveItem(
+        items.find(
+          item =>
+            item.text
+              .toLowerCase()
+              .startsWith(currentSearchQuery.toLowerCase()) && !item.disabled,
+        ),
+      )
+
+      setSearchQuery(currentSearchQuery)
+
+      setSearchDebounce(setTimeout(() => setSearchQuery(''), 500))
+    },
+    closeMenu,
     data: {
+      isSearching: !!searchDebounce,
+      activeItemId: activeItem?.id,
       hidden: menuIsClosed() || undefined,
       ariaLabelledBy: menuButtonId,
       ariaActiveDescendant: menuIsOpen() ? activeItem?.id : undefined,
@@ -101,10 +195,10 @@ function Menu({ children }: { children?: ReactNode }): ReactElement {
       setItems(itemsList => [...itemsList, data])
     },
     focus: (id: string) => {
-      setActiveItem(items.find(item => item.id === id))
+      selectItem(Items.Specific, id)
     },
     unFocus: () => {
-      setActiveItem(undefined)
+      selectItem(Items.None)
     },
     close: () => {
       setMenuState(MenuState.Closed)

@@ -1,4 +1,5 @@
 import { createContext } from '../createContext'
+import { Items } from '../../components/Menu/Menu'
 
 interface MenuListRegistrationData {
   id: string
@@ -6,7 +7,12 @@ interface MenuListRegistrationData {
 
 export interface MenuListContract {
   subscribe: (data: MenuListRegistrationData) => void
+  setActiveItem: (item: Exclude<Items, Items.Specific>) => void
+  search: (value: string) => void
+  closeMenu: () => void
   data: {
+    isSearching: boolean
+    activeItemId: string | undefined
     hidden: boolean | undefined
     ariaLabelledBy: string | null
     ariaActiveDescendant: string | undefined

@@ -36,13 +36,6 @@ export function getMenuItems(options?: ByRoleOptions): Array<HTMLElement> {
   return screen.getAllByRole('menuitem', options)
 }
 
-// export const render = createRenderer({
-//   Menu,
-//   MenuItem,
-//   MenuList,
-//   MenuButton,
-// })
-
 interface Options {
   disabledItems?: Array<number>
   state?: MenuState

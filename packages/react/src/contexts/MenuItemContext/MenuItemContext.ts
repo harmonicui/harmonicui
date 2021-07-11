@@ -1,11 +1,13 @@
 import { createContext } from '../createContext'
 
-export interface SubscriptionRequirements {
+export interface SubscribedMenuItem {
   id: string
+  disabled: boolean
+  text: string
 }
 
 export interface MenuItemContract {
-  subscribe: (data: SubscriptionRequirements) => void
+  subscribe: (data: SubscribedMenuItem) => void
   focus: (id: string) => void
   unFocus: () => void
   close: () => void

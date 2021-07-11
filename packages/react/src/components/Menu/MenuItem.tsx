@@ -13,14 +13,18 @@ interface MenuItemProps {
 
 export function MenuItem({
   children,
-  disabled,
+  disabled = false,
   onClick,
   id = useGenerateId('MenuItem'),
 }: MenuItemProps): ReactElement {
   const { close, data, focus, subscribe, unFocus } = useMenuItemContext()
 
   useEffect(() => {
-    subscribe({ id })
+    subscribe({
+      id,
+      disabled,
+      text: document.getElementById(id)?.textContent || '',
+    })
   }, [id])
 
   function isActive() {
@@ -61,7 +65,7 @@ export function MenuItem({
     {
       id,
       role: 'menuitem',
-      'aria-disabled': disabled,
+      'aria-disabled': disabled || undefined,
       tabIndex: !disabled ? -1 : undefined,
       onPointerMove: onHoverHandler,
       onPointerLeave: onUnHoverHandler,
