@@ -1,20 +1,30 @@
-import { createElement, ReactElement, ReactNode, useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { useMenuButtonContext } from '../../contexts'
-import { Keys, renderChildren } from '../../utils'
+import { Keys } from '../../utils'
 import { useGenerateId } from '../../hooks'
 import { Items } from './Menu'
+import { PolymorphicComponentWithChildren } from '../../types'
+import { render } from '../../utils/render'
 
 interface MenuButtonProps {
   id?: string
   disabled?: boolean
-  children?: ReactNode
 }
 
-export function MenuButton({
-  id = useGenerateId('MenuButton'),
-  disabled,
-  children,
-}: MenuButtonProps): ReactElement {
+const COMPONENT_NAME = 'MenuButton'
+const DEFAULT_ELEMENT = 'button'
+
+function MenuButton<T extends React.ElementType = typeof DEFAULT_ELEMENT>(
+  props: PolymorphicComponentWithChildren<T, MenuButtonProps>,
+): ReactElement {
+  const {
+    id = useGenerateId(COMPONENT_NAME),
+    disabled,
+    as,
+    children,
+    ...attrs
+  } = props
+
   const { data, toggleMenu, openMenu, subscribe } = useMenuButtonContext()
 
   useEffect(() => {
@@ -43,9 +53,11 @@ export function MenuButton({
     }
   }
 
-  return createElement(
-    'button',
-    {
+  return render({
+    componentName: COMPONENT_NAME,
+    as: as || DEFAULT_ELEMENT,
+    props: {
+      ...attrs,
       id,
       disabled,
       role: 'button',
@@ -55,6 +67,10 @@ export function MenuButton({
       onClick: onClickHandler,
       onKeyDown: handleOnKeyDown,
     },
-    renderChildren(children, {}),
-  )
+    children,
+  })
 }
+
+MenuButton.displayName = COMPONENT_NAME
+
+export { MenuButton }

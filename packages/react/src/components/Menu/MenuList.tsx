@@ -1,18 +1,23 @@
-import { createElement, ReactElement, ReactNode, useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { useMenuListContext } from '../../contexts'
-import { Keys, renderChildren } from '../../utils'
+import { Keys } from '../../utils'
 import { useGenerateId } from '../../hooks'
 import { Items } from './Menu'
+import { PolymorphicComponentWithChildren } from '../../types'
+import { render } from '../../utils/render'
 
 interface MenuListProps {
   id?: string
-  children?: ReactNode
 }
 
-export function MenuList({
-  id = useGenerateId('MenuList'),
-  children,
-}: MenuListProps): ReactElement {
+const COMPONENT_NAME = 'MenuList'
+const DEFAULT_ELEMENT = 'div'
+
+function MenuList<T extends React.ElementType = typeof DEFAULT_ELEMENT>(
+  props: PolymorphicComponentWithChildren<T, MenuListProps>,
+): ReactElement {
+  const { id = useGenerateId(COMPONENT_NAME), as, children, ...attrs } = props
+
   const { closeMenu, data, search, setActiveItem, subscribe } =
     useMenuListContext()
 
@@ -72,9 +77,11 @@ export function MenuList({
     }
   }
 
-  return createElement(
-    'div',
-    {
+  return render({
+    componentName: COMPONENT_NAME,
+    as: as || DEFAULT_ELEMENT,
+    props: {
+      ...attrs,
       id,
       role: 'menu',
       tabIndex: -1,
@@ -83,6 +90,10 @@ export function MenuList({
       'aria-activedescendant': data.ariaActiveDescendant,
       onKeyDown: handleOnKeyDown,
     },
-    renderChildren(children, {}),
-  )
+    children,
+  })
 }
+
+MenuList.displayName = COMPONENT_NAME
+
+export { MenuList }

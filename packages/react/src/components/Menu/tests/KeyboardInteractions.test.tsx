@@ -19,9 +19,9 @@ describe('`Space` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -42,9 +42,9 @@ describe('`Space` key', () => {
       <Menu>
         <Menu.Button disabled>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -65,9 +65,11 @@ describe('`Space` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item disabled>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Settings
+          </Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -87,9 +89,13 @@ describe('`Space` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item disabled>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Settings
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -125,9 +131,15 @@ describe('`Space` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item disabled>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item disabled>Sign out</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Settings
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Sign out
+          </Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -147,9 +159,9 @@ describe('`Space` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -172,9 +184,11 @@ describe('`Space` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item onClick={clickHandler}>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a" onClick={clickHandler}>
+            Settings
+          </Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -199,9 +213,9 @@ describe('`Enter` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -222,9 +236,9 @@ describe('`Enter` key', () => {
       <Menu>
         <Menu.Button disabled>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -244,9 +258,11 @@ describe('`Enter` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item disabled>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Settings
+          </Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -266,9 +282,13 @@ describe('`Enter` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item disabled>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Settings
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -304,9 +324,15 @@ describe('`Enter` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item disabled>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item disabled>Sign out</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Settings
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Sign out
+          </Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -326,9 +352,9 @@ describe('`Enter` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -351,9 +377,11 @@ describe('`Enter` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item onClick={clickHandler}>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a" onClick={clickHandler}>
+            Settings
+          </Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -378,9 +406,9 @@ describe('`ArrowDown` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -400,9 +428,9 @@ describe('`ArrowDown` key', () => {
       <Menu>
         <Menu.Button disabled>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -438,9 +466,11 @@ describe('`ArrowDown` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item disabled>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Settings
+          </Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -460,9 +490,13 @@ describe('`ArrowDown` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item disabled>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Settings
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -482,9 +516,9 @@ describe('`ArrowDown` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -512,9 +546,11 @@ describe('`ArrowDown` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -538,10 +574,14 @@ describe('`ArrowDown` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item disabled>Help</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Help
+          </Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -565,9 +605,9 @@ describe('`ArrowDown` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -598,9 +638,9 @@ describe('`ArrowUp` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -620,9 +660,9 @@ describe('`ArrowUp` key', () => {
       <Menu>
         <Menu.Button disabled>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -658,9 +698,11 @@ describe('`ArrowUp` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item disabled>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Sign out
+          </Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -680,9 +722,13 @@ describe('`ArrowUp` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item disabled>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Sign out
+          </Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -702,9 +748,9 @@ describe('`ArrowUp` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -732,9 +778,11 @@ describe('`ArrowUp` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -758,10 +806,14 @@ describe('`ArrowUp` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item disabled>Help</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Help
+          </Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -785,9 +837,9 @@ describe('`ArrowUp` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -818,9 +870,9 @@ describe('`Escape` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -846,9 +898,9 @@ describe('`End` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -871,9 +923,11 @@ describe('`End` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item disabled>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Sign out
+          </Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -896,9 +950,13 @@ describe('`End` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item disabled>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Sign out
+          </Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -921,9 +979,15 @@ describe('`End` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item disabled>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item disabled>Sign out</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Settings
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Sign out
+          </Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -948,9 +1012,9 @@ describe('`PageDown` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -973,9 +1037,11 @@ describe('`PageDown` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item disabled>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Sign out
+          </Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -998,9 +1064,13 @@ describe('`PageDown` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item disabled>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Sign out
+          </Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -1023,9 +1093,15 @@ describe('`PageDown` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item disabled>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item disabled>Sign out</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Settings
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Sign out
+          </Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -1050,9 +1126,9 @@ describe('`Home` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -1075,9 +1151,11 @@ describe('`Home` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item disabled>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Settings
+          </Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -1100,9 +1178,13 @@ describe('`Home` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item disabled>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Settings
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -1125,9 +1207,15 @@ describe('`Home` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item disabled>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item disabled>Sign out</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Settings
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Sign out
+          </Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -1152,9 +1240,9 @@ describe('`PageUp` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -1177,9 +1265,11 @@ describe('`PageUp` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item disabled>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Settings
+          </Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -1202,9 +1292,13 @@ describe('`PageUp` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item disabled>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Settings
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -1227,9 +1321,15 @@ describe('`PageUp` key', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item disabled>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item disabled>Sign out</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Settings
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a" disabled>
+            Sign out
+          </Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -1254,9 +1354,9 @@ describe('`Any` key / searching', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -1279,9 +1379,9 @@ describe('`Any` key / searching', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -1304,9 +1404,9 @@ describe('`Any` key / searching', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -1329,9 +1429,9 @@ describe('`Any` key / searching', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -1354,9 +1454,9 @@ describe('`Any` key / searching', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -1382,9 +1482,9 @@ describe('`Any` key / searching', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )
@@ -1404,9 +1504,11 @@ describe('`Any` key / searching', () => {
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item disabled>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a" disabled>
+            Profile
+          </Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>,
     )

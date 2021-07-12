@@ -1,22 +1,38 @@
-import { createElement, ReactNode, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import type { ReactElement, MouseEvent } from 'react'
 import { useComposeDataState, useGenerateId } from '../../hooks'
 import { useMenuItemContext } from '../../contexts'
-import { renderChildren } from '../../utils'
+import { PolymorphicComponentWithDynamicChildren } from '../../types'
+import { render } from '../../utils/render'
 
 interface MenuItemProps {
   id?: string
   disabled?: boolean
   onClick?: (event: MouseEvent) => void
-  children?: ReactNode
 }
 
-export function MenuItem({
-  children,
-  disabled = false,
-  onClick,
-  id = useGenerateId('MenuItem'),
-}: MenuItemProps): ReactElement {
+interface MenuItemChildrenProps {
+  isActive: boolean
+}
+
+const COMPONENT_NAME = 'MenuItem'
+const DEFAULT_ELEMENT = 'fragment'
+
+function MenuItem<T extends React.ElementType = typeof DEFAULT_ELEMENT>(
+  props: PolymorphicComponentWithDynamicChildren<
+    T,
+    MenuItemProps,
+    MenuItemChildrenProps
+  >,
+): ReactElement {
+  const {
+    id = useGenerateId(COMPONENT_NAME),
+    disabled = false,
+    onClick,
+    as,
+    children,
+    ...attrs
+  } = props
   const { close, data, focus, subscribe, unFocus } = useMenuItemContext()
 
   useEffect(() => {
@@ -60,9 +76,11 @@ export function MenuItem({
     onClick?.(event)
   }
 
-  return createElement(
-    'div',
-    {
+  return render({
+    componentName: COMPONENT_NAME,
+    as: as || DEFAULT_ELEMENT,
+    props: {
+      ...attrs,
       id,
       role: 'menuitem',
       'aria-disabled': disabled || undefined,
@@ -76,6 +94,11 @@ export function MenuItem({
         disabled,
       }),
     },
-    renderChildren(children, {}),
-  )
+    children,
+    childrenProps: { isActive: isActive() },
+  })
 }
+
+MenuItem.displayName = COMPONENT_NAME
+
+export { MenuItem }

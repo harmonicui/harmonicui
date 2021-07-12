@@ -18,9 +18,9 @@ test('`Click` on MenuButton should open the menu', () => {
     <Menu>
       <Menu.Button>Options</Menu.Button>
       <Menu.List>
-        <Menu.Item>Settings</Menu.Item>
-        <Menu.Item>Profile</Menu.Item>
-        <Menu.Item>Sign out</Menu.Item>
+        <Menu.Item as="a">Settings</Menu.Item>
+        <Menu.Item as="a">Profile</Menu.Item>
+        <Menu.Item as="a">Sign out</Menu.Item>
       </Menu.List>
     </Menu>,
   )
@@ -38,9 +38,9 @@ test('`Right Click` on MenuButton should not open the menu', () => {
     <Menu>
       <Menu.Button>Options</Menu.Button>
       <Menu.List>
-        <Menu.Item>Settings</Menu.Item>
-        <Menu.Item>Profile</Menu.Item>
-        <Menu.Item>Sign out</Menu.Item>
+        <Menu.Item as="a">Settings</Menu.Item>
+        <Menu.Item as="a">Profile</Menu.Item>
+        <Menu.Item as="a">Sign out</Menu.Item>
       </Menu.List>
     </Menu>,
   )
@@ -58,9 +58,9 @@ test('`Click` on MenuButton should not open the menu when MenuButton is disabled
     <Menu>
       <Menu.Button disabled>Options</Menu.Button>
       <Menu.List>
-        <Menu.Item>Settings</Menu.Item>
-        <Menu.Item>Profile</Menu.Item>
-        <Menu.Item>Sign out</Menu.Item>
+        <Menu.Item as="a">Settings</Menu.Item>
+        <Menu.Item as="a">Profile</Menu.Item>
+        <Menu.Item as="a">Sign out</Menu.Item>
       </Menu.List>
     </Menu>,
   )
@@ -78,9 +78,9 @@ test('`Click` on MenuButton should close the menu when its open', () => {
     <Menu>
       <Menu.Button>Options</Menu.Button>
       <Menu.List>
-        <Menu.Item>Settings</Menu.Item>
-        <Menu.Item>Profile</Menu.Item>
-        <Menu.Item>Sign out</Menu.Item>
+        <Menu.Item as="a">Settings</Menu.Item>
+        <Menu.Item as="a">Profile</Menu.Item>
+        <Menu.Item as="a">Sign out</Menu.Item>
       </Menu.List>
     </Menu>,
   )
@@ -102,9 +102,9 @@ test('`Click` outside of the Menu should close the menu', () => {
     <Menu>
       <Menu.Button>Options</Menu.Button>
       <Menu.List>
-        <Menu.Item>Settings</Menu.Item>
-        <Menu.Item>Profile</Menu.Item>
-        <Menu.Item>Sign out</Menu.Item>
+        <Menu.Item as="a">Settings</Menu.Item>
+        <Menu.Item as="a">Profile</Menu.Item>
+        <Menu.Item as="a">Sign out</Menu.Item>
       </Menu.List>
     </Menu>,
   )
@@ -126,9 +126,9 @@ test('`Click` outside of the Menu should do noting when the menu is closed', () 
     <Menu>
       <Menu.Button>Options</Menu.Button>
       <Menu.List>
-        <Menu.Item>Settings</Menu.Item>
-        <Menu.Item>Profile</Menu.Item>
-        <Menu.Item>Sign out</Menu.Item>
+        <Menu.Item as="a">Settings</Menu.Item>
+        <Menu.Item as="a">Profile</Menu.Item>
+        <Menu.Item as="a">Sign out</Menu.Item>
       </Menu.List>
     </Menu>,
   )
@@ -146,19 +146,19 @@ test('`Click` outside of the menu on another MenuButton should close the current
       <Menu>
         <Menu.Button>Options</Menu.Button>
         <Menu.List>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Profile</Menu.Item>
-          <Menu.Item>Sign out</Menu.Item>
+          <Menu.Item as="a">Settings</Menu.Item>
+          <Menu.Item as="a">Profile</Menu.Item>
+          <Menu.Item as="a">Sign out</Menu.Item>
         </Menu.List>
       </Menu>
 
       <Menu>
         <Menu.Button>Edit</Menu.Button>
         <Menu.List>
-          <Menu.Item>Undo</Menu.Item>
-          <Menu.Item>Redo</Menu.Item>
-          <Menu.Item>Copy</Menu.Item>
-          <Menu.Item>Paste</Menu.Item>
+          <Menu.Item as="a">Undo</Menu.Item>
+          <Menu.Item as="a">Redo</Menu.Item>
+          <Menu.Item as="a">Copy</Menu.Item>
+          <Menu.Item as="a">Paste</Menu.Item>
         </Menu.List>
       </Menu>
     </>,
@@ -192,9 +192,9 @@ test('`Hover` on a MenuItem should activate it', () => {
     <Menu>
       <Menu.Button>Options</Menu.Button>
       <Menu.List>
-        <Menu.Item>Settings</Menu.Item>
-        <Menu.Item>Profile</Menu.Item>
-        <Menu.Item>Sign out</Menu.Item>
+        <Menu.Item as="a">Settings</Menu.Item>
+        <Menu.Item as="a">Profile</Menu.Item>
+        <Menu.Item as="a">Sign out</Menu.Item>
       </Menu.List>
     </Menu>,
   )
@@ -224,9 +224,9 @@ test('`Hover` on an already activated MenuItem should do nothing', () => {
     <Menu>
       <Menu.Button>Options</Menu.Button>
       <Menu.List>
-        <Menu.Item>Settings</Menu.Item>
-        <Menu.Item>Profile</Menu.Item>
-        <Menu.Item>Sign out</Menu.Item>
+        <Menu.Item as="a">Settings</Menu.Item>
+        <Menu.Item as="a">Profile</Menu.Item>
+        <Menu.Item as="a">Sign out</Menu.Item>
       </Menu.List>
     </Menu>,
   )
@@ -250,9 +250,11 @@ test('`Hover` on a disable MenuItem should not activate it', () => {
     <Menu>
       <Menu.Button>Options</Menu.Button>
       <Menu.List>
-        <Menu.Item>Settings</Menu.Item>
-        <Menu.Item disabled>Profile</Menu.Item>
-        <Menu.Item>Sign out</Menu.Item>
+        <Menu.Item as="a">Settings</Menu.Item>
+        <Menu.Item as="a" disabled>
+          Profile
+        </Menu.Item>
+        <Menu.Item as="a">Sign out</Menu.Item>
       </Menu.List>
     </Menu>,
   )
@@ -273,9 +275,9 @@ test('`UnHover` an already active MenuItem should inactivate it', () => {
     <Menu>
       <Menu.Button>Options</Menu.Button>
       <Menu.List>
-        <Menu.Item>Settings</Menu.Item>
-        <Menu.Item>Profile</Menu.Item>
-        <Menu.Item>Sign out</Menu.Item>
+        <Menu.Item as="a">Settings</Menu.Item>
+        <Menu.Item as="a">Profile</Menu.Item>
+        <Menu.Item as="a">Sign out</Menu.Item>
       </Menu.List>
     </Menu>,
   )
@@ -299,9 +301,11 @@ test('`UnHover` a disabled MenuItem should do nothing', () => {
     <Menu>
       <Menu.Button>Options</Menu.Button>
       <Menu.List>
-        <Menu.Item>Settings</Menu.Item>
-        <Menu.Item disabled>Profile</Menu.Item>
-        <Menu.Item>Sign out</Menu.Item>
+        <Menu.Item as="a">Settings</Menu.Item>
+        <Menu.Item as="a" disabled>
+          Profile
+        </Menu.Item>
+        <Menu.Item as="a">Sign out</Menu.Item>
       </Menu.List>
     </Menu>,
   )
@@ -330,9 +334,11 @@ test('`Click` on a MenuItem should invoke a clickEvent on it and closes the menu
     <Menu>
       <Menu.Button>Options</Menu.Button>
       <Menu.List>
-        <Menu.Item>Settings</Menu.Item>
-        <Menu.Item onClick={clickHandler}>Profile</Menu.Item>
-        <Menu.Item>Sign out</Menu.Item>
+        <Menu.Item as="a">Settings</Menu.Item>
+        <Menu.Item as="a" onClick={clickHandler}>
+          Profile
+        </Menu.Item>
+        <Menu.Item as="a">Sign out</Menu.Item>
       </Menu.List>
     </Menu>,
   )
@@ -356,11 +362,11 @@ test('`Click` on a disabled MenuItem should do nothing', () => {
     <Menu>
       <Menu.Button>Options</Menu.Button>
       <Menu.List>
-        <Menu.Item>Settings</Menu.Item>
-        <Menu.Item disabled onClick={clickHandler}>
+        <Menu.Item as="a">Settings</Menu.Item>
+        <Menu.Item as="a" disabled onClick={clickHandler}>
           Profile
         </Menu.Item>
-        <Menu.Item>Sign out</Menu.Item>
+        <Menu.Item as="a">Sign out</Menu.Item>
       </Menu.List>
     </Menu>,
   )
@@ -382,9 +388,9 @@ test('`Focus` on a MenuItem should activate it', () => {
     <Menu>
       <Menu.Button>Options</Menu.Button>
       <Menu.List>
-        <Menu.Item>Settings</Menu.Item>
-        <Menu.Item>Profile</Menu.Item>
-        <Menu.Item>Sign out</Menu.Item>
+        <Menu.Item as="a">Settings</Menu.Item>
+        <Menu.Item as="a">Profile</Menu.Item>
+        <Menu.Item as="a">Sign out</Menu.Item>
       </Menu.List>
     </Menu>,
   )
@@ -405,9 +411,11 @@ test('should not be possible to `Focus` on a disabled MenuItem', () => {
     <Menu>
       <Menu.Button>Options</Menu.Button>
       <Menu.List>
-        <Menu.Item>Settings</Menu.Item>
-        <Menu.Item disabled>Profile</Menu.Item>
-        <Menu.Item>Sign out</Menu.Item>
+        <Menu.Item as="a">Settings</Menu.Item>
+        <Menu.Item as="a" disabled>
+          Profile
+        </Menu.Item>
+        <Menu.Item as="a">Sign out</Menu.Item>
       </Menu.List>
     </Menu>,
   )

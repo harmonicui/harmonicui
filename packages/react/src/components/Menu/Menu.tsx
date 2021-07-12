@@ -1,6 +1,5 @@
-import type { ReactElement, ReactNode } from 'react'
-import { createElement, Fragment, useEffect, useState } from 'react'
-import { renderChildren } from '../../utils'
+import type { ReactElement } from 'react'
+import React, { createElement, useEffect, useState } from 'react'
 import type {
   MenuButtonContract,
   MenuItemContract,
@@ -15,6 +14,8 @@ import {
 import { MenuList } from './MenuList'
 import { MenuButton } from './MenuButton'
 import { MenuItem } from './MenuItem'
+import { PolymorphicComponentWithDynamicChildren } from '../../types'
+import { render } from '../../utils/render'
 
 export enum Items {
   First = 'First',
@@ -30,7 +31,18 @@ export enum MenuState {
   Closed,
 }
 
-function Menu({ children }: { children?: ReactNode }): ReactElement {
+interface MenuChildrenProps {
+  isOpen: boolean
+}
+
+const COMPONENT_NAME = 'Menu'
+const DEFAULT_ELEMENT = 'fragment'
+
+function Menu<T extends React.ElementType = typeof DEFAULT_ELEMENT>(
+  props: PolymorphicComponentWithDynamicChildren<T, unknown, MenuChildrenProps>,
+): ReactElement {
+  const { as, children, ...attrs } = props
+
   const [menuListId, setMenuListId] = useState<string | null>(null)
   const [menuButtonId, setMenuButtonId] = useState<string | null>(null)
   const [menuState, setMenuState] = useState<MenuState>(MenuState.Closed)
@@ -208,7 +220,6 @@ function Menu({ children }: { children?: ReactNode }): ReactElement {
     },
   }
 
-  // const Element: ElementType = as || DEFAULT_ELEMENT
   return createElement(
     MenuButtonContextProvider,
     { value: menuButtonContextValue },
@@ -218,13 +229,21 @@ function Menu({ children }: { children?: ReactNode }): ReactElement {
       createElement(
         MenuItemContextProvider,
         { value: menuItemContextValue },
-        createElement(Fragment, null, renderChildren(children, {})),
+        render({
+          componentName: COMPONENT_NAME,
+          as: as || DEFAULT_ELEMENT,
+          props: attrs,
+          children,
+          childrenProps: {
+            isOpen: menuIsOpen(),
+          },
+        }),
       ),
     ),
   )
 }
 
-Menu.displayName = 'Menu'
+Menu.displayName = COMPONENT_NAME
 
 Menu.Button = MenuButton
 Menu.List = MenuList
