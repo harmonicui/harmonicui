@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react'
 import {
-  ComponentWithHybridChildren,
+  ComponentWithDynamicChildren,
   PolymorphicPropsWithoutRef,
 } from '../../types'
 import { useGenerateId, useGenerateDataIsAttribute } from '../../hooks'
@@ -51,7 +51,7 @@ interface TextFieldChildrenProps {
 const DEFAULT_ELEMENT = Fragment
 
 export type TextFieldProps<T extends ElementType = typeof DEFAULT_ELEMENT> =
-  ComponentWithHybridChildren<
+  ComponentWithDynamicChildren<
     PolymorphicPropsWithoutRef<TextFieldOwnProps, T>,
     TextFieldChildrenProps
   >

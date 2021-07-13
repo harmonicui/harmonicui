@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react'
 import {
-  ComponentWithHybridChildren,
+  ComponentWithDynamicChildren,
   PolymorphicPropsWithoutRef,
 } from '../../types'
 import { useGenerateId, useGenerateDataIsAttribute } from '../../hooks'
@@ -53,7 +53,7 @@ interface CheckBoxChildrenProps {
 const DEFAULT_ELEMENT = Fragment
 
 export type CheckBoxProps<T extends ElementType = typeof DEFAULT_ELEMENT> =
-  ComponentWithHybridChildren<
+  ComponentWithDynamicChildren<
     PolymorphicPropsWithoutRef<CheckBoxOwnProps, T>,
     CheckBoxChildrenProps
   >
